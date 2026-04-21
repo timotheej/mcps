@@ -2,12 +2,26 @@ import { Outlet, useLocation } from "react-router-dom";
 import { Header } from "@codegouvfr/react-dsfr/Header";
 import { Footer } from "@codegouvfr/react-dsfr/Footer";
 import { headerFooterDisplayItem } from "@codegouvfr/react-dsfr/Display";
+import { loadSelectedThemes } from "../../data/maquette";
 
-export function Layout() {
+export function MaquetteLayout() {
   const location = useLocation();
+  const hasThemes = loadSelectedThemes() !== null;
+
+  const navigation = hasThemes
+    ? [
+        {
+          text: "Tableau de bord",
+          linkProps: { to: "/maquette/tableau-de-bord" },
+          isActive: location.pathname === "/maquette/tableau-de-bord",
+        },
+      ]
+    : [];
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+    <div
+      style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
+    >
       <Header
         brandTop={
           <>
@@ -17,23 +31,12 @@ export function Layout() {
           </>
         }
         serviceTitle="Ma Certif' Pro Sante"
-        serviceTagline="Suivi de la certification periodique des professionnels de sante"
+        serviceTagline="Maquette — Onboarding themes preferentiels"
         homeLinkProps={{
-          to: "/",
+          to: "/maquette",
           title: "Accueil - Ma Certif' Pro Sante",
         }}
-        navigation={[
-          {
-            text: "Accueil",
-            linkProps: { to: "/" },
-            isActive: location.pathname === "/",
-          },
-          {
-            text: "Tableau de bord",
-            linkProps: { to: "/tableau-de-bord" },
-            isActive: location.pathname === "/tableau-de-bord",
-          },
-        ]}
+        navigation={navigation}
         quickAccessItems={[headerFooterDisplayItem]}
       />
       <main role="main" id="content" style={{ flex: 1 }}>
@@ -41,7 +44,7 @@ export function Layout() {
       </main>
       <Footer
         accessibility="non compliant"
-        contentDescription="mcps"
+        contentDescription="Maquette interactive MCPS — Prototype de test"
         bottomItems={[headerFooterDisplayItem]}
       />
     </div>

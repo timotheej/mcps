@@ -1,0 +1,1393 @@
+/* ═══════════════════════════════════════════════════════════
+   Maquette MCPS — Styles custom enrichis
+   Tokens DSFR, pas de couleurs en dur.
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── Auth ────────────────────────────────────────────── */
+
+.maq-auth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+}
+
+.maq-auth__logo {
+  font-size: 1rem;
+  color: var(--text-mention-grey);
+  margin-bottom: 2rem;
+}
+
+.maq-auth__title {
+  margin-bottom: 0.5rem;
+}
+
+.maq-auth__subtitle {
+  color: var(--text-mention-grey);
+  margin-bottom: 2.5rem;
+}
+
+.maq-auth__psc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.maq-auth__psc-label {
+  font-size: 0.875rem;
+  color: var(--text-mention-grey);
+}
+
+/* ─── Onboarding ─────────────────────────────────────── */
+
+/* Activation box — DSFR "creation de compte" pattern */
+.maq-activation-box {
+  background: var(--background-alt-grey);
+  padding: 2rem 2.5rem 2.5rem;
+  max-width: 48rem;
+  margin: 0 auto;
+}
+
+.maq-activation-box__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-default-grey);
+}
+
+.maq-activation-box__actions--between {
+  justify-content: space-between;
+}
+
+@media (max-width: 767px) {
+  .maq-activation-box {
+    padding: 1.5rem 1rem 2rem;
+  }
+}
+
+/* Profile verification card (step 1) */
+.maq-profil-card {
+  max-width: 36rem;
+  border: 1px solid var(--border-default-grey);
+  background: var(--background-alt-grey);
+}
+
+.maq-profil-card__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.75rem 1.25rem;
+  gap: 1rem;
+}
+
+.maq-profil-card__row + .maq-profil-card__row {
+  border-top: 1px solid var(--border-default-grey);
+}
+
+.maq-profil-card__label {
+  font-size: 0.8125rem;
+  color: var(--text-mention-grey);
+  flex-shrink: 0;
+}
+
+.maq-profil-card__value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-align: right;
+}
+
+.maq-onboarding__counter {
+  font-size: 0.875rem;
+  color: var(--text-mention-grey);
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.maq-onboarding__counter strong {
+  color: var(--text-default-success);
+}
+
+.maq-onboarding__axe {
+  border: 1px solid var(--border-default-grey);
+  padding: 1.5rem 1.5rem 1.25rem;
+  margin-bottom: 1.5rem;
+  transition: border-color 0.2s;
+}
+
+.maq-onboarding__axe--valid {
+  border-color: var(--border-plain-success);
+}
+
+.maq-onboarding__axe-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.maq-onboarding__axe-num {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-mention-grey);
+  margin-bottom: 0.25rem;
+}
+
+.maq-onboarding__axe-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
+.maq-onboarding__axe-desc {
+  font-size: 0.8125rem;
+  color: var(--text-mention-grey);
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
+.maq-onboarding__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.maq-onboarding__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.875rem;
+  font-size: 0.875rem;
+  border: 1px solid var(--border-default-grey);
+  border-radius: 1.5rem;
+  background: var(--background-default-grey);
+  color: var(--text-default-grey);
+  cursor: pointer;
+  transition: all 0.15s;
+  user-select: none;
+}
+
+.maq-onboarding__tag:hover {
+  background: var(--background-contrast-warning);
+  border-color: var(--border-plain-warning);
+}
+
+.maq-onboarding__tag--selected {
+  background: var(--background-contrast-success);
+  border-color: var(--border-plain-success);
+  color: var(--text-default-success);
+  font-weight: 500;
+}
+
+.maq-onboarding__tag--selected:hover {
+  background: var(--background-contrast-success);
+  border-color: var(--border-plain-success);
+}
+
+.maq-onboarding__tag-icon {
+  font-size: 0.75rem;
+}
+
+.maq-onboarding__hint {
+  color: var(--text-default-error);
+  font-size: 0.875rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.maq-onboarding__axe-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+  color: var(--text-default-success);
+  font-weight: 500;
+}
+
+.maq-onboarding__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-default-grey);
+}
+
+/* ─── Dashboard — Header (profil + circle chart) ────────── */
+
+.maq-progress-banner {
+  background: var(--background-alt-grey);
+  padding: 1rem 0 1.5rem;
+}
+
+.maq-dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.maq-dashboard-header__left {
+  flex: 1;
+  min-width: 0;
+}
+
+.maq-dashboard-header__right {
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 1.5rem;
+}
+
+.maq-dashboard-header__progress {
+  min-width: 200px;
+}
+
+/* Progress bar (reusable — used in Synthese) */
+.maq-progress__track {
+  height: 8px;
+  background: var(--border-default-grey);
+  border-radius: 4px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.maq-progress__fill {
+  height: 100%;
+  background: var(--background-flat-success);
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+/* ─── Dashboard — Section header ─────────────────────── */
+
+.maq-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+/* ─── Dashboard — Grille axes ────────────────────────── */
+
+.maq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* ─── Dashboard — Card axes ──────────────────────────── */
+
+.maq-card {
+  border: 1px solid var(--border-default-grey);
+  padding: 1.25rem 1.5rem 1rem;
+  cursor: pointer;
+  transition: box-shadow 0.15s, border-color 0.15s;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.maq-card:hover {
+  border-color: var(--border-action-high-blue-france);
+}
+
+/* Card top: axe number + circles */
+.maq-card__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.maq-card__num {
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-mention-grey);
+  font-weight: 600;
+}
+
+.maq-card__circles-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.maq-card__circles {
+  display: flex;
+  gap: 0.375rem;
+}
+
+.maq-card__circle {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  border: 2px solid var(--border-default-grey);
+}
+
+.maq-card__circle--filled {
+  background: var(--background-flat-success);
+  border-color: var(--background-flat-success);
+}
+
+.maq-card__count {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-mention-grey);
+}
+
+/* Card title */
+.maq-card__title {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.35;
+  margin: 0 0 0.125rem;
+}
+
+.maq-card__ps {
+  font-size: 0.8125rem;
+  color: var(--text-mention-grey);
+  font-style: italic;
+  margin: 0 0 0.75rem;
+}
+
+/* Card themes */
+.maq-card__themes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.maq-card__theme-tag {
+  font-size: 0.6875rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 1rem;
+  background: var(--background-alt-grey);
+  color: var(--text-mention-grey);
+  white-space: nowrap;
+}
+
+.maq-card__theme-more {
+  font-size: 0.6875rem;
+  color: var(--text-mention-grey);
+  padding: 0.125rem 0.25rem;
+}
+
+/* Card nudge (suggestion) */
+.maq-card__nudge {
+  margin-top: auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-default-grey);
+  min-height: 3.5rem;
+}
+
+.maq-card__nudge-label {
+  font-size: 0.75rem;
+  color: var(--text-mention-grey);
+  margin-bottom: 0.25rem;
+}
+
+.maq-card__nudge-suggestion {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.35;
+  margin-bottom: 0.125rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.maq-card__nudge-meta {
+  font-size: 0.6875rem;
+  color: var(--text-mention-grey);
+}
+
+/* Variant A — Compact avec badge type */
+.maq-card__nudge-compact {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.maq-card__nudge-type {
+  display: inline-block;
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.0625rem 0.375rem;
+  border: 1px solid var(--border-default-grey);
+  border-radius: 0.1875rem;
+  margin-right: 0.375rem;
+  vertical-align: middle;
+  color: var(--text-mention-grey);
+}
+
+.maq-card__nudge-duree {
+  color: var(--text-mention-grey);
+  font-weight: 400;
+}
+
+/* Variant B — Compteur de suggestions */
+.maq-card__nudge-count {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.maq-card__nudge-count-icon {
+  font-size: 1rem;
+  color: var(--text-action-high-blue-france);
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+.maq-card__nudge-count p {
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.maq-card__nudge-count-sub {
+  font-size: 0.75rem;
+  color: var(--text-mention-grey);
+  font-weight: 400;
+}
+
+/* Variant C — Mini-liste */
+.maq-card__nudge-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.25rem 0 0;
+}
+
+.maq-card__nudge-list li {
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  padding: 0.125rem 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.maq-card__nudge-list-meta {
+  color: var(--text-mention-grey);
+  font-weight: 400;
+}
+
+.maq-card__nudge-list-more {
+  font-size: 0.75rem;
+  color: var(--text-action-high-blue-france);
+  margin-top: 0.25rem;
+}
+
+.maq-card__nudge-text--success {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-default-success);
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+/* Card footer (link) */
+.maq-card__footer {
+  margin-top: 0.75rem;
+}
+
+.maq-card__link {
+  font-size: 0.8125rem;
+  color: var(--text-action-high-blue-france);
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: gap 0.15s;
+}
+
+.maq-card:hover .maq-card__link {
+  gap: 0.5rem;
+}
+
+@media (max-width: 767px) {
+  .maq-dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .maq-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .maq-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ─── Axe detail — Inter-axe navigation ─────────────── */
+
+.maq-axe-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-default-grey);
+}
+
+.maq-axe-nav__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+  color: var(--text-action-high-blue-france);
+  text-decoration: none;
+  transition: gap 0.15s;
+}
+
+.maq-axe-nav__link:hover {
+  text-decoration: underline;
+  gap: 0.5rem;
+}
+
+.maq-axe-nav__link--prev span[class^="fr-icon"] {
+  font-size: 0.875rem;
+}
+
+.maq-axe-nav__link--next span[class^="fr-icon"] {
+  font-size: 0.875rem;
+}
+
+/* ─── Axe detail — Header integre ────────────────────── */
+
+.maq-axe-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.maq-axe-header__left {
+  flex: 1;
+  min-width: 280px;
+}
+
+.maq-axe-header__num {
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-mention-grey);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.maq-axe-header__title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0 0 0.375rem;
+}
+
+.maq-axe-header__ps {
+  font-size: 0.9375rem;
+  color: var(--text-mention-grey);
+  font-style: italic;
+  margin: 0;
+}
+
+.maq-axe-header__right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.maq-axe-header__status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.maq-axe-header__circles {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.maq-axe-header__circle {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  border: 2px solid var(--border-default-grey);
+}
+
+.maq-axe-header__circle--filled {
+  background: var(--background-flat-success);
+  border-color: var(--background-flat-success);
+}
+
+/* ─── Axe detail — Main column ───────────────────────── */
+
+.maq-axe-main__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.maq-axe-main__filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.maq-axe-main__formations {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* ─── Formation card (new) ───────────────────────────── */
+
+.maq-formation {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: var(--background-alt-grey);
+  border-left: 3px solid var(--border-action-high-blue-france);
+  transition: box-shadow 0.15s;
+}
+
+.maq-formation:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.maq-formation__body {
+  flex: 1;
+}
+
+.maq-formation__type {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-mention-grey);
+  margin-bottom: 0.25rem;
+}
+
+.maq-formation__title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0 0 0.5rem;
+}
+
+.maq-formation__org {
+  font-size: 0.8125rem;
+  color: var(--text-mention-grey);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.maq-formation__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.maq-formation__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.6875rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.25rem;
+  background: var(--background-default-grey);
+  color: var(--text-mention-grey);
+}
+
+.maq-formation__badge span[class^="fr-icon"] {
+  font-size: 0.625rem;
+}
+
+.maq-formation__themes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+.maq-formation__theme-match {
+  display: inline-block;
+  font-size: 0.6875rem;
+  padding: 0.0625rem 0.5rem;
+  border-radius: 0.25rem;
+  background: var(--background-contrast-success);
+  color: var(--text-default-success);
+}
+
+.maq-formation__action {
+  flex-shrink: 0;
+  align-self: center;
+}
+
+/* ─── Sidebar blocks ─────────────────────────────────── */
+
+.maq-sidebar-block {
+  padding: 1.25rem;
+  background: var(--background-alt-grey);
+  margin-bottom: 1rem;
+}
+
+.maq-sidebar-block__title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.maq-sidebar-block__title span[class^="fr-icon"] {
+  font-size: 1rem;
+  color: var(--text-action-high-blue-france);
+}
+
+.maq-sidebar-block__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.maq-sidebar-item {
+  display: flex;
+  gap: 0.625rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-default-grey);
+}
+
+.maq-sidebar-item:last-child {
+  border-bottom: none;
+}
+
+.maq-sidebar-item__dot {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  background: var(--background-flat-success);
+  flex-shrink: 0;
+  margin-top: 0.3125rem;
+}
+
+.maq-sidebar-item__label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.maq-sidebar-item__meta {
+  font-size: 0.6875rem;
+  color: var(--text-mention-grey);
+  margin: 0.125rem 0 0;
+}
+
+.maq-sidebar-block__empty {
+  font-size: 0.8125rem;
+  color: var(--text-mention-grey);
+  font-style: italic;
+  margin: 0;
+}
+
+.maq-sidebar-block__remaining {
+  font-size: 0.75rem;
+  color: var(--text-mention-grey);
+  margin: 0.75rem 0 0;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-default-grey);
+}
+
+.maq-sidebar-block__text {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  margin: 0 0 0.5rem;
+}
+
+.maq-sidebar-block__text--muted {
+  color: var(--text-mention-grey);
+}
+
+.maq-sidebar-block__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-bottom: 0.5rem;
+}
+
+.maq-sidebar-block__tag {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 1rem;
+  background: var(--background-default-grey);
+  color: var(--text-default-grey);
+}
+
+/* ─── Kept from before ───────────────────────────────── */
+
+.maq-axe__theme-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.maq-axe__theme-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8125rem;
+  border-radius: 1.5rem;
+  background: var(--background-alt-grey);
+  border: 1px solid var(--border-default-grey);
+  color: var(--text-default-grey);
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s;
+}
+
+.maq-axe__theme-tag:hover {
+  border-color: var(--border-action-high-blue-france);
+}
+
+.maq-axe__theme-tag--active {
+  background: var(--background-action-high-blue-france);
+  border-color: var(--background-action-high-blue-france);
+  color: var(--text-inverted-blue-france);
+}
+
+.maq-axe__formations {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.maq-axe__formation-card {
+  background: var(--background-alt-grey);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  border-left: 3px solid var(--border-action-high-blue-france);
+  transition: box-shadow 0.15s;
+}
+
+.maq-axe__formation-card:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.maq-axe__formation-title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+}
+
+.maq-axe__formation-org {
+  font-size: 0.8125rem;
+  color: var(--text-mention-grey);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.maq-axe__formation-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-bottom: 0.75rem;
+}
+
+.maq-axe__formation-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.25rem;
+  background: var(--background-default-grey);
+  color: var(--text-mention-grey);
+}
+
+.maq-axe__formation-footer {
+  margin-top: auto;
+  padding-top: 0.75rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.maq-axe__modify-link {
+  font-size: 0.8125rem;
+}
+
+.maq-axe__no-formations {
+  padding: 1.5rem;
+  background: var(--background-alt-grey);
+  text-align: center;
+}
+
+.maq-axe__no-formations p {
+  margin: 0;
+  color: var(--text-mention-grey);
+  font-size: 0.875rem;
+}
+
+/* ─── Referentiel complet ────────────────────────────── */
+
+.maq-ref__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.maq-ref__filter-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8125rem;
+  border-radius: 1.5rem;
+  border: 1px solid var(--border-default-grey);
+  background: var(--background-default-grey);
+  color: var(--text-default-grey);
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s;
+}
+
+.maq-ref__filter-tag:hover {
+  border-color: var(--border-action-high-blue-france);
+}
+
+.maq-ref__filter-tag--active {
+  background: var(--background-action-high-blue-france);
+  border-color: var(--background-action-high-blue-france);
+  color: var(--text-inverted-blue-france);
+}
+
+.maq-ref__action-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border-default-grey);
+}
+
+.maq-ref__action-item:last-child {
+  border-bottom: none;
+}
+
+.maq-ref__action-type {
+  display: inline-block;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.25rem;
+  background: var(--background-alt-grey);
+  color: var(--text-mention-grey);
+  margin-bottom: 0.25rem;
+}
+
+.maq-ref__action-libelle {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.maq-ref__action-code {
+  font-size: 0.6875rem;
+  color: var(--text-mention-grey);
+  margin-top: 0.125rem;
+}
+
+.maq-ref__count {
+  font-size: 0.875rem;
+  color: var(--text-mention-grey);
+  margin-bottom: 1rem;
+}
+
+/* ─── Declaration ────────────────────────────────────── */
+
+/* Type selection tiles */
+.maq-decl__types {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 44rem;
+}
+
+.maq-decl__type-tile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--border-default-grey);
+  background: var(--background-default-grey);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.maq-decl__type-tile:hover {
+  border-color: var(--border-action-high-blue-france);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+}
+
+.maq-decl__type-tile-icon {
+  font-size: 1.25rem;
+  color: var(--text-action-high-blue-france);
+  flex-shrink: 0;
+}
+
+.maq-decl__type-tile-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.maq-decl__type-tile-title {
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.maq-decl__type-tile-desc {
+  display: block;
+  font-size: 0.8125rem;
+  color: var(--text-mention-grey);
+  margin-top: 0.125rem;
+}
+
+.maq-decl__type-tile-arrow {
+  color: var(--text-mention-grey);
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.maq-decl__type-tile:hover .maq-decl__type-tile-arrow {
+  color: var(--text-action-high-blue-france);
+}
+
+/* Type badge in form header */
+.maq-decl__type-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.125rem 0.5rem;
+  border: 1px solid var(--border-default-grey);
+  border-radius: 0.25rem;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+/* Axe selection */
+.maq-decl__axes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.maq-decl__axe-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--border-default-grey);
+  background: var(--background-default-grey);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  position: relative;
+}
+
+.maq-decl__axe-tile:hover {
+  border-color: var(--border-action-high-blue-france);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+}
+
+.maq-decl__axe-tile-num {
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-mention-grey);
+  font-weight: 600;
+  margin-bottom: 0.375rem;
+}
+
+.maq-decl__axe-tile-title {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.35;
+  margin-bottom: 0.25rem;
+}
+
+.maq-decl__axe-tile-ps {
+  font-size: 0.8125rem;
+  color: var(--text-mention-grey);
+  font-style: italic;
+}
+
+.maq-decl__axe-tile-arrow {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  color: var(--text-mention-grey);
+  font-size: 1rem;
+}
+
+.maq-decl__axe-tile:hover .maq-decl__axe-tile-arrow {
+  color: var(--text-action-high-blue-france);
+}
+
+/* Form */
+.maq-decl__form {
+  max-width: 44rem;
+}
+
+.maq-decl__actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-default-grey);
+}
+
+/* Recap */
+.maq-decl__recap {
+  max-width: 40rem;
+  border: 1px solid var(--border-default-grey);
+  margin-bottom: 1rem;
+}
+
+.maq-decl__recap-row {
+  display: flex;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid var(--border-default-grey);
+  gap: 1rem;
+}
+
+.maq-decl__recap-row:last-child {
+  border-bottom: none;
+}
+
+.maq-decl__recap-label {
+  font-size: 0.8125rem;
+  color: var(--text-mention-grey);
+  min-width: 7rem;
+  flex-shrink: 0;
+}
+
+.maq-decl__recap-value {
+  font-size: 0.9375rem;
+}
+
+.maq-decl__recap-value--strong {
+  font-weight: 600;
+}
+
+/* Success */
+.maq-decl__success {
+  max-width: 40rem;
+}
+
+.maq-decl__success-recap {
+  padding: 1.25rem 1.5rem;
+  background: var(--background-alt-grey);
+  margin-bottom: 2rem;
+}
+
+.maq-decl__success-count {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.maq-decl__success-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.25rem;
+  background: var(--background-contrast-success);
+  color: var(--text-default-success);
+  margin-left: 0.5rem;
+}
+
+.maq-decl__success-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* ─── Synthese ──────────────────────────────────────── */
+
+.maq-synthese__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.maq-synthese__profile {
+  background: var(--background-alt-grey);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.maq-synthese__progress {
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border-default-grey);
+}
+
+.maq-synthese__axe {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--border-default-grey);
+}
+
+.maq-synthese__axe:last-of-type {
+  border-bottom: none;
+}
+
+.maq-synthese__axe-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.maq-synthese__action-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.maq-synthese__action {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-default-grey);
+}
+
+.maq-synthese__action:last-child {
+  border-bottom: none;
+}
+
+.maq-synthese__action-libelle {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.maq-synthese__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-default-grey);
+}
+
+@media print {
+  .maq-synthese__header button,
+  .maq-synthese__footer button,
+  .maq-synthese__footer a {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .maq-axe-header {
+    flex-direction: column;
+  }
+
+  .maq-axe-header__right {
+    align-items: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .maq-formation {
+    flex-direction: column;
+  }
+
+  .maq-axe-main__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .maq-decl__axes {
+    grid-template-columns: 1fr;
+  }
+
+  .maq-decl__actions {
+    flex-direction: column-reverse;
+    gap: 0.75rem;
+  }
+
+  .maq-decl__recap-row {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .maq-decl__success-actions {
+    flex-direction: column;
+  }
+
+  .maq-synthese__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .maq-synthese__axe-header {
+    flex-direction: column;
+  }
+
+  .maq-synthese__footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

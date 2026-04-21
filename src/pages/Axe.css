@@ -1,0 +1,25 @@
+.mcps-axe-state {
+  height: 100%;
+  padding: 1.5rem;
+  background-color: var(--background-alt-grey);
+  border-left: 4px solid var(--border-default-grey);
+}
+
+.mcps-axe-state--couvert {
+  border-left-color: var(--border-default-success);
+}
+
+.mcps-axe-state--en-cours {
+  border-left-color: var(--border-active-blue-france);
+}
+
+.mcps-axe-invitation {
+  height: 100%;
+  padding: 1.5rem;
+  background-color: var(--background-default-grey);
+  border: 1px solid var(--border-default-grey);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+}
