@@ -12,6 +12,7 @@ export type ActionRef = {
   code: string;
   type: string;
   libelle: string;
+  themeId?: string;
 };
 
 export type AxeRef = {

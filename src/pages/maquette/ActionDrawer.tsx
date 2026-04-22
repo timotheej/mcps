@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import { Button } from "@codegouvfr/react-dsfr/Button";
+import { Download } from "@codegouvfr/react-dsfr/Download";
+import { Tag } from "@codegouvfr/react-dsfr/Tag";
 import {
   SOURCES,
   VALIDATION_STATES,
@@ -144,14 +146,6 @@ export function ActionDrawer({
               {getThemeLabel(axeId, action.themeId)}
             </span>
           )}
-          {isAuto && (
-            <span className="maq-auto-chip">
-              <svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-                <path d="M9 1 L3 9 L7 9 L6 15 L13 7 L9 7 Z" />
-              </svg>
-              Transmis par {sourceDef.label}
-            </span>
-          )}
         </div>
 
         {/* Title */}
@@ -211,17 +205,16 @@ export function ActionDrawer({
           <h3 className="maq-drawer__section-title">Justificatif</h3>
 
           {isAuto ? (
-            <div className="maq-drawer__justif maq-drawer__justif--auto">
-              <span className="fr-icon-shield-line" aria-hidden="true" style={{ fontSize: "1rem", color: "var(--text-action-high-blue-france)" }} />
-              <div>
-                <p className={fr.cx("fr-text--sm", "fr-mb-1v")}>
-                  Transmis automatiquement par <strong>{sourceDef.label}</strong>
-                </p>
-                <p className={fr.cx("fr-text--xs", "fr-mb-0")} style={{ color: "var(--text-mention-grey)" }}>
-                  Ce document est certifie par la source et ne peut pas etre modifie.
-                </p>
-              </div>
-            </div>
+            <>
+              <Tag small iconId="fr-icon-shield-line" className={fr.cx("fr-mb-2w")}>
+                Transmis par {sourceDef.label}
+              </Tag>
+              <Download
+                label="Telecharger l'attestation"
+                details={<>attestation-{action.source}-{action.date?.slice(-4)}.pdf<br />PDF &mdash; 61,88 Ko</>}
+                linkProps={{ href: "#", onClick: (e) => e.preventDefault() }}
+              />
+            </>
           ) : validation === "complement" ? (
             <div className="maq-drawer__justif maq-drawer__justif--complement">
               <span className="fr-icon-error-line" aria-hidden="true" style={{ fontSize: "1rem", color: "var(--text-default-warning)" }} />
@@ -262,17 +255,11 @@ export function ActionDrawer({
               </div>
             </div>
           ) : action.attachment ? (
-            <div className="maq-drawer__justif">
-              <span className="fr-icon-attachment-line" aria-hidden="true" style={{ fontSize: "1rem", color: "var(--text-action-high-blue-france)" }} />
-              <div>
-                <a className={fr.cx("fr-link")} href="#" onClick={(e) => e.preventDefault()}>
-                  {action.attachment}
-                </a>
-                <p className={fr.cx("fr-text--xs", "fr-mb-0")} style={{ color: "var(--text-mention-grey)", marginTop: "0.25rem" }}>
-                  {action.declaredOn ? `Envoye le ${action.declaredOn}` : ""}
-                </p>
-              </div>
-            </div>
+            <Download
+              label="Telecharger l'attestation"
+              details={<>{action.attachment}<br />PDF &mdash; 61,88 Ko</>}
+              linkProps={{ href: "#", onClick: (e) => e.preventDefault() }}
+            />
           ) : (
             <div className="maq-drawer__justif maq-drawer__justif--missing">
               <span className="fr-icon-error-line" aria-hidden="true" style={{ fontSize: "1rem", color: "var(--text-default-error)" }} />
@@ -292,19 +279,6 @@ export function ActionDrawer({
             </div>
           )}
 
-          {/* Download button for auto or validated manual with attachment */}
-          {(isAuto || (validation === "validated" && action.attachment)) && (
-            <div style={{ marginTop: "0.75rem" }}>
-              <Button
-                priority="tertiary no outline"
-                size="small"
-                iconId="fr-icon-download-line"
-                iconPosition="left"
-              >
-                Telecharger l'attestation
-              </Button>
-            </div>
-          )}
         </div>
 
         {/* ─── Historique ────────────────────────────────── */}

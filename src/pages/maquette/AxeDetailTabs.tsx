@@ -93,19 +93,6 @@ function ValidationChip({ state }: { state: ValidationState }) {
   );
 }
 
-/* ─── Auto Chip ───────────────────────────────────────── */
-
-function AutoSourceChip({ sourceLabel }: { sourceLabel: string }) {
-  return (
-    <span className="maq-auto-chip">
-      <svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-        <path d="M9 1 L3 9 L7 9 L6 15 L13 7 L9 7 Z" />
-      </svg>
-      Transmis par {sourceLabel}
-    </span>
-  );
-}
-
 /* ─── Complement / Rejected alert block ──────────────── */
 
 function ActionAlert({ action, onDeclare }: { action: ActionRealisee; onDeclare: () => void }) {
@@ -188,7 +175,6 @@ function ActionRow({ action, axeId, onDeclare, onOpenDetail }: { action: ActionR
               {getThemeLabel(axeId, action.themeId)}
             </span>
           )}
-          {isAuto && <AutoSourceChip sourceLabel={sourceDef.label} />}
           <ValidationChip state={validation} />
           <span className="maq-action-row__date">{action.date}</span>
         </div>

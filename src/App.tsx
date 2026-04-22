@@ -1,8 +1,4 @@
-import { Routes, Route } from "react-router-dom";
-import { Layout } from "./Layout";
-import { Accueil } from "./pages/Accueil";
-import { TableauDeBord } from "./pages/TableauDeBord";
-import { Axe } from "./pages/Axe";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { MaquetteLayout } from "./pages/maquette/MaquetteLayout";
 import { Auth } from "./pages/maquette/Auth";
 import { Onboarding } from "./pages/maquette/Onboarding";
@@ -17,11 +13,7 @@ import { AxeDetailTabs } from "./pages/maquette/AxeDetailTabs";
 export function App() {
   return (
     <Routes>
-      <Route element={<Layout />}>
-        <Route path="/" element={<Accueil />} />
-        <Route path="/tableau-de-bord" element={<TableauDeBord />} />
-        <Route path="/referentiel/axe/:numero" element={<Axe />} />
-      </Route>
+      <Route path="/" element={<Navigate to="/maquette" replace />} />
       <Route element={<MaquetteLayout />}>
         <Route path="/maquette" element={<Auth />} />
         <Route path="/maquette/onboarding" element={<Onboarding />} />
