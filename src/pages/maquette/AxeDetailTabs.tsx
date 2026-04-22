@@ -1,10 +1,9 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { useParams, Navigate, useNavigate } from "react-router-dom";
 import { fr } from "@codegouvfr/react-dsfr";
 import { Button } from "@codegouvfr/react-dsfr/Button";
 import { Breadcrumb } from "@codegouvfr/react-dsfr/Breadcrumb";
 import { ActionDrawer } from "./ActionDrawer";
-// Badge not needed in this version
 import {
   getAxeById,
   loadActions,
@@ -20,8 +19,6 @@ import {
   type ActionRealisee,
   type ValidationState,
   type FormationSuggestion,
-  saveAxeFilters,
-  loadAxeFilters,
 } from "../../data/maquette";
 import "./maquette.css";
 
@@ -77,7 +74,6 @@ function StatusBullet({ state }: { state: ValidationState }) {
         {v.icon === "alert" && <span style={{ fontWeight: 700, fontSize: "0.875rem", color: "#fff" }}>!</span>}
         {v.icon === "close" && <span className="fr-icon-close-line" aria-hidden="true" style={{ fontSize: "0.75rem", color: "#fff" }} />}
       </span>
-      {/* P0 Accessibility: visible text label next to the bullet */}
       <span className="maq-status-label" style={{ color: v.color }}>
         {v.shortLabel}
       </span>
@@ -85,7 +81,7 @@ function StatusBullet({ state }: { state: ValidationState }) {
   );
 }
 
-/* ─── Validation Chip (shown only for non-validated) ─── */
+/* ─── Validation Chip ─────────────────────────────────── */
 
 function ValidationChip({ state }: { state: ValidationState }) {
   if (state === "validated") return null;
@@ -97,7 +93,7 @@ function ValidationChip({ state }: { state: ValidationState }) {
   );
 }
 
-/* ─── Auto Chip — wording accessible ─────────────────── */
+/* ─── Auto Chip ───────────────────────────────────────── */
 
 function AutoSourceChip({ sourceLabel }: { sourceLabel: string }) {
   return (
@@ -186,7 +182,6 @@ function ActionRow({ action, axeId, onDeclare, onOpenDetail }: { action: ActionR
     <div className={`maq-action-row${isRejected ? " maq-action-row--rejected" : ""}`}>
       <StatusBullet state={validation} />
       <div className="maq-action-row__body">
-        {/* Line 1: theme + auto chip + validation chip + date */}
         <div className="maq-action-row__chips">
           {action.themeId && (
             <span className="maq-theme-chip" style={{ background: bgTint, color: axeColor }}>
@@ -198,17 +193,14 @@ function ActionRow({ action, axeId, onDeclare, onOpenDetail }: { action: ActionR
           <span className="maq-action-row__date">{action.date}</span>
         </div>
 
-        {/* Title */}
         <h4 className={`maq-action-row__title${isRejected ? " maq-action-row__title--rejected" : ""}`}>
           {action.title || action.libelle}
         </h4>
 
-        {/* Meta: org · duration · modality */}
         <p className="maq-action-row__meta">
           {[action.org, action.duration, action.modality].filter(Boolean).join(" · ")}
         </p>
 
-        {/* Sub-meta: triennat + attachment */}
         <div className="maq-action-row__submeta">
           {action.triennat && (
             <span>
@@ -234,10 +226,8 @@ function ActionRow({ action, axeId, onDeclare, onOpenDetail }: { action: ActionR
           )}
         </div>
 
-        {/* P0: Complement motif + CTA / Rejected motif + CTA */}
         <ActionAlert action={action} onDeclare={onDeclare} />
 
-        {/* Detail link */}
         <button
           type="button"
           className="maq-action-row__detail-btn"
@@ -251,7 +241,7 @@ function ActionRow({ action, axeId, onDeclare, onOpenDetail }: { action: ActionR
   );
 }
 
-/* ─── Empty Action Row ───────��───────────────────────── */
+/* ─── Empty Action Row ─────────────────────────────────── */
 
 function EmptyActionRow({ onDeclare }: { onDeclare: () => void }) {
   return (
@@ -271,7 +261,7 @@ function EmptyActionRow({ onDeclare }: { onDeclare: () => void }) {
   );
 }
 
-/* ─── Suggestion Card ───────��────────────────────────── */
+/* ─── Suggestion Card ──────────────────────────────────── */
 
 function SuggestionCard({ sug, axeId }: { sug: FormationSuggestion; axeId: string }) {
   const { color: axeColor, bgTint } = getAxeColor(axeId);
@@ -306,30 +296,23 @@ function SuggestionCard({ sug, axeId }: { sug: FormationSuggestion; axeId: strin
   );
 }
 
-/* ─── AxeDetail page ────��────────────────────────────── */
+/* ─── AxeDetailTabs — Tabbed variant page ──────────────── */
 
-export function AxeDetail() {
+type TabValue = "actions" | "recommandations";
+
+export function AxeDetailTabs() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const axe = id ? getAxeById(id) : undefined;
 
   const savedThemes = loadSelectedThemes();
   const axeThemeIds = savedThemes && id ? savedThemes[id] || [] : [];
-  const savedAxeFilters = id ? loadAxeFilters(id) : [];
-  const [activeFilters, setActiveFilters] = useState<string[]>(
-    savedAxeFilters.length > 0 ? savedAxeFilters : axeThemeIds
-  );
+  const [activeFilters, setActiveFilters] = useState<string[]>(axeThemeIds);
   const [drawerAction, setDrawerAction] = useState<ActionRealisee | null>(null);
-  const [mobileTab, setMobileTab] = useState<"actions" | "recommandations">("actions");
-  const [statusFilter, setStatusFilter] = useState<ValidationState | "all">("all");
+  const [activeTab, setActiveTab] = useState<TabValue>("actions");
 
   const openDrawer = useCallback((a: ActionRealisee) => setDrawerAction(a), []);
   const closeDrawer = useCallback(() => setDrawerAction(null), []);
-
-  // Persist theme filters
-  useEffect(() => {
-    if (id) saveAxeFilters(id, activeFilters);
-  }, [id, activeFilters]);
 
   if (!axe || !id) {
     return <Navigate to="/maquette/tableau-de-bord" replace />;
@@ -349,17 +332,6 @@ export function AxeDetail() {
   const allFormations = formationsMock.filter((f) => f.axeId === id);
   const displayFormations = filteredFormations.length > 0 ? filteredFormations : allFormations;
 
-  // Status filter
-  const statusCounts = axeActions.reduce((acc, a) => {
-    acc[a.validation] = (acc[a.validation] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
-  const availableStatuses = Object.keys(statusCounts) as ValidationState[];
-  const showStatusFilter = availableStatuses.length > 1;
-  const filteredByStatus = statusFilter === "all"
-    ? axeActions
-    : axeActions.filter(a => a.validation === statusFilter);
-
   const toggleFilter = (tid: string) => {
     setActiveFilters((f) => f.includes(tid) ? f.filter((x) => x !== tid) : [...f, tid]);
   };
@@ -372,7 +344,7 @@ export function AxeDetail() {
       <section className="maq-axe-band" style={{ background: bgTint, borderBottomColor: color + "22" }}>
         <div className={fr.cx("fr-container")} style={{ padding: "1.25rem 0 2.25rem" }}>
           <Breadcrumb
-            currentPageLabel={`Axe ${axeNum}`}
+            currentPageLabel={`Axe ${axeNum} (variante tabs)`}
             homeLinkProps={{ to: "/maquette" }}
             segments={[
               { label: "Tableau de bord", linkProps: { to: "/maquette/tableau-de-bord" } },
@@ -381,16 +353,13 @@ export function AxeDetail() {
 
           <div className="maq-axe-band__grid">
             <div>
-              {/* AXE N chip */}
               <span className="maq-axe-band__chip">AXE {axeNum}</span>
 
-              {/* Progress dots + "N sur N" */}
               <div className="maq-axe-band__progress">
                 <AxisProgressRow done={count} required={axe.min_actions} color={progressColor} />
                 <span className="maq-axe-band__count">{count} sur {axe.min_actions}</span>
               </div>
 
-              {/* Title */}
               <h1 className="maq-axe-band__title" style={{ color }}>{axe.label_court}</h1>
               <p className="maq-axe-band__desc">{axe.label_ps}</p>
             </div>
@@ -418,34 +387,34 @@ export function AxeDetail() {
         </div>
       </section>
 
-      {/* ═══ Two-column content ══════════════════════════════ */}
-      <div className={fr.cx("fr-container")} style={{ paddingTop: "2.5rem", paddingBottom: "3rem" }}>
+      {/* ═══ Single-column tabbed content ═══════════════════ */}
+      <div className={fr.cx("fr-container")} style={{ paddingTop: "2rem", paddingBottom: "3rem", maxWidth: "52rem" }}>
 
-        {/* Mobile-only segmented control */}
-        <fieldset className="maq-axe-segmented fr-segmented fr-segmented--no-legend">
+        {/* ─── DSFR Segmented Control ──────────────────────── */}
+        <fieldset className="fr-segmented fr-segmented--no-legend" style={{ marginBottom: "2rem" }}>
           <legend className="fr-segmented__legend">Vue</legend>
           <div className="fr-segmented__elements">
             <div className="fr-segmented__element">
               <input
                 type="radio"
                 id="seg-actions"
-                name="axe-mobile-view"
+                name="axe-view"
                 value="actions"
-                checked={mobileTab === "actions"}
-                onChange={() => setMobileTab("actions")}
+                checked={activeTab === "actions"}
+                onChange={() => setActiveTab("actions")}
               />
               <label className="fr-label" htmlFor="seg-actions">
-                Actions ({axeActions.length})
+                Actions declarees ({axeActions.length})
               </label>
             </div>
             <div className="fr-segmented__element">
               <input
                 type="radio"
                 id="seg-reco"
-                name="axe-mobile-view"
+                name="axe-view"
                 value="recommandations"
-                checked={mobileTab === "recommandations"}
-                onChange={() => setMobileTab("recommandations")}
+                checked={activeTab === "recommandations"}
+                onChange={() => setActiveTab("recommandations")}
               />
               <label className="fr-label" htmlFor="seg-reco">
                 Recommandations ({displayFormations.length})
@@ -454,82 +423,55 @@ export function AxeDetail() {
           </div>
         </fieldset>
 
-        <div className="maq-axe-columns" data-mobile-tab={mobileTab}>
-          {/* ─── LEFT: Actions declarees ──────────────────── */}
+        {/* ─── Tab: Actions declarees ──────────────────────── */}
+        {activeTab === "actions" && (
           <section>
             <h2 className={fr.cx("fr-h4", "fr-mb-1v")}>
               Actions declaree{axeActions.length > 1 ? "s" : ""}
             </h2>
             <p className={fr.cx("fr-text--sm", "fr-mb-3w")} style={{ color: "var(--text-mention-grey)" }}>
               {axeActions.length === 0
-                ? "Votre premier pas commence ici."
+                ? "Votre premier pas commence ici. Choisissez une formation dans les recommandations, ou declarez une action deja realisee."
                 : `Sur les ${axe.min_actions} actions minimum requises pour cet axe.`}
             </p>
 
-            {/* Status filter pills */}
-            {showStatusFilter && (
-              <div className="maq-axe-status-filters">
-                <button
-                  type="button"
-                  className={`maq-axe-filter-pill${statusFilter === "all" ? " maq-axe-filter-pill--active" : ""}`}
-                  style={statusFilter === "all" ? { background: "var(--blue-france-sun-113-625)", borderColor: "var(--blue-france-sun-113-625)", color: "#fff" } : {}}
-                  onClick={() => setStatusFilter("all")}
-                >
-                  Toutes ({axeActions.length})
-                </button>
-                {availableStatuses.map(s => {
-                  const v = VALIDATION_STATES[s];
-                  const isActive = statusFilter === s;
-                  return (
-                    <button
-                      key={s}
-                      type="button"
-                      className={`maq-axe-filter-pill${isActive ? " maq-axe-filter-pill--active" : ""}`}
-                      style={isActive ? { background: v.color, borderColor: v.color, color: "#fff" } : {}}
-                      onClick={() => setStatusFilter(s)}
-                    >
-                      {v.shortLabel} ({statusCounts[s]})
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-
-            {/* Empty state */}
-            {axeActions.length === 0 && (
-              <div className="maq-axe-empty">
-                <span className="fr-icon-draft-line" aria-hidden="true" style={{ fontSize: "3rem", color: "var(--text-mention-grey)", display: "block", marginBottom: "1rem" }} />
-                <h3 className={fr.cx("fr-h5", "fr-mb-1v")}>Cet axe attend sa premiere action</h3>
-                <p className={fr.cx("fr-text--sm")} style={{ color: "var(--text-mention-grey)", maxWidth: "28rem", margin: "0.5rem auto 1.5rem" }}>
-                  Consultez les recommandations pour trouver une action adaptee, ou declarez directement une action deja realisee.
-                </p>
-                <div style={{ display: "flex", gap: "0.75rem", justifyContent: "center", flexWrap: "wrap" }}>
-                  <Button priority="primary" iconId="fr-icon-add-line" iconPosition="left" size="small" onClick={onDeclare}>
-                    Declarer une action
-                  </Button>
-                </div>
-              </div>
-            )}
-
-            {filteredByStatus.map((a) => (
+            {axeActions.map((a) => (
               <ActionRow key={a.id} action={a} axeId={id} onDeclare={onDeclare} onOpenDetail={openDrawer} />
             ))}
 
-            {/* Empty slots */}
-            {statusFilter === "all" && Array.from({ length: remaining }).map((_, i) => (
+            {Array.from({ length: remaining }).map((_, i) => (
               <EmptyActionRow key={`empty-${i}`} onDeclare={onDeclare} />
             ))}
 
-            {/* Bravo message */}
-            {isComplete && axeActions.length > 0 && statusFilter === "all" && (
+            {isComplete && axeActions.length > 0 && (
               <div className="maq-axe-bravo">
                 <strong>Bravo !</strong> Vous avez valide les exigences de cet axe.
                 {count > axe.min_actions && <> Les actions supplementaires sont conservees et valorisees dans votre dossier.</>}
               </div>
             )}
-          </section>
 
-          {/* ─── RIGHT: Actions recommandees ──────────────── */}
+            {/* Nudge towards recommendations when no actions yet */}
+            {axeActions.length === 0 && (
+              <div style={{ marginTop: "1.5rem", padding: "1rem 1.25rem", background: "var(--background-action-low-blue-france)", borderLeft: "3px solid var(--border-action-high-blue-france)" }}>
+                <p className={fr.cx("fr-text--sm", "fr-mb-1v")} style={{ fontWeight: 600 }}>
+                  {displayFormations.length} recommandation{displayFormations.length > 1 ? "s" : ""} disponible{displayFormations.length > 1 ? "s" : ""} pour cet axe
+                </p>
+                <button
+                  type="button"
+                  className="maq-action-row__detail-btn"
+                  onClick={() => setActiveTab("recommandations")}
+                  style={{ marginTop: "0.25rem" }}
+                >
+                  Voir les recommandations
+                  <span className="fr-icon-arrow-right-s-line" aria-hidden="true" style={{ fontSize: "0.75rem" }} />
+                </button>
+              </div>
+            )}
+          </section>
+        )}
+
+        {/* ─── Tab: Recommandations ────────────────────────── */}
+        {activeTab === "recommandations" && (
           <section>
             <h2 className={fr.cx("fr-h4", "fr-mb-3w")}>Actions recommandees</h2>
 
@@ -551,9 +493,9 @@ export function AxeDetail() {
               })}
             </div>
 
-            {/* Suggestion cards */}
-            <div className="maq-sug-list">
-              {displayFormations.slice(0, 4).map((s) => (
+            {/* Suggestion cards — full-width grid */}
+            <div className="maq-sug-list maq-sug-list--tabs">
+              {displayFormations.slice(0, 6).map((s) => (
                 <SuggestionCard key={s.id} sug={s} axeId={id} />
               ))}
             </div>
@@ -571,7 +513,7 @@ export function AxeDetail() {
               </Button>
             </div>
           </section>
-        </div>
+        )}
 
         {/* ═══ Retour ══════════════════════════════════════ */}
         <div className={fr.cx("fr-mt-6w")}>
@@ -590,9 +532,9 @@ export function AxeDetail() {
             <Button
               priority="tertiary no outline"
               size="small"
-              linkProps={{ to: `/maquette/axe-test/${id}` }}
+              linkProps={{ to: `/maquette/axe/${id}` }}
             >
-              Tester la variante tabs
+              Voir la version deux colonnes
             </Button>
           </div>
         </div>
@@ -604,8 +546,6 @@ export function AxeDetail() {
         axeId={id}
         onClose={closeDrawer}
         onDeclare={onDeclare}
-        allActions={axeActions}
-        onNavigate={openDrawer}
       />
     </div>
   );

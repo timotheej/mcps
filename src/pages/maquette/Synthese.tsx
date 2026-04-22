@@ -14,7 +14,7 @@ import "./maquette.css";
 
 export function Synthese() {
   const actions = loadActions();
-  const tempsRestant = getTempsRestant();
+  const tempsRestant = getTempsRestant().text;
   const cycleProgress = getCycleProgress();
 
   const totalActions = actions.length;

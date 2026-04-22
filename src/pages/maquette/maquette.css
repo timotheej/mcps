@@ -1391,3 +1391,1297 @@
     align-items: flex-start;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   PROTOTYPE DESIGN — New components
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── Progress Dot (shared) ──────────────────────────── */
+
+.maq-progress-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 2px dashed var(--grey-625-425);
+  background: var(--background-default-grey);
+  flex-shrink: 0;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.maq-progress-dot--filled {
+  border-style: solid;
+}
+
+.maq-progress-dot--overflow {
+  border-style: solid;
+}
+
+.maq-progress-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* ─── Global Ring (donut on dashboard) ───────────────── */
+
+.maq-global-ring {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.maq-global-ring__center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.maq-global-ring__number {
+  font-weight: 800;
+  font-size: 2.5rem;
+  line-height: 1;
+  color: var(--blue-france-sun-113-625);
+  letter-spacing: -0.02em;
+}
+
+.maq-global-ring__total {
+  font-weight: 500;
+  font-size: 1.125rem;
+  color: var(--text-mention-grey);
+}
+
+.maq-global-ring__label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-mention-grey);
+  margin-top: 0.375rem;
+}
+
+/* ─── Dashboard header band ──────────────────────────── */
+
+.maq-dash-header-band {
+  background: var(--background-default-grey);
+  border-bottom: 1px solid var(--border-default-grey);
+  padding-bottom: 2rem;
+}
+
+.maq-dash-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.maq-dash-header__left {
+  flex: 1;
+  min-width: 0;
+}
+
+.maq-dash-countdown {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 1rem;
+  background: var(--background-action-low-blue-france);
+  border: 1px solid var(--border-action-low-blue-france);
+  font-size: 0.875rem;
+  color: var(--text-default-grey);
+}
+
+.maq-dash-countdown .fr-icon-timer-line {
+  font-size: 1.25rem;
+  color: var(--text-action-high-blue-france);
+}
+
+/* ─── Card V2 (axis cards on dashboard) ──────────────── */
+
+.maq-card2 {
+  background: var(--background-default-grey);
+  border: 1px solid var(--border-default-grey);
+  padding: 1.5rem 1.5rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+  cursor: pointer;
+  transition: border-color 0.15s;
+  min-height: 17.5rem;
+}
+
+.maq-card2:hover {
+  border-color: var(--border-action-high-blue-france);
+}
+
+.maq-card2--complete {
+  border-width: 2px;
+  border-color: var(--border-plain-success);
+}
+
+.maq-card2__accent {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+}
+
+.maq-card2__top {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.maq-card2__num {
+  width: 2.75rem;
+  height: 2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.125rem;
+  flex-shrink: 0;
+  border: 1px solid;
+}
+
+.maq-card2__title-group {
+  flex: 1;
+  min-width: 0;
+}
+
+.maq-card2__axe-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.125rem;
+  display: block;
+}
+
+.maq-card2__title {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.maq-card2__progress {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding-bottom: 0.875rem;
+  border-bottom: 1px solid var(--border-default-grey);
+}
+
+.maq-card2__status {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-default-grey);
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.maq-card2__status--success {
+  color: var(--text-default-success);
+}
+
+.maq-card2__themes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.maq-card2__theme {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.1875rem 0.5rem;
+}
+
+.maq-card2__theme-more {
+  font-size: 0.75rem;
+  color: var(--text-mention-grey);
+  padding: 0.1875rem 0.25rem;
+}
+
+.maq-card2__nudge {
+  margin-top: auto;
+}
+
+.maq-card2__nudge-label {
+  font-size: 0.75rem;
+  color: var(--text-mention-grey);
+  margin-bottom: 0.25rem;
+}
+
+.maq-card2__link {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-action-high-blue-france);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.maq-card2__link .fr-icon-arrow-right-s-line {
+  font-size: 0.75rem;
+  transition: margin-left 0.15s;
+}
+
+.maq-card2:hover .maq-card2__link .fr-icon-arrow-right-s-line {
+  margin-left: 0.25rem;
+}
+
+/* ─── Recommendations section ────────────────────────── */
+
+.maq-reco-section {
+  background: var(--background-default-grey);
+  border: 1px solid var(--border-default-grey);
+  padding: 1.75rem 2rem;
+}
+
+.maq-reco-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.maq-reco-card {
+  border: 1px solid var(--border-default-grey);
+  padding: 1.125rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.maq-reco-card:hover {
+  border-color: var(--border-action-high-blue-france);
+}
+
+.maq-reco-card__top {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.maq-reco-card__axe {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  padding: 0.125rem 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.maq-reco-card__theme {
+  font-size: 0.75rem;
+  color: var(--text-mention-grey);
+}
+
+.maq-reco-card__title {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.maq-reco-card__org {
+  font-size: 0.8125rem;
+  color: var(--text-default-grey);
+  margin: 0;
+}
+
+.maq-reco-card__meta {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  color: var(--text-mention-grey);
+  align-items: center;
+  margin-top: auto;
+}
+
+.maq-reco-card__meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* ─── Axe Detail — colored header band ───────────────── */
+
+.maq-axe-band {
+  border-bottom: 1px solid;
+}
+
+.maq-axe-band__grid {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.maq-axe-band__chip {
+  display: inline-flex;
+  padding: 0.1875rem 0.625rem;
+  background: var(--background-default-grey);
+  border: 1px solid var(--grey-625-425);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--text-default-grey);
+  margin-bottom: 0.75rem;
+}
+
+.maq-axe-band__progress {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-bottom: 0.875rem;
+}
+
+.maq-axe-band__count {
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.maq-axe-band__title {
+  font-size: 2.125rem;
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0 0 0.625rem;
+  letter-spacing: -0.01em;
+  max-width: 45rem;
+}
+
+.maq-axe-band__desc {
+  font-size: 0.9375rem;
+  color: var(--text-default-grey);
+  margin: 0;
+}
+
+.maq-axe-band__actions {
+  display: flex;
+  gap: 0.625rem;
+  align-items: center;
+  flex-shrink: 0;
+  margin-top: 2.5rem;
+}
+
+/* ─── Axe Detail — Two-column layout ─────────────────── */
+
+.maq-axe-columns {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 3rem;
+}
+
+/* ─── Action Row ─────────────────────────────────────── */
+
+.maq-action-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.125rem 0;
+  border-bottom: 1px solid var(--border-default-grey);
+}
+
+.maq-action-row--empty {
+  opacity: 0.8;
+}
+
+.maq-action-row__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.maq-action-row__chips {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.maq-action-row__date {
+  font-size: 0.8125rem;
+  color: var(--text-mention-grey);
+  margin-left: auto;
+}
+
+.maq-action-row__title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.45;
+  margin: 0 0 0.375rem;
+}
+
+.maq-action-row__meta {
+  font-size: 0.875rem;
+  color: var(--text-default-grey);
+  margin: 0 0 0.5rem;
+}
+
+.maq-action-row__submeta {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.625rem;
+  font-size: 0.75rem;
+  color: var(--text-mention-grey);
+}
+
+.maq-action-row__submeta span,
+.maq-action-row__submeta a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3125rem;
+}
+
+/* Detail button (semantic button styled as link) */
+.maq-action-row__detail-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-action-high-blue-france);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-family: inherit;
+}
+
+.maq-action-row__detail-btn:hover {
+  color: #1212ff;
+}
+
+.maq-action-row__empty-text {
+  font-size: 0.875rem;
+  color: var(--text-mention-grey);
+  margin: 0 0 0.5rem;
+}
+
+/* Rejected action row — dimmed */
+.maq-action-row--rejected {
+  opacity: 0.85;
+}
+
+.maq-action-row__title--rejected {
+  text-decoration: line-through;
+  text-decoration-color: var(--text-mention-grey);
+}
+
+/* Missing document — DSFR-style error indicator */
+.maq-action-row__missing-doc {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3125rem;
+  color: var(--text-default-error);
+  font-weight: 500;
+}
+
+/* P0: Action alert — complement / rejected motif + CTA */
+
+.maq-action-alert {
+  margin: 0.625rem 0 0.75rem;
+  padding: 0.875rem 1rem;
+  border-left: 3px solid;
+  font-size: 0.8125rem;
+}
+
+.maq-action-alert--complement {
+  background: var(--background-contrast-warning);
+  border-left-color: var(--border-plain-warning);
+}
+
+.maq-action-alert--rejected {
+  background: var(--background-contrast-error);
+  border-left-color: var(--border-plain-error);
+}
+
+.maq-action-alert__header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-default-error);
+}
+
+.maq-action-alert--complement .maq-action-alert__header {
+  color: var(--text-default-warning);
+}
+
+.maq-action-alert__motif {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--text-default-grey);
+  margin: 0 0 0.75rem;
+  font-style: italic;
+}
+
+.maq-action-alert__note {
+  font-size: 0.75rem;
+  color: var(--text-mention-grey);
+  margin: 0 0 0.75rem;
+}
+
+/* ─── Status Bullet ──────────────────────────────────── */
+
+.maq-status-bullet {
+  width: 1.375rem;
+  height: 1.375rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+.maq-status-bullet--empty {
+  background: transparent;
+  border: 2px dashed var(--grey-625-425);
+}
+
+/* P0: Status group — bullet + accessible text label */
+
+.maq-status-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+  min-width: 3.5rem;
+}
+
+.maq-status-label {
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* ─── Theme Chip ─────────────────────────────────────── */
+
+.maq-theme-chip {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 0.1875rem 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* ─── Auto Chip (orange outline) ─────────────────────── */
+
+.maq-auto-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3125rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 0.1875rem 0.625rem;
+  border: 1px solid var(--warning-425-625);
+  color: var(--text-default-warning);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* ─��─ Validation Chip ────────────────────────────────── */
+
+.maq-validation-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3125rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.125rem 0.5rem;
+  border: 1px solid;
+  white-space: nowrap;
+}
+
+/* ─── Bravo banner ───────────────────────────────────── */
+
+.maq-axe-bravo {
+  margin-top: 1.5rem;
+  padding: 0.875rem 1.125rem;
+  background: var(--background-contrast-success);
+  border-left: 4px solid var(--border-plain-success);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* ─── Filter pills ───────────────────────────────────── */
+
+.maq-axe-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.maq-axe-filter-pill {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  padding: 0.3125rem 0.875rem;
+  border: 1px solid var(--border-default-grey);
+  border-radius: 999px;
+  background: var(--background-default-grey);
+  color: var(--text-default-grey);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+
+.maq-axe-filter-pill:hover {
+  border-color: var(--border-action-high-blue-france);
+}
+
+.maq-axe-filter-pill--active {
+  color: #fff;
+}
+
+/* ─── Suggestion cards ───────────────────────────────── */
+
+.maq-sug-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+/* Tabbed variant: 2-column grid for suggestions at full width */
+.maq-sug-list--tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.maq-sug-card {
+  border: 1px solid var(--border-default-grey);
+  padding: 1.125rem 1.25rem;
+}
+
+.maq-sug-card__top {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.625rem;
+}
+
+.maq-sug-card__code {
+  font-size: 0.6875rem;
+  color: var(--text-mention-grey);
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  margin-left: auto;
+}
+
+.maq-sug-card__title {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 0 0 0.25rem;
+}
+
+.maq-sug-card__org {
+  font-size: 0.875rem;
+  color: var(--text-default-grey);
+  margin: 0 0 0.75rem;
+}
+
+.maq-sug-card__meta {
+  display: flex;
+  gap: 1.125rem;
+  font-size: 0.8125rem;
+  color: var(--text-default-grey);
+  align-items: center;
+}
+
+.maq-sug-card__meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+/* ─── Success screen ─────────────────────────────────── */
+
+.maq-success-hero {
+  border: 2px solid var(--border-plain-success);
+  padding: 3.5rem 4rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.maq-success-hero__strip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 4px;
+  background: linear-gradient(to right,
+    var(--blue-france-sun-113-625) 0 33.33%,
+    var(--grey-1000-50) 33.33% 66.66%,
+    var(--red-marianne-main-472) 66.66% 100%);
+}
+
+.maq-success-hero__icon {
+  width: 5rem;
+  height: 5rem;
+  margin: 0 auto 1.5rem;
+  background: var(--background-contrast-success);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.maq-success-hero__label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-default-success);
+  margin-bottom: 0.75rem;
+}
+
+.maq-success-hero__title {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0 0 1rem;
+  letter-spacing: -0.01em;
+}
+
+.maq-success-hero__desc {
+  font-size: 1.125rem;
+  line-height: 1.65;
+  color: var(--text-default-grey);
+  margin: 0 auto 2rem;
+  max-width: 42.5rem;
+}
+
+.maq-success-hero__summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 1.25rem 2rem;
+  background: var(--background-contrast-success);
+  border: 1px solid var(--border-plain-success);
+  margin-bottom: 2rem;
+}
+
+/* ─── Success axes grid ──────────────────────────────── */
+
+.maq-success-axes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.maq-success-axe-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid;
+  position: relative;
+}
+
+.maq-success-axe-card__accent {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+}
+
+.maq-success-axe-card__num {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+/* ─── Success next cycle ─────────────────────────────── */
+
+.maq-success-next {
+  margin-top: 2rem;
+  padding: 1.75rem 2rem;
+  background: var(--background-action-low-blue-france);
+  border-left: 4px solid var(--border-action-high-blue-france);
+}
+
+/* ─── Dashboard card urgency alert ──────────────────── */
+
+.maq-card2__alert {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-default-error);
+  padding: 0.375rem 0.625rem;
+  background: var(--background-contrast-error);
+  border-left: 2px solid var(--border-plain-error);
+}
+
+/* ─── Mobile segmented control (hybrid layout) ─────── */
+
+.maq-axe-segmented {
+  display: none;
+}
+
+/* ─── Status filter pills ──────────────────────────── */
+
+.maq-axe-status-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-bottom: 1.25rem;
+}
+
+/* ─── Empty state for axes with 0 actions ──────────── */
+
+.maq-axe-empty {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: var(--background-alt-grey);
+  border: 1px dashed var(--border-default-grey);
+}
+
+/* ─── Drawer suggestion nudge ──────────────────────── */
+
+.maq-drawer__nudge {
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border-default-grey);
+  margin-top: 1rem;
+}
+
+.maq-drawer__nudge-title {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-mention-grey);
+  margin: 0 0 0.75rem;
+}
+
+.maq-drawer__nudge-card {
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--border-default-grey);
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.maq-drawer__nudge-card:hover {
+  border-color: var(--border-action-high-blue-france);
+}
+
+.maq-drawer__nudge-card__title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0 0 0.25rem;
+}
+
+.maq-drawer__nudge-card__org {
+  font-size: 0.8125rem;
+  color: var(--text-mention-grey);
+  margin: 0 0 0.5rem;
+}
+
+.maq-drawer__nudge-card__meta {
+  display: flex;
+  gap: 0.875rem;
+  font-size: 0.75rem;
+  color: var(--text-mention-grey);
+  align-items: center;
+}
+
+.maq-drawer__nudge-card__meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* ─── Drawer inter-action navigation ───────────────── */
+
+.maq-drawer__nav {
+  display: flex;
+  gap: 0.375rem;
+}
+
+.maq-drawer__nav-btn {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-default-grey);
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.75rem;
+  color: var(--text-default-grey);
+  font-family: inherit;
+}
+
+.maq-drawer__nav-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.maq-drawer__nav-btn:not(:disabled):hover {
+  background: var(--background-alt-grey);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Action Drawer (detail panel)
+   ═══════════════════════════════════════════════════════════ */
+
+.maq-drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 18, 0.5);
+  z-index: 1000;
+  animation: maq-fade-in 0.2s ease;
+}
+
+@keyframes maq-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes maq-slide-in {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.maq-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 30rem;
+  max-width: 100vw;
+  background: var(--background-default-grey);
+  z-index: 1001;
+  overflow-y: auto;
+  padding: 1.5rem 2rem 2rem;
+  box-shadow: var(--shadow-modal);
+  animation: maq-slide-in 0.25s ease;
+  outline: none;
+}
+
+.maq-drawer__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.maq-drawer__close {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--text-default-grey);
+  border-radius: 0;
+  transition: background 0.15s;
+}
+
+.maq-drawer__close:hover {
+  background: var(--background-alt-grey);
+}
+
+/* Status banner */
+.maq-drawer__status {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid;
+  margin-bottom: 1rem;
+}
+
+.maq-drawer__status-dot {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.maq-drawer__status-label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  display: block;
+}
+
+.maq-drawer__status-date {
+  font-size: 0.75rem;
+  color: var(--text-mention-grey);
+}
+
+/* Chips */
+.maq-drawer__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Title */
+.maq-drawer__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 0 0 1.5rem;
+}
+
+/* Section */
+.maq-drawer__section {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-default-grey);
+}
+
+.maq-drawer__section:last-of-type {
+  border-bottom: none;
+}
+
+.maq-drawer__section-title {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-mention-grey);
+  margin: 0 0 0.75rem;
+}
+
+/* Description list */
+.maq-drawer__dl {
+  display: grid;
+  grid-template-columns: 8.5rem 1fr;
+  gap: 0.5rem 1rem;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.maq-drawer__dl dt {
+  color: var(--text-mention-grey);
+  font-weight: 400;
+}
+
+.maq-drawer__dl dd {
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Justificatif */
+.maq-drawer__justif {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  background: var(--background-alt-grey);
+}
+
+.maq-drawer__justif--auto {
+  background: var(--background-action-low-blue-france);
+}
+
+.maq-drawer__justif--complement {
+  background: var(--background-contrast-warning);
+}
+
+.maq-drawer__justif--rejected {
+  background: var(--background-contrast-error);
+}
+
+.maq-drawer__justif--missing {
+  background: var(--background-contrast-error);
+}
+
+/* Timeline */
+.maq-drawer__timeline {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: relative;
+}
+
+.maq-drawer__timeline-item {
+  display: grid;
+  grid-template-columns: 0.5rem 5rem 1fr;
+  gap: 0 0.75rem;
+  padding-bottom: 0.875rem;
+  position: relative;
+  align-items: baseline;
+}
+
+.maq-drawer__timeline-item:not(.maq-drawer__timeline-item--last)::before {
+  content: "";
+  position: absolute;
+  left: 0.1875rem;
+  top: 0.625rem;
+  bottom: 0;
+  width: 1px;
+  background: var(--border-default-grey);
+}
+
+.maq-drawer__timeline-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--grey-625-425);
+  margin-top: 0.3125rem;
+  flex-shrink: 0;
+}
+
+.maq-drawer__timeline-date {
+  font-size: 0.75rem;
+  color: var(--text-mention-grey);
+  white-space: nowrap;
+}
+
+.maq-drawer__timeline-label {
+  font-size: 0.8125rem;
+}
+
+.maq-drawer__timeline-item--last .maq-drawer__timeline-label {
+  font-weight: 600;
+}
+
+/* Alert in drawer */
+.maq-drawer__alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-left: 3px solid;
+  font-size: 0.8125rem;
+}
+
+.maq-drawer__alert--complement {
+  background: var(--background-contrast-warning);
+  border-left-color: var(--border-plain-warning);
+  color: var(--text-default-warning);
+}
+
+.maq-drawer__alert--rejected {
+  background: var(--background-contrast-error);
+  border-left-color: var(--border-plain-error);
+  color: var(--text-default-error);
+}
+
+.maq-drawer__alert p {
+  color: var(--text-default-grey);
+}
+
+/* Footer */
+.maq-drawer__footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-top: 1rem;
+}
+
+.maq-drawer__pending-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  background: var(--background-contrast-warning);
+  border-left: 3px solid var(--border-plain-warning);
+}
+
+/* ─── Responsive — New components ────────────────────── */
+
+@media (max-width: 767px) {
+  .maq-dash-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .maq-reco-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .maq-axe-band__grid {
+    flex-direction: column;
+  }
+
+  .maq-axe-band__actions {
+    margin-top: 0;
+  }
+
+  .maq-axe-segmented {
+    display: block;
+    margin-bottom: 1.5rem;
+  }
+
+  .maq-axe-columns {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .maq-axe-columns[data-mobile-tab="recommandations"] > section:first-child {
+    display: none;
+  }
+
+  .maq-axe-columns[data-mobile-tab="actions"] > section:last-child {
+    display: none;
+  }
+
+  .maq-success-hero {
+    padding: 2rem 1.5rem;
+  }
+
+  .maq-success-hero__summary {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .maq-success-axes {
+    grid-template-columns: 1fr;
+  }
+
+  .maq-drawer {
+    width: 100vw;
+    padding: 1rem 1.25rem 1.5rem;
+  }
+
+  .maq-drawer__dl {
+    grid-template-columns: 7rem 1fr;
+  }
+
+  .maq-sug-list--tabs {
+    grid-template-columns: 1fr;
+  }
+}

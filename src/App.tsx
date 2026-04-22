@@ -11,6 +11,8 @@ import { AxeDetail } from "./pages/maquette/AxeDetail";
 import { ReferentielComplet } from "./pages/maquette/ReferentielComplet";
 import { Declaration } from "./pages/maquette/Declaration";
 import { Synthese } from "./pages/maquette/Synthese";
+import { Success } from "./pages/maquette/Success";
+import { AxeDetailTabs } from "./pages/maquette/AxeDetailTabs";
 
 export function App() {
   return (
@@ -25,9 +27,11 @@ export function App() {
         <Route path="/maquette/onboarding" element={<Onboarding />} />
         <Route path="/maquette/tableau-de-bord" element={<Dashboard />} />
         <Route path="/maquette/axe/:id" element={<AxeDetail />} />
+        <Route path="/maquette/axe-test/:id" element={<AxeDetailTabs />} />
         <Route path="/maquette/axe/:id/referentiel" element={<ReferentielComplet />} />
         <Route path="/maquette/declarer" element={<Declaration />} />
         <Route path="/maquette/synthese" element={<Synthese />} />
+        <Route path="/maquette/succes" element={<Success />} />
       </Route>
     </Routes>
   );

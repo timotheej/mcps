@@ -15,6 +15,11 @@ export function MaquetteLayout() {
           linkProps: { to: "/maquette/tableau-de-bord" },
           isActive: location.pathname === "/maquette/tableau-de-bord",
         },
+        {
+          text: "Mon referentiel",
+          linkProps: { to: "/maquette/axe/axe-1/referentiel" },
+          isActive: location.pathname.includes("/referentiel"),
+        },
       ]
     : [];
 

@@ -135,6 +135,9 @@ export function Declaration() {
       libelle: titre,
       date: date,
       type: getActionTypeLabel(selectedTypeId),
+      source: "manual",
+      validation: "pending",
+      declaredOn: date,
     };
     actions.push(newAction);
     saveActions(actions);
