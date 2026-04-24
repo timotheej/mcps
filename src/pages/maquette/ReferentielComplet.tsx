@@ -76,6 +76,8 @@ function ReferentielActionCard({
 
       <h3 className="maq-ref-card__libelle">{action.libelle}</h3>
 
+      <p className="maq-ref-card__type-line">Type : {action.type}</p>
+
       <div className="maq-ref-card__chips">
         {action.themeId && (
           <span
@@ -85,7 +87,6 @@ function ReferentielActionCard({
             {getThemeLabel(axeId, action.themeId)}
           </span>
         )}
-        <span className="maq-ref-card__type-chip">{action.type}</span>
       </div>
 
       <div className="maq-ref-card__footer">

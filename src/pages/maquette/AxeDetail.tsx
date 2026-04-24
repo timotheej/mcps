@@ -311,6 +311,7 @@ function ReferentielExtractCard({
         <span className="maq-sug-card__code">{action.code}</span>
       </div>
       <h4 className="maq-sug-card__title">{action.libelle}</h4>
+      <p className="maq-sug-card__type-line">Type : {action.type}</p>
       <div className="maq-sug-card__footer">
         {declared ? (
           <Button

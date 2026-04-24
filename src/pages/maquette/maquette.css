@@ -1089,6 +1089,12 @@
   white-space: nowrap;
 }
 
+.maq-ref-card__type-line {
+  font-size: 0.8125rem;
+  color: var(--text-mention-grey);
+  margin: -0.25rem 0 0.125rem;
+}
+
 .maq-ref-card__footer {
   display: flex;
   flex-wrap: wrap;
@@ -2350,6 +2356,12 @@
   margin-top: 0.75rem;
   padding-top: 0.75rem;
   border-top: 1px solid var(--border-default-grey);
+}
+
+.maq-sug-card__type-line {
+  font-size: 0.8125rem;
+  color: var(--text-mention-grey);
+  margin: 0.5rem 0 0;
 }
 
 /* ─── Success screen ─────────────────────────────────── */
