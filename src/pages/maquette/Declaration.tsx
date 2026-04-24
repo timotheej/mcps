@@ -15,7 +15,17 @@ import {
   ACTION_TYPES,
   getActionTypeLabel,
   type ActionRealisee,
+  type ActionRef,
 } from "../../data/maquette";
+
+const REF_TYPE_TO_ID: Record<string, string> = {
+  "Formation": "formation",
+  "Action d'analyse des pratiques": "analyse-pratiques",
+  "Action de gestion des risques": "gestion-risques",
+  "Programmes intégrés": "programme-integre",
+  "Programmes integres": "programme-integre",
+  "Action libre": "action-libre",
+};
 import "./maquette.css";
 
 type Step = "type" | "axe" | "form" | "confirm" | "success";
@@ -35,23 +45,31 @@ export function Declaration() {
 
   const preAxeId = searchParams.get("axe");
   const preFormationId = searchParams.get("formation");
+  const preCode = searchParams.get("code");
   const preFormation = preFormationId
     ? formationsMock.find((f) => f.id === preFormationId)
     : null;
 
+  // Pre-fill from referentiel code
+  const preRefAction: ActionRef | null = (() => {
+    if (!preAxeId || !preCode) return null;
+    const axe = getAxeById(preAxeId);
+    return axe?.actions.find((a) => a.code === preCode) || null;
+  })();
+  const preRefTypeId = preRefAction ? REF_TYPE_TO_ID[preRefAction.type] || null : null;
+
   // Determine initial step based on pre-filled data
-  const initialStep: Step = preFormation
-    ? "form"
-    : preAxeId
-    ? "type"
-    : "type";
+  const initialStep: Step =
+    preFormation || (preRefAction && preRefTypeId)
+      ? "form"
+      : "type";
 
   const [step, setStep] = useState<Step>(initialStep);
   const [selectedAxeId, setSelectedAxeId] = useState<string | null>(
     preAxeId
   );
   const [selectedTypeId, setSelectedTypeId] = useState<string | null>(
-    preFormation?.typeAction || null
+    preFormation?.typeAction || preRefTypeId || null
   );
 
   const [titre, setTitre] = useState(preFormation?.titre || "");
@@ -138,6 +156,7 @@ export function Declaration() {
       source: "manual",
       validation: "pending",
       declaredOn: date,
+      ...(preRefAction && { code: preRefAction.code, themeId: preRefAction.themeId }),
     };
     actions.push(newAction);
     saveActions(actions);
@@ -150,7 +169,7 @@ export function Declaration() {
   // With preAxeId: type → form → confirm
   // With preFormation: form → confirm
   const hasAxeStep = !preAxeId;
-  const hasTypeStep = !preFormation;
+  const hasTypeStep = !preFormation && !(preRefAction && preRefTypeId);
   const stepNames: Step[] = [
     ...(hasTypeStep ? ["type" as Step] : []),
     ...(hasAxeStep ? ["axe" as Step] : []),
@@ -339,7 +358,7 @@ export function Declaration() {
           <h1 className={fr.cx("fr-mb-1w")}>
             {formTitle}
           </h1>
-          <p className={`${fr.cx("fr-text--sm", "fr-mb-4w")} fr-text-mention--grey`}>
+          <p className={`${fr.cx("fr-text--sm", "fr-mb-2w")} fr-text-mention--grey`}>
             {selectedType && (
               <span className="maq-decl__type-badge">
                 {selectedType.label}
@@ -353,6 +372,16 @@ export function Declaration() {
               </>
             )}
           </p>
+
+          {preRefAction && (
+            <div className="maq-decl__ref-context">
+              <p className="maq-decl__ref-label">
+                Declaration rattachee a l'entree du referentiel
+              </p>
+              <p className="maq-decl__ref-code">{preRefAction.code}</p>
+              <p className="maq-decl__ref-libelle">{preRefAction.libelle}</p>
+            </div>
+          )}
 
           <div className="maq-decl__form">
             <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>

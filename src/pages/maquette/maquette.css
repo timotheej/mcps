@@ -973,21 +973,18 @@
 
 /* ─── Referentiel complet — v2 ───────────────────────── */
 
-.maq-ref-filters {
+.maq-ref-sidebar {
   position: sticky;
-  top: 0;
-  background: var(--background-default-grey);
-  padding: 1rem 0 0.75rem;
-  border-bottom: 1px solid var(--border-default-grey);
-  z-index: 10;
+  top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-right: 0.5rem;
 }
 
-.maq-ref-filters__row {
-  margin-bottom: 0.75rem;
-}
-
-.maq-ref-filters__row:last-child {
-  margin-bottom: 0;
+.maq-ref-sidebar__block {
+  display: flex;
+  flex-direction: column;
 }
 
 .maq-ref-filters__label {
@@ -1013,7 +1010,9 @@
   gap: 0.5rem;
   font-size: 0.875rem;
   color: var(--text-mention-grey);
-  margin: 1rem 0 0.75rem;
+  margin: 0 0 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-default-grey);
 }
 
 .maq-ref-counter strong {
@@ -1025,7 +1024,6 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  padding: 1.5rem 0 0;
 }
 
 .maq-ref-card {
@@ -1040,6 +1038,15 @@
 
 .maq-ref-card:hover {
   border-color: var(--border-action-high-blue-france);
+}
+
+.maq-ref-card--clickable {
+  cursor: pointer;
+}
+
+.maq-ref-card--clickable:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
 }
 
 .maq-ref-card__top {
@@ -1127,8 +1134,11 @@
 }
 
 @media (max-width: 767px) {
-  .maq-ref-filters {
-    padding: 0.75rem 0 0.5rem;
+  .maq-ref-sidebar {
+    position: static;
+    gap: 1rem;
+    padding-right: 0;
+    margin-bottom: 1rem;
   }
   .maq-ref-filters__tags {
     flex-wrap: nowrap;
@@ -1156,6 +1166,51 @@
     display: block;
     padding: 1rem 0;
   }
+}
+
+/* ─── Referentiel public — index ─────────────────────── */
+
+.maq-ref-public-card {
+  background: var(--background-default-grey);
+  border: 1px solid var(--border-default-grey);
+  padding: 1.5rem 1.5rem 1.25rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: border-color 0.15s;
+}
+
+.maq-ref-public-card:hover {
+  border-color: var(--border-action-high-blue-france);
+}
+
+.maq-ref-public-card__chip {
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 0.25rem 0.625rem;
+}
+
+.maq-ref-public-card__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.3;
+  color: var(--text-title-grey);
+}
+
+.maq-ref-public-card__desc {
+  font-size: 0.875rem;
+  color: var(--text-mention-grey);
+  margin: 0;
+}
+
+.maq-ref-public-card__footer {
+  margin-top: auto;
+  padding-top: 0.5rem;
 }
 
 /* ─── Declaration ────────────────────────────────────── */
@@ -1289,6 +1344,38 @@
 
 .maq-decl__axe-tile:hover .maq-decl__axe-tile-arrow {
   color: var(--text-action-high-blue-france);
+}
+
+/* Referentiel context banner */
+.maq-decl__ref-context {
+  max-width: 44rem;
+  padding: 1rem 1.25rem;
+  background: var(--background-alt-grey);
+  border-left: 3px solid var(--border-action-high-blue-france);
+  margin-bottom: 2rem;
+}
+
+.maq-decl__ref-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-mention-grey);
+  margin: 0 0 0.375rem;
+}
+
+.maq-decl__ref-code {
+  font-size: 0.75rem;
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  color: var(--text-mention-grey);
+  margin: 0 0 0.5rem;
+}
+
+.maq-decl__ref-libelle {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--text-default-grey);
+  margin: 0;
 }
 
 /* Form */
@@ -1944,6 +2031,47 @@
   margin: 0 0 0.5rem;
 }
 
+.maq-action-row__ref-link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.375rem;
+  flex-wrap: wrap;
+  background: none;
+  border: none;
+  padding: 0 0 0.5rem;
+  margin: -0.125rem 0 0.375rem;
+  font-size: 0.8125rem;
+  color: var(--text-mention-grey);
+  cursor: pointer;
+  text-align: left;
+  line-height: 1.4;
+}
+
+.maq-action-row__ref-link:hover .maq-action-row__ref-libelle,
+.maq-action-row__ref-link:hover .maq-action-row__ref-code {
+  color: var(--text-action-high-blue-france);
+  text-decoration: underline;
+}
+
+.maq-action-row__ref-arrow {
+  color: var(--text-mention-grey);
+  font-size: 0.9375rem;
+}
+
+.maq-action-row__ref-code {
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-size: 0.75rem;
+  color: var(--text-mention-grey);
+}
+
+.maq-action-row__ref-sep {
+  color: var(--text-mention-grey);
+}
+
+.maq-action-row__ref-libelle {
+  color: var(--text-default-grey);
+}
+
 .maq-action-row__submeta {
   display: flex;
   align-items: center;
@@ -2067,7 +2195,7 @@
 
 .maq-status-bullet--empty {
   background: transparent;
-  border: 2px dashed var(--grey-625-425);
+  border: 2px solid var(--border-default-grey);
 }
 
 /* P0: Status group — bullet + accessible text label */
@@ -2205,16 +2333,23 @@
 
 .maq-sug-card__meta {
   display: flex;
-  gap: 1.125rem;
+  gap: 0.5rem;
   font-size: 0.8125rem;
   color: var(--text-default-grey);
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .maq-sug-card__meta span {
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
+}
+
+.maq-sug-card__footer {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-default-grey);
 }
 
 /* ─── Success screen ─────────────────────────────────── */
@@ -2715,6 +2850,32 @@
   padding: 0.875rem 1rem;
   background: var(--background-contrast-warning);
   border-left: 3px solid var(--border-plain-warning);
+}
+
+/* Referentiel action drawer */
+.maq-ref-drawer__meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--border-default-grey);
+  border-bottom: 1px solid var(--border-default-grey);
+}
+
+.maq-ref-drawer__label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-mention-grey);
+  margin: 0 0 0.5rem;
+}
+
+.maq-ref-drawer__declared {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  flex-wrap: wrap;
 }
 
 /* ─── Responsive — New components ────────────────────── */

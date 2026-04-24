@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import { useParams, Navigate, useNavigate } from "react-router-dom";
+import { useParams, Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import { fr } from "@codegouvfr/react-dsfr";
 import { Button } from "@codegouvfr/react-dsfr/Button";
 import { Breadcrumb } from "@codegouvfr/react-dsfr/Breadcrumb";
@@ -10,16 +10,13 @@ import {
   loadActions,
   getActionsForAxe,
   loadSelectedThemes,
-  getFormationsForAxeAndThemes,
-  formationsMock,
   getThemeLabel,
-  getActionTypeLabel,
   getAxeColor,
   SOURCES,
   VALIDATION_STATES,
   type ActionRealisee,
+  type ActionRef,
   type ValidationState,
-  type FormationSuggestion,
   saveAxeFilters,
   loadAxeFilters,
 } from "../../data/maquette";
@@ -162,12 +159,27 @@ function ActionAlert({ action, onDeclare }: { action: ActionRealisee; onDeclare:
 
 /* ─── Action Row ─────────────────────────────────────── */
 
-function ActionRow({ action, axeId, onDeclare, onOpenDetail }: { action: ActionRealisee; axeId: string; onDeclare: () => void; onOpenDetail: (a: ActionRealisee) => void }) {
+function ActionRow({
+  action,
+  axeId,
+  refLookup,
+  onDeclare,
+  onOpenDetail,
+  onNavigateRef,
+}: {
+  action: ActionRealisee;
+  axeId: string;
+  refLookup: (code: string) => ActionRef | undefined;
+  onDeclare: () => void;
+  onOpenDetail: (a: ActionRealisee) => void;
+  onNavigateRef: (code: string) => void;
+}) {
   const sourceDef = SOURCES[action.source] || SOURCES.manual;
   const isAuto = sourceDef.auto;
   const validation = action.validation || "validated";
   const isRejected = validation === "rejected";
   const { color: axeColor, bgTint } = getAxeColor(axeId);
+  const refEntry = action.code ? refLookup(action.code) : undefined;
 
   return (
     <div className={`maq-action-row${isRejected ? " maq-action-row--rejected" : ""}`}>
@@ -188,6 +200,21 @@ function ActionRow({ action, axeId, onDeclare, onOpenDetail }: { action: ActionR
         <h4 className={`maq-action-row__title${isRejected ? " maq-action-row__title--rejected" : ""}`}>
           {action.title || action.libelle}
         </h4>
+
+        {/* Rattachement referentiel */}
+        {refEntry && (
+          <button
+            type="button"
+            className="maq-action-row__ref-link"
+            onClick={() => onNavigateRef(refEntry.code)}
+            aria-label={`Voir l'entree ${refEntry.code} dans le referentiel`}
+          >
+            <span aria-hidden="true" className="maq-action-row__ref-arrow">↳</span>
+            <span className="maq-action-row__ref-code">{refEntry.code}</span>
+            <span className="maq-action-row__ref-sep">—</span>
+            <span className="maq-action-row__ref-libelle">{refEntry.libelle}</span>
+          </button>
+        )}
 
         {/* Meta: org · duration · modality */}
         <p className="maq-action-row__meta">
@@ -239,54 +266,73 @@ function ActionRow({ action, axeId, onDeclare, onOpenDetail }: { action: ActionR
 
 /* ─── Empty Action Row ───────��───────────────────────── */
 
-function EmptyActionRow({ onDeclare }: { onDeclare: () => void }) {
+function EmptyActionRow({ remaining, onDeclare }: { remaining: number; onDeclare: () => void }) {
   return (
     <div className="maq-action-row maq-action-row--empty">
-      <span className="maq-status-bullet maq-status-bullet--empty" />
+      <span className="maq-status-bullet maq-status-bullet--empty" aria-hidden="true" />
       <div className="maq-action-row__body">
-        <p className="maq-action-row__empty-text">En attente d'une nouvelle action</p>
+        <p className="maq-action-row__empty-text">
+          {remaining} action{remaining > 1 ? "s" : ""} restante{remaining > 1 ? "s" : ""} pour cet axe
+        </p>
         <a
           className={fr.cx("fr-link", "fr-link--sm")}
           href="#"
           onClick={(e) => { e.preventDefault(); onDeclare(); }}
         >
-          + Declarer une nouvelle action
+          + Declarer une action
         </a>
       </div>
     </div>
   );
 }
 
-/* ─── Suggestion Card ───────��────────────────────────── */
+/* ─── Referentiel Extract Card ────────────────────────── */
 
-function SuggestionCard({ sug, axeId }: { sug: FormationSuggestion; axeId: string }) {
+function ReferentielExtractCard({
+  action,
+  axeId,
+  declared,
+  onDeclare,
+}: {
+  action: ActionRef;
+  axeId: string;
+  declared: boolean;
+  onDeclare: () => void;
+}) {
   const { color: axeColor, bgTint } = getAxeColor(axeId);
   return (
     <article className="maq-sug-card">
       <div className="maq-sug-card__top">
-        {sug.themes[0] && (
+        {action.themeId && (
           <span className="maq-theme-chip" style={{ background: bgTint, color: axeColor }}>
-            {getThemeLabel(axeId, sug.themes[0])}
+            {getThemeLabel(axeId, action.themeId)}
           </span>
         )}
-        <span className="maq-sug-card__code">{sug.id}</span>
+        <span className="maq-sug-card__code">{action.code}</span>
       </div>
-      <h4 className="maq-sug-card__title">{sug.titre}</h4>
-      {sug.organisme && <p className="maq-sug-card__org">{sug.organisme}</p>}
-      <div className="maq-sug-card__meta">
-        {sug.duree && (
-          <span>
-            <span className="fr-icon-time-line" aria-hidden="true" style={{ fontSize: "0.75rem", opacity: 0.7 }} />
-            {sug.duree}
-          </span>
+      <h4 className="maq-sug-card__title">{action.libelle}</h4>
+      <div className="maq-sug-card__footer">
+        {declared ? (
+          <Button
+            priority="tertiary no outline"
+            size="small"
+            iconId="fr-icon-check-line"
+            iconPosition="left"
+            disabled
+          >
+            Deja declaree
+          </Button>
+        ) : (
+          <Button
+            priority="secondary"
+            size="small"
+            iconId="fr-icon-add-line"
+            iconPosition="left"
+            onClick={onDeclare}
+          >
+            Declarer au titre de cette entree
+          </Button>
         )}
-        {sug.modalite && (
-          <span>
-            <span className="fr-icon-road-map-line" aria-hidden="true" style={{ fontSize: "0.75rem", opacity: 0.7 }} />
-            {sug.modalite}
-          </span>
-        )}
-        <span>{getActionTypeLabel(sug.typeAction)}</span>
       </div>
     </article>
   );
@@ -296,6 +342,7 @@ function SuggestionCard({ sug, axeId }: { sug: FormationSuggestion; axeId: strin
 
 export function AxeDetail() {
   const { id } = useParams<{ id: string }>();
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const axe = id ? getAxeById(id) : undefined;
 
@@ -317,6 +364,20 @@ export function AxeDetail() {
     if (id) saveAxeFilters(id, activeFilters);
   }, [id, activeFilters]);
 
+  // Auto-open drawer from ?action=... query param
+  useEffect(() => {
+    if (!id) return;
+    const actionId = searchParams.get("action");
+    if (!actionId) return;
+    const match = getActionsForAxe(id, loadActions()).find((a) => a.id === actionId);
+    if (match) {
+      setDrawerAction(match);
+      const next = new URLSearchParams(searchParams);
+      next.delete("action");
+      setSearchParams(next, { replace: true });
+    }
+  }, [id, searchParams, setSearchParams]);
+
   if (!axe || !id) {
     return <Navigate to="/maquette/tableau-de-bord" replace />;
   }
@@ -330,10 +391,20 @@ export function AxeDetail() {
   const { color, bgTint } = getAxeColor(id);
   const progressColor = isComplete ? "var(--success-425-625)" : color;
 
-  // Suggestions with filters
-  const filteredFormations = getFormationsForAxeAndThemes(id, activeFilters);
-  const allFormations = formationsMock.filter((f) => f.axeId === id);
-  const displayFormations = filteredFormations.length > 0 ? filteredFormations : allFormations;
+  // Extrait du referentiel filtre par themes preferentiels
+  const declaredCodes = new Set(axeActions.map((a) => a.code).filter(Boolean));
+  const referentielFiltered =
+    activeFilters.length > 0
+      ? axe.actions.filter((a) => a.themeId && activeFilters.includes(a.themeId))
+      : axe.actions;
+  const seenCodes = new Set<string>();
+  const displayReferentiel = referentielFiltered
+    .filter((a) => {
+      if (seenCodes.has(a.code)) return false;
+      seenCodes.add(a.code);
+      return true;
+    })
+    .slice(0, 3);
 
   // Status filter
   const statusCounts = axeActions.reduce((acc, a) => {
@@ -434,7 +505,7 @@ export function AxeDetail() {
                 onChange={() => setMobileTab("recommandations")}
               />
               <label className="fr-label" htmlFor="seg-reco">
-                Recommandations ({displayFormations.length})
+                Recommandations ({referentielFiltered.length})
               </label>
             </div>
           </div>
@@ -498,13 +569,21 @@ export function AxeDetail() {
             )}
 
             {filteredByStatus.map((a) => (
-              <ActionRow key={a.id} action={a} axeId={id} onDeclare={onDeclare} onOpenDetail={openDrawer} />
+              <ActionRow
+                key={a.id}
+                action={a}
+                axeId={id}
+                refLookup={(code) => axe.actions.find((ra) => ra.code === code)}
+                onDeclare={onDeclare}
+                onOpenDetail={openDrawer}
+                onNavigateRef={(code) => navigate(`/maquette/axe/${id}/referentiel#${code}`)}
+              />
             ))}
 
-            {/* Empty slots */}
-            {statusFilter === "all" && Array.from({ length: remaining }).map((_, i) => (
-              <EmptyActionRow key={`empty-${i}`} onDeclare={onDeclare} />
-            ))}
+            {/* Empty slot (consolide) */}
+            {statusFilter === "all" && remaining > 0 && (
+              <EmptyActionRow remaining={remaining} onDeclare={onDeclare} />
+            )}
 
             {/* Bravo message */}
             {isComplete && axeActions.length > 0 && statusFilter === "all" && (
@@ -515,9 +594,12 @@ export function AxeDetail() {
             )}
           </section>
 
-          {/* ─── RIGHT: Actions recommandees ──────────────── */}
+          {/* ─── RIGHT: Extrait du referentiel ─────────────── */}
           <section>
-            <h2 className={fr.cx("fr-h4", "fr-mb-3w")}>Actions recommandees</h2>
+            <h2 className={fr.cx("fr-h4", "fr-mb-1v")}>Actions recommandees</h2>
+            <p className={fr.cx("fr-text--sm", "fr-mb-3w")} style={{ color: "var(--text-mention-grey)" }}>
+              Extrait du referentiel CNP, filtre par vos themes preferentiels.
+            </p>
 
             {/* Filter pills */}
             <div className="maq-axe-filters">
@@ -537,10 +619,16 @@ export function AxeDetail() {
               })}
             </div>
 
-            {/* Suggestion cards */}
+            {/* Referentiel extract cards */}
             <div className="maq-sug-list">
-              {displayFormations.slice(0, 4).map((s) => (
-                <SuggestionCard key={s.id} sug={s} axeId={id} />
+              {displayReferentiel.map((a) => (
+                <ReferentielExtractCard
+                  key={a.code}
+                  action={a}
+                  axeId={id}
+                  declared={declaredCodes.has(a.code)}
+                  onDeclare={() => navigate(`/maquette/declarer?axe=${id}&code=${a.code}`)}
+                />
               ))}
             </div>
 

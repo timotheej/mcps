@@ -18,10 +18,16 @@ export function MaquetteLayout() {
         {
           text: "Mon referentiel",
           linkProps: { to: "/maquette/axe/axe-1/referentiel" },
-          isActive: location.pathname.includes("/referentiel"),
+          isActive: location.pathname.startsWith("/maquette/axe"),
         },
       ]
-    : [];
+    : [
+        {
+          text: "Referentiel de certification",
+          linkProps: { to: "/referentiel" },
+          isActive: location.pathname.startsWith("/referentiel"),
+        },
+      ];
 
   return (
     <div

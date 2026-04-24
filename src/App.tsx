@@ -9,12 +9,18 @@ import { Declaration } from "./pages/maquette/Declaration";
 import { Synthese } from "./pages/maquette/Synthese";
 import { Success } from "./pages/maquette/Success";
 import { AxeDetailTabs } from "./pages/maquette/AxeDetailTabs";
+import { ReferentielPublicIndex } from "./pages/maquette/ReferentielPublicIndex";
 
 export function App() {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/maquette" replace />} />
       <Route element={<MaquetteLayout />}>
+        <Route path="/referentiel" element={<ReferentielPublicIndex />} />
+        <Route
+          path="/referentiel/:id"
+          element={<ReferentielComplet mode="public" />}
+        />
         <Route path="/maquette" element={<Auth />} />
         <Route path="/maquette/onboarding" element={<Onboarding />} />
         <Route path="/maquette/tableau-de-bord" element={<Dashboard />} />

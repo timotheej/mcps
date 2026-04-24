@@ -6,7 +6,6 @@ import { Breadcrumb } from "@codegouvfr/react-dsfr/Breadcrumb";
 import { Input } from "@codegouvfr/react-dsfr/Input";
 import { Badge } from "@codegouvfr/react-dsfr/Badge";
 import { Tag } from "@codegouvfr/react-dsfr/Tag";
-import { Accordion } from "@codegouvfr/react-dsfr/Accordion";
 import { CallOut } from "@codegouvfr/react-dsfr/CallOut";
 import { Select } from "@codegouvfr/react-dsfr/SelectNext";
 import {
@@ -17,34 +16,55 @@ import {
   getActionsForAxe,
   loadSelectedThemes,
   referentiel,
-  formationsMock,
   type ActionRef,
   type ActionRealisee,
 } from "../../data/maquette";
+import { ReferentielActionDrawer } from "./ReferentielActionDrawer";
 import "./maquette.css";
-
-function countFormationsForCode(code: string): number {
-  return formationsMock.filter((f) => f.id === code).length;
-}
 
 function ReferentielActionCard({
   action,
   axeId,
   declared,
+  onOpen,
   onDeclare,
+  onViewDeclaration,
+  mode,
 }: {
   action: ActionRef;
   axeId: string;
   declared: ActionRealisee | undefined;
+  onOpen: () => void;
   onDeclare: () => void;
+  onViewDeclaration: () => void;
+  mode: "private" | "public";
 }) {
   const { color: axeColor, bgTint } = getAxeColor(axeId);
-  const formationsCount = countFormationsForCode(action.code);
+  const isPublic = mode === "public";
+
+  const stop = (handler: () => void) => (e: React.MouseEvent) => {
+    e.stopPropagation();
+    handler();
+  };
+
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onOpen();
+    }
+  };
 
   return (
-    <article className="maq-ref-card">
+    <article
+      className="maq-ref-card maq-ref-card--clickable"
+      role="button"
+      tabIndex={0}
+      onClick={onOpen}
+      onKeyDown={onKeyDown}
+      aria-label={`Voir le detail de l'action ${action.code}`}
+    >
       <div className="maq-ref-card__top">
-        {declared ? (
+        {!isPublic && declared ? (
           <Badge severity="success" small>
             Deja declaree
           </Badge>
@@ -69,47 +89,41 @@ function ReferentielActionCard({
       </div>
 
       <div className="maq-ref-card__footer">
-        {declared ? (
+        {!isPublic && declared ? (
           <Button
             priority="tertiary no outline"
             size="small"
             iconId="fr-icon-arrow-right-line"
             iconPosition="right"
+            onClick={stop(onViewDeclaration)}
           >
             Voir ma declaration du {declared.declaredOn || declared.date}
           </Button>
         ) : (
-          <>
-            <Button
-              priority="secondary"
-              size="small"
-              iconId="fr-icon-add-line"
-              iconPosition="left"
-              onClick={onDeclare}
-            >
-              Declarer cette action
-            </Button>
-            {formationsCount > 0 && (
-              <Button
-                priority="tertiary no outline"
-                size="small"
-                iconId="fr-icon-book-2-line"
-                iconPosition="left"
-              >
-                Voir formations proposees ({formationsCount})
-              </Button>
-            )}
-          </>
+          <Button
+            priority="secondary"
+            size="small"
+            iconId={isPublic ? "fr-icon-lock-line" : "fr-icon-add-line"}
+            iconPosition="left"
+            onClick={stop(onDeclare)}
+          >
+            {isPublic ? "Se connecter pour declarer" : "Declarer cette action"}
+          </Button>
         )}
       </div>
     </article>
   );
 }
 
-export function ReferentielComplet() {
+export function ReferentielComplet({
+  mode = "private",
+}: {
+  mode?: "private" | "public";
+}) {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const axe = id ? getAxeById(id) : undefined;
+  const isPublic = mode === "public";
 
   const [search, setSearch] = useState("");
   const [selectedThemes, setSelectedThemes] = useState<string[]>(() => {
@@ -117,9 +131,10 @@ export function ReferentielComplet() {
     return saved && id ? saved[id] || [] : [];
   });
   const [typeFilter, setTypeFilter] = useState<string | null>(null);
+  const [drawerAction, setDrawerAction] = useState<ActionRef | null>(null);
 
   if (!axe || !id) {
-    return <Navigate to="/maquette/tableau-de-bord" replace />;
+    return <Navigate to={isPublic ? "/referentiel" : "/maquette/tableau-de-bord"} replace />;
   }
 
   const axeNum = axe.id.split("-")[1];
@@ -188,12 +203,23 @@ export function ReferentielComplet() {
       >
         <div className={fr.cx("fr-container")} style={{ padding: "1.25rem 0 2.25rem" }}>
           <Breadcrumb
-            currentPageLabel="Referentiel complet"
-            homeLinkProps={{ to: "/maquette" }}
-            segments={[
-              { label: "Tableau de bord", linkProps: { to: "/maquette/tableau-de-bord" } },
-              { label: `Axe ${axeNum}`, linkProps: { to: `/maquette/axe/${id}` } },
-            ]}
+            currentPageLabel={
+              isPublic ? `Axe ${axeNum} — ${axe.label_court}` : "Referentiel complet"
+            }
+            homeLinkProps={{ to: isPublic ? "/" : "/maquette" }}
+            segments={
+              isPublic
+                ? [
+                    {
+                      label: "Referentiel de certification",
+                      linkProps: { to: "/referentiel" },
+                    },
+                  ]
+                : [
+                    { label: "Tableau de bord", linkProps: { to: "/maquette/tableau-de-bord" } },
+                    { label: `Axe ${axeNum}`, linkProps: { to: `/maquette/axe/${id}` } },
+                  ]
+            }
           />
 
           <div className="maq-axe-band__grid">
@@ -216,172 +242,220 @@ export function ReferentielComplet() {
               >
                 Consulter le CNP
               </Button>
-              <Button
-                priority="primary"
-                iconId="fr-icon-add-line"
-                iconPosition="left"
-                size="small"
-                onClick={() => navigate(`/maquette/declarer?axe=${id}`)}
-              >
-                Declarer une action
-              </Button>
+              {isPublic ? (
+                <Button
+                  priority="primary"
+                  iconId="fr-icon-lock-line"
+                  iconPosition="left"
+                  size="small"
+                  onClick={() => navigate("/maquette")}
+                >
+                  Se connecter pour declarer
+                </Button>
+              ) : (
+                <Button
+                  priority="primary"
+                  iconId="fr-icon-add-line"
+                  iconPosition="left"
+                  size="small"
+                  onClick={() => navigate(`/maquette/declarer?axe=${id}`)}
+                >
+                  Declarer une action
+                </Button>
+              )}
             </div>
           </div>
         </div>
       </section>
 
-      {/* ═══ Filtres sticky ═════════════════════════════════ */}
-      <div className={fr.cx("fr-container")}>
-        <div className="maq-ref-filters">
-          <div className="maq-ref-filters__row">
-            <Input
-              label="Rechercher une action"
-              hideLabel
-              iconId="fr-icon-search-line"
-              nativeInputProps={{
-                value: search,
-                onChange: (e) => setSearch(e.target.value),
-                placeholder: "Rechercher par mot-cle (simulation, protocole, formation...)",
-                "aria-label": "Rechercher une action dans le referentiel",
-              }}
-            />
-          </div>
+      {/* ═══ Layout 2 colonnes : filtres + liste ════════════ */}
+      <div className={fr.cx("fr-container", "fr-mt-3w")}>
+        <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
+          {/* ─── Colonne filtres (col-3) ─────────────────── */}
+          <div className={fr.cx("fr-col-12", "fr-col-md-3")}>
+            <aside className="maq-ref-sidebar" aria-label="Filtres">
+              <div className="maq-ref-sidebar__block">
+                <Input
+                  label="Rechercher une action"
+                  hideLabel
+                  iconId="fr-icon-search-line"
+                  nativeInputProps={{
+                    value: search,
+                    onChange: (e) => setSearch(e.target.value),
+                    placeholder: "Mot-cle, code...",
+                    "aria-label": "Rechercher une action dans le referentiel",
+                  }}
+                />
+              </div>
 
-          <div className="maq-ref-filters__row">
-            <p className="maq-ref-filters__label">Theme</p>
-            <div className="maq-ref-filters__tags">
-              <Tag
-                pressed={selectedThemes.length === 0}
-                nativeButtonProps={{
-                  onClick: () => setSelectedThemes([]),
-                  "aria-label": "Afficher toutes les actions",
-                }}
-              >
-                Tous
-              </Tag>
-              {axe.themes.map((t) => {
-                const active = selectedThemes.includes(t.id);
-                return (
+              <div className="maq-ref-sidebar__block">
+                <p className="maq-ref-filters__label">Theme</p>
+                <div className="maq-ref-filters__tags">
                   <Tag
-                    key={t.id}
-                    pressed={active}
+                    pressed={selectedThemes.length === 0}
                     nativeButtonProps={{
-                      onClick: () => toggleTheme(t.id),
-                      "aria-pressed": active,
+                      onClick: () => setSelectedThemes([]),
+                      "aria-label": "Afficher toutes les actions",
                     }}
                   >
-                    {t.label}
+                    Tous
                   </Tag>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="maq-ref-filters__row">
-            <Accordion label="Plus de filtres" defaultExpanded={false}>
-              <p className="maq-ref-filters__label">Type d'action</p>
-              <div className="maq-ref-filters__tags">
-                <Tag
-                  pressed={typeFilter === null}
-                  nativeButtonProps={{ onClick: () => setTypeFilter(null) }}
-                >
-                  Tous ({axe.actions.length})
-                </Tag>
-                {types.map((type) => {
-                  const count = axe.actions.filter((a) => a.type === type).length;
-                  const active = typeFilter === type;
-                  return (
-                    <Tag
-                      key={type}
-                      pressed={active}
-                      nativeButtonProps={{
-                        onClick: () => setTypeFilter(active ? null : type),
-                      }}
-                    >
-                      {type} ({count})
-                    </Tag>
-                  );
-                })}
+                  {axe.themes.map((t) => {
+                    const active = selectedThemes.includes(t.id);
+                    return (
+                      <Tag
+                        key={t.id}
+                        pressed={active}
+                        nativeButtonProps={{
+                          onClick: () => toggleTheme(t.id),
+                          "aria-pressed": active,
+                        }}
+                      >
+                        {t.label}
+                      </Tag>
+                    );
+                  })}
+                </div>
               </div>
-            </Accordion>
-          </div>
 
-          <div className="maq-ref-counter">
-            <span>
-              <strong>{filtered.length}</strong> action{filtered.length > 1 ? "s" : ""} affichee{filtered.length > 1 ? "s" : ""}
-              {declaredCount > 0 && (
-                <>
-                  {" "}· dont <strong>{declaredCount}</strong> deja declaree{declaredCount > 1 ? "s" : ""} par vous
-                </>
+              <div className="maq-ref-sidebar__block">
+                <p className="maq-ref-filters__label">Type d'action</p>
+                <div className="maq-ref-filters__tags">
+                  <Tag
+                    pressed={typeFilter === null}
+                    nativeButtonProps={{ onClick: () => setTypeFilter(null) }}
+                  >
+                    Tous ({axe.actions.length})
+                  </Tag>
+                  {types.map((type) => {
+                    const count = axe.actions.filter((a) => a.type === type).length;
+                    const active = typeFilter === type;
+                    return (
+                      <Tag
+                        key={type}
+                        pressed={active}
+                        nativeButtonProps={{
+                          onClick: () => setTypeFilter(active ? null : type),
+                        }}
+                      >
+                        {type} ({count})
+                      </Tag>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {hasActiveFilters && (
+                <div className="maq-ref-sidebar__block">
+                  <Button
+                    priority="tertiary no outline"
+                    size="small"
+                    iconId="fr-icon-close-line"
+                    iconPosition="right"
+                    onClick={resetFilters}
+                  >
+                    Reinitialiser les filtres
+                  </Button>
+                </div>
               )}
-            </span>
-            {hasActiveFilters && (
-              <Button
-                priority="tertiary no outline"
-                size="small"
-                iconId="fr-icon-close-line"
-                iconPosition="right"
-                onClick={resetFilters}
-              >
-                Reinitialiser les filtres
-              </Button>
-            )}
+            </aside>
           </div>
-        </div>
 
-        {/* ═══ Liste de cards ═══════════════════════════════ */}
-        <div className="maq-ref-list">
-          {filtered.length === 0 ? (
-            <div className="maq-ref-empty">
-              <span
-                className="fr-icon-search-line"
-                aria-hidden="true"
-                style={{
-                  fontSize: "2.5rem",
-                  color: "var(--text-mention-grey)",
-                  display: "block",
-                  marginBottom: "1rem",
-                }}
-              />
-              <p className={fr.cx("fr-text--lg", "fr-mb-1w")}>
-                Aucune action ne correspond a votre recherche.
-              </p>
-              <p
-                className={fr.cx("fr-text--sm", "fr-mb-3w")}
-                style={{ color: "var(--text-mention-grey)" }}
-              >
-                Essayez d'elargir vos filtres ou de modifier votre recherche.
-              </p>
-              <Button priority="secondary" size="small" onClick={resetFilters}>
-                Reinitialiser les filtres
-              </Button>
+          {/* ─── Colonne actions (col-9) ─────────────────── */}
+          <div className={fr.cx("fr-col-12", "fr-col-md-9")}>
+            <div className="maq-ref-counter">
+              <span>
+                <strong>{filtered.length}</strong> action{filtered.length > 1 ? "s" : ""} affichee{filtered.length > 1 ? "s" : ""}
+                {!isPublic && declaredCount > 0 && (
+                  <>
+                    {" "}· dont <strong>{declaredCount}</strong> deja declaree{declaredCount > 1 ? "s" : ""} par vous
+                  </>
+                )}
+              </span>
             </div>
-          ) : (
-            filtered.map((action) => (
-              <ReferentielActionCard
-                key={action.code}
-                action={action}
-                axeId={id}
-                declared={declaredByCode.get(action.code)}
-                onDeclare={() => navigate(`/maquette/declarer?axe=${id}&code=${action.code}`)}
-              />
-            ))
-          )}
+
+            <div className="maq-ref-list">
+              {filtered.length === 0 ? (
+                <div className="maq-ref-empty">
+                  <span
+                    className="fr-icon-search-line"
+                    aria-hidden="true"
+                    style={{
+                      fontSize: "2.5rem",
+                      color: "var(--text-mention-grey)",
+                      display: "block",
+                      marginBottom: "1rem",
+                    }}
+                  />
+                  <p className={fr.cx("fr-text--lg", "fr-mb-1w")}>
+                    Aucune action ne correspond a votre recherche.
+                  </p>
+                  <p
+                    className={fr.cx("fr-text--sm", "fr-mb-3w")}
+                    style={{ color: "var(--text-mention-grey)" }}
+                  >
+                    Essayez d'elargir vos filtres ou de modifier votre recherche.
+                  </p>
+                  <Button priority="secondary" size="small" onClick={resetFilters}>
+                    Reinitialiser les filtres
+                  </Button>
+                </div>
+              ) : (
+                filtered.map((action) => {
+                  const decl = declaredByCode.get(action.code);
+                  return (
+                    <ReferentielActionCard
+                      key={action.code}
+                      action={action}
+                      axeId={id}
+                      declared={decl}
+                      mode={mode}
+                      onOpen={() => setDrawerAction(action)}
+                      onDeclare={() =>
+                        navigate(
+                          isPublic
+                            ? "/maquette"
+                            : `/maquette/declarer?axe=${id}&code=${action.code}`
+                        )
+                      }
+                      onViewDeclaration={() =>
+                        decl && navigate(`/maquette/axe/${id}?action=${decl.id}`)
+                      }
+                    />
+                  );
+                })
+              )}
+            </div>
+          </div>
         </div>
 
         {/* ═══ CallOut action libre ═════════════════════════ */}
         <div className={fr.cx("fr-mt-5w")}>
-          <CallOut
-            title="Votre action ne figure pas dans cette liste ?"
-            iconId="fr-icon-information-line"
-            buttonProps={{
-              priority: "primary",
-              children: "Declarer une action libre",
-              onClick: () => navigate(`/maquette/declarer?axe=${id}&type=action-libre`),
-            }}
-          >
-            Vous pouvez declarer une action libre. Elle sera examinee par votre CNP pour validation au titre de cet axe.
-          </CallOut>
+          {isPublic ? (
+            <CallOut
+              title="Votre situation est specifique ?"
+              iconId="fr-icon-information-line"
+              buttonProps={{
+                priority: "primary",
+                children: "Creer mon compte",
+                onClick: () => navigate("/maquette"),
+              }}
+            >
+              Une fois connecte, vous pourrez declarer une action libre. Elle sera examinee par votre CNP pour validation au titre de cet axe.
+            </CallOut>
+          ) : (
+            <CallOut
+              title="Votre action ne figure pas dans cette liste ?"
+              iconId="fr-icon-information-line"
+              buttonProps={{
+                priority: "primary",
+                children: "Declarer une action libre",
+                onClick: () => navigate(`/maquette/declarer?axe=${id}&type=action-libre`),
+              }}
+            >
+              Vous pouvez declarer une action libre. Elle sera examinee par votre CNP pour validation au titre de cet axe.
+            </CallOut>
+          )}
         </div>
 
         {/* ═══ Navigation inter-axes ════════════════════════ */}
@@ -391,9 +465,9 @@ export function ReferentielComplet() {
               priority="tertiary"
               iconId="fr-icon-arrow-left-line"
               iconPosition="left"
-              linkProps={{ to: `/maquette/axe/${id}` }}
+              linkProps={{ to: isPublic ? "/referentiel" : `/maquette/axe/${id}` }}
             >
-              Retour a l'axe {axeNum}
+              {isPublic ? "Retour aux 4 axes" : `Retour a l'axe ${axeNum}`}
             </Button>
 
             <div className="maq-ref-axe-nav__others">
@@ -406,7 +480,11 @@ export function ReferentielComplet() {
                     key={a.id}
                     priority={isCurrent ? "tertiary" : "tertiary no outline"}
                     size="small"
-                    linkProps={{ to: `/maquette/axe/${a.id}/referentiel` }}
+                    linkProps={{
+                      to: isPublic
+                        ? `/referentiel/${a.id}`
+                        : `/maquette/axe/${a.id}/referentiel`,
+                    }}
                     disabled={isCurrent}
                   >
                     Axe {n}
@@ -421,7 +499,12 @@ export function ReferentielComplet() {
               label="Aller a un autre axe"
               nativeSelectProps={{
                 value: id,
-                onChange: (e) => navigate(`/maquette/axe/${e.target.value}/referentiel`),
+                onChange: (e) =>
+                  navigate(
+                    isPublic
+                      ? `/referentiel/${e.target.value}`
+                      : `/maquette/axe/${e.target.value}/referentiel`
+                  ),
               }}
               options={referentiel.axes.map((a) => ({
                 value: a.id,
@@ -431,6 +514,31 @@ export function ReferentielComplet() {
           </div>
         </div>
       </div>
+
+      <ReferentielActionDrawer
+        action={drawerAction}
+        axeId={id}
+        declared={drawerAction ? declaredByCode.get(drawerAction.code) : undefined}
+        mode={mode}
+        onClose={() => setDrawerAction(null)}
+        onDeclare={() => {
+          if (!drawerAction) return;
+          setDrawerAction(null);
+          navigate(
+            isPublic
+              ? "/maquette"
+              : `/maquette/declarer?axe=${id}&code=${drawerAction.code}`
+          );
+        }}
+        onViewDeclaration={() => {
+          if (!drawerAction) return;
+          const decl = declaredByCode.get(drawerAction.code);
+          if (decl) {
+            setDrawerAction(null);
+            navigate(`/maquette/axe/${id}?action=${decl.id}`);
+          }
+        }}
+      />
     </div>
   );
 }
