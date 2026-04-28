@@ -532,6 +532,9 @@ export function AxeDetailTabs() {
         axeId={id}
         onClose={closeDrawer}
         onDeclare={onDeclare}
+        onNavigateRef={(code) =>
+          navigate(`/maquette/axe/${id}/referentiel#${code}`)
+        }
       />
     </div>
   );

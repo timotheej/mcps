@@ -4,6 +4,7 @@ import { fr } from "@codegouvfr/react-dsfr";
 import { Button } from "@codegouvfr/react-dsfr/Button";
 import { Breadcrumb } from "@codegouvfr/react-dsfr/Breadcrumb";
 import { Alert } from "@codegouvfr/react-dsfr/Alert";
+import { Notice } from "@codegouvfr/react-dsfr/Notice";
 import {
   referentiel,
   profileMock,
@@ -14,233 +15,269 @@ import {
   getTempsRestant,
   getNewlyCoveredAxes,
   markAxesCelebrated,
-  getAxeColor,
   getThemeLabel,
+  getActionTypeLabel,
+  actionsCompletMock,
+  actionsDepassementMock,
   type AxeRef,
   type ActionRealisee,
   type FormationSuggestion,
 } from "../../data/maquette";
 import "./maquette.css";
 
-/* ─── Progress Dot ────────────────────────────────────── */
+export type DashboardState =
+  | "default"
+  | "vierge"
+  | "complet"
+  | "depassement"
+  | "cycle-2";
 
-function ProgressDot({ filled, overflow, color }: { filled: boolean; overflow?: boolean; color: string }) {
-  const size = 18;
-  if (overflow) {
-    return (
-      <span
-        className="maq-progress-dot maq-progress-dot--overflow"
-        style={{ width: size, height: size, background: color, borderColor: color }}
-      >
-        +
-      </span>
-    );
-  }
-  if (filled) {
-    return (
-      <span
-        className="maq-progress-dot maq-progress-dot--filled"
-        style={{ width: size, height: size, background: color, borderColor: color }}
-      />
-    );
-  }
-  return <span className="maq-progress-dot" style={{ width: size, height: size }} />;
+/* ─── Helpers ──────────────────────────────────────────── */
+
+const MOIS_FR = [
+  "janvier", "février", "mars", "avril", "mai", "juin",
+  "juillet", "août", "septembre", "octobre", "novembre", "décembre",
+];
+
+function formatDateLong(dateStr: string): string {
+  const [d, m, y] = dateStr.split("/").map(Number);
+  if (!d || !m || !y) return dateStr;
+  return `${d} ${MOIS_FR[m - 1]} ${y}`;
 }
 
-function AxisProgressRow({ done, required, color }: { done: number; required: number; color: string }) {
-  const slots = Math.max(required, done);
-  const dots = [];
-  for (let i = 0; i < slots; i++) {
-    if (i < required) {
-      dots.push(<ProgressDot key={i} filled={i < done} color={color} />);
-    } else {
-      dots.push(<ProgressDot key={i} filled overflow color={color} />);
-    }
+function getActionsForState(state: DashboardState): ActionRealisee[] {
+  switch (state) {
+    case "vierge":
+    case "cycle-2":
+      return [];
+    case "complet":
+      return actionsCompletMock;
+    case "depassement":
+      return actionsDepassementMock;
+    case "default":
+    default:
+      return loadActions();
   }
-  return <div className="maq-progress-row">{dots}</div>;
 }
 
-/* ─── Global Ring (donut) ─────────────────────────────── */
+/* ─── Mini ring header ────────────────────────────────── */
 
-function GlobalRing({ done, total }: { done: number; total: number }) {
-  const size = 176;
-  const stroke = 14;
-  const r = (size - stroke) / 2;
+function MiniRing({
+  done,
+  total,
+  capped,
+  overflow = 0,
+}: {
+  done: number;
+  total: number;
+  capped?: boolean;
+  overflow?: number;
+}) {
+  const size = 104;
+  const stroke = 3;
+  const r = (size - stroke - 8) / 2;
+  const cx = size / 2;
+  const cy = size / 2;
   const c = 2 * Math.PI * r;
-  const pct = Math.min(done / total, 1);
+  const displayed = capped ? Math.min(done, total) : done;
+  const pct = total > 0 ? Math.min(displayed / total, 1) : 0;
+  const arcLen = c * pct;
+  const angle = -Math.PI / 2 + 2 * Math.PI * pct;
+  const checkX = cx + r * Math.cos(angle);
+  const checkY = cy + r * Math.sin(angle);
+
+  // Badge anchored at 1 o'clock on the ring perimeter
+  const badgeAngle = -Math.PI / 4;
+  const badgeX = cx + r * Math.cos(badgeAngle);
+  const badgeY = cy + r * Math.sin(badgeAngle);
+
   return (
-    <div className="maq-global-ring" style={{ width: size, height: size }}>
-      <svg width={size} height={size}>
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="var(--grey-950-100)" strokeWidth={stroke} />
+    <div className="maq-mini-ring" style={{ width: size, height: size }}>
+      <svg width={size} height={size} aria-hidden="true">
         <circle
-          cx={size / 2}
-          cy={size / 2}
+          cx={cx}
+          cy={cy}
           r={r}
           fill="none"
-          stroke="var(--blue-france-sun-113-625)"
+          stroke="var(--text-mention-grey)"
           strokeWidth={stroke}
-          strokeDasharray={`${c * pct} ${c * (1 - pct)}`}
-          strokeDashoffset={c / 4}
-          strokeLinecap="butt"
-          transform={`rotate(-90 ${size / 2} ${size / 2})`}
-          style={{ transition: "stroke-dasharray 0.6s ease" }}
+          strokeDasharray="2 5"
+          opacity={0.55}
         />
+        {pct > 0 && (
+          <circle
+            cx={cx}
+            cy={cy}
+            r={r}
+            fill="none"
+            stroke="var(--success-425-625)"
+            strokeWidth={stroke + 1}
+            strokeDasharray={`${arcLen} ${c}`}
+            transform={`rotate(-90 ${cx} ${cy})`}
+            strokeLinecap="round"
+          />
+        )}
+        {pct > 0 && pct < 1 && (
+          <g transform={`translate(${checkX} ${checkY})`}>
+            <circle r={9} fill="var(--success-425-625)" />
+            <path
+              d="M-3.6 0 L-1 2.4 L3.6 -2.4"
+              stroke="white"
+              strokeWidth={1.6}
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </g>
+        )}
       </svg>
-      <div className="maq-global-ring__center">
-        <span className="maq-global-ring__number">
-          {done}<span className="maq-global-ring__total">/{total}</span>
+      <div className="maq-mini-ring__center">
+        <span className="maq-mini-ring__num">
+          {displayed}/{total}
         </span>
-        <span className="maq-global-ring__label">actions declarees</span>
+        <span className="maq-mini-ring__label">actions</span>
       </div>
+      {overflow > 0 && (
+        <span
+          className="maq-mini-ring__badge"
+          style={{
+            left: `${badgeX}px`,
+            top: `${badgeY}px`,
+          }}
+          aria-label={`${overflow} action${overflow > 1 ? "s" : ""} au-delà du minimum`}
+        >
+          +{overflow}
+        </span>
+      )}
     </div>
   );
 }
 
-/* ─── AxeCard ─────────────────────────────────────────── */
+/* ─── Axe progress dot ────────────────────────────────── */
+
+function AxeDot({ done }: { done: boolean }) {
+  if (done) {
+    return (
+      <span className="maq-axe-dot maq-axe-dot--done" aria-hidden="true">
+        <span className="fr-icon-check-line" />
+      </span>
+    );
+  }
+  return <span className="maq-axe-dot" aria-hidden="true" />;
+}
+
+/* ─── Axe card ─────────────────────────────────────────── */
 
 function AxeCard({
   axe,
   actions,
-  themes,
-  suggestion,
   onClick,
 }: {
   axe: AxeRef;
   actions: ActionRealisee[];
-  themes: { id: string; label: string }[];
-  suggestion: FormationSuggestion | null;
   onClick: () => void;
 }) {
   const axeNum = axe.id.split("-")[1];
-  const count = actions.length;
-  const isComplete = count >= axe.min_actions;
-  const isOverflow = count > axe.min_actions;
-  const { color, bgTint } = getAxeColor(axe.id);
-  const progressColor = isComplete ? "var(--success-425-625)" : color;
-
-  const status = count === 0
-    ? "notstarted"
-    : isOverflow
-    ? "overflow"
-    : isComplete
-    ? "complete"
-    : "inprogress";
-
-  const complementCount = actions.filter(a => a.validation === "complement").length;
-  const rejectedCount = actions.filter(a => a.validation === "rejected").length;
-  const hasAlert = complementCount > 0 || rejectedCount > 0;
+  const total = actions.length;
+  const required = axe.min_actions;
+  const done = Math.min(total, required);
+  const overflow = Math.max(0, total - required);
 
   return (
     <article
-      className={`maq-card2${isComplete ? " maq-card2--complete" : ""}`}
+      className="maq-axe-card"
       onClick={onClick}
       role="link"
       tabIndex={0}
-      onKeyDown={(e) => { if (e.key === "Enter") onClick(); }}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") onClick();
+      }}
     >
-      {/* Accent bar */}
-      <div className="maq-card2__accent" style={{ background: color }} />
-
-      {/* Top: axe badge + title */}
-      <div className="maq-card2__top">
-        <span
-          className="maq-card2__num"
-          style={{ background: bgTint, color, borderColor: color }}
-        >
-          {axeNum}
-        </span>
-        <div className="maq-card2__title-group">
-          <span className="maq-card2__axe-label" style={{ color }}>
-            Axe {axeNum}
+      <div className="maq-axe-card__head">
+        <span className="maq-axe-card__label">Axe {axeNum}</span>
+        <div className="maq-axe-card__progress">
+          <span className="maq-axe-card__progress-text">
+            {overflow > 0
+              ? `${total} actions (min. ${required})`
+              : `${done} sur ${required}`}
           </span>
-          <h3 className="maq-card2__title">{axe.label_court}</h3>
+          <div className="maq-axe-card__dots">
+            {Array.from({ length: required }).map((_, i) => (
+              <AxeDot key={i} done={i < done} />
+            ))}
+          </div>
         </div>
       </div>
+      <h3 className="maq-axe-card__title">{axe.label_court}</h3>
+      <p className="maq-axe-card__desc">{axe.label_ps}.</p>
+    </article>
+  );
+}
 
-      {/* Progress + status */}
-      <div className="maq-card2__progress">
-        <AxisProgressRow done={count} required={axe.min_actions} color={progressColor} />
-        <span className={`maq-card2__status${isComplete ? " maq-card2__status--success" : ""}`}>
-          {status === "notstarted" && <>Non commence · 0/{axe.min_actions} actions</>}
-          {status === "inprogress" && <>En cours · {count}/{axe.min_actions} actions</>}
-          {status === "complete" && (
-            <><span className="fr-icon-check-line" aria-hidden="true" style={{ fontSize: "0.875rem" }} /> Axe couvert — {count} actions</>
-          )}
-          {status === "overflow" && (
-            <><span className="fr-icon-check-line" aria-hidden="true" style={{ fontSize: "0.875rem" }} /> Axe couvert — {count} actions (+{count - axe.min_actions})</>
-          )}
-        </span>
-      </div>
+/* ─── Reco card ────────────────────────────────────────── */
 
-      {/* Urgency alert */}
-      {hasAlert && (
-        <div className="maq-card2__alert">
-          <span className="fr-icon-error-line" aria-hidden="true" style={{ fontSize: "0.75rem" }} />
-          <span>
-            {complementCount > 0 && `${complementCount} action${complementCount > 1 ? "s" : ""} a completer`}
-            {complementCount > 0 && rejectedCount > 0 && " · "}
-            {rejectedCount > 0 && `${rejectedCount} refusee${rejectedCount > 1 ? "s" : ""}`}
-          </span>
-        </div>
-      )}
+function RecoCard({
+  sug,
+  axe,
+  onClick,
+}: {
+  sug: FormationSuggestion;
+  axe: AxeRef;
+  onClick: () => void;
+}) {
+  const themeLabel = sug.themes[0] ? getThemeLabel(axe.id, sug.themes[0]) : null;
+  const typeLabel = getActionTypeLabel(sug.typeAction);
 
-      {/* Theme tags */}
-      {themes.length > 0 && (
-        <div className="maq-card2__themes">
-          {themes.slice(0, 3).map((t) => (
-            <span key={t.id} className="maq-card2__theme" style={{ background: bgTint, color }}>
-              {t.label}
-            </span>
-          ))}
-          {themes.length > 3 && (
-            <span className="maq-card2__theme-more">+{themes.length - 3}</span>
-          )}
-        </div>
-      )}
-
-      {/* Nudge / suggestion */}
-      <div className="maq-card2__nudge">
-        {isComplete ? (
-          <span className="maq-card2__link">
-            Voir mes actions declarees
-            <span className="fr-icon-arrow-right-s-line" aria-hidden="true" />
-          </span>
-        ) : suggestion ? (
-          <>
-            <p className="maq-card2__nudge-label">Action recommandee</p>
-            <span className="maq-card2__link">
-              {suggestion.titre}
-              <span className="fr-icon-arrow-right-s-line" aria-hidden="true" />
-            </span>
-          </>
-        ) : (
-          <span className="maq-card2__link">
-            Explorer l'axe
-            <span className="fr-icon-arrow-right-s-line" aria-hidden="true" />
-          </span>
+  return (
+    <article
+      className="maq-reco-card"
+      onClick={onClick}
+      role="link"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") onClick();
+      }}
+    >
+      <div className="maq-reco-card__head">
+        {themeLabel && (
+          <span className="maq-reco-card__tag">{themeLabel.toUpperCase()}</span>
         )}
+        <span className="maq-reco-card__ref">{sug.id}</span>
       </div>
+      <h3 className="maq-reco-card__title">{sug.titre}</h3>
+      <p className="maq-reco-card__type">{typeLabel}</p>
     </article>
   );
 }
 
 /* ─── Dashboard page ───────────────────────────────────── */
 
-export function Dashboard() {
+type DashboardProps = {
+  mockState?: DashboardState;
+};
+
+export function Dashboard({ mockState = "default" }: DashboardProps) {
   const navigate = useNavigate();
-  const actions = loadActions();
+  const actions = getActionsForState(mockState);
   const savedThemes = loadSelectedThemes();
   const totalActions = actions.length;
   const totalRequired = referentiel.min_total;
   const tempsRestant = getTempsRestant();
+  const isCycle2 = mockState === "cycle-2";
 
-  const axesCovered = referentiel.axes.filter(
-    (axe) => getActionsForAxe(axe.id, actions).length >= axe.min_actions
-  ).length;
+  // Cycle-2 mock: cycle just started on 01/01/2032, ends 31/12/2037
+  const cycleEndDate = isCycle2 ? "31/12/2037" : profileMock.finCycle;
+  const cycleRemaining = isCycle2 ? "6 ans" : tempsRestant.text;
 
-  // Celebration
+  const isCertified =
+    referentiel.axes.every(
+      (a) => getActionsForAxe(a.id, actions).length >= a.min_actions
+    );
+  const overflow = Math.max(0, totalActions - totalRequired);
+
   const [celebratedAxes, setCelebratedAxes] = useState<AxeRef[]>([]);
   useEffect(() => {
+    if (mockState !== "default") return;
     const newAxes = getNewlyCoveredAxes(actions);
     if (newAxes.length > 0) {
       setCelebratedAxes(newAxes);
@@ -248,191 +285,238 @@ export function Dashboard() {
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Check if all 4 axes covered for success link
-  const allCovered = axesCovered === referentiel.axes.length;
+  // Build up to 3 reco cards (only if not certified)
+  const recos: { sug: FormationSuggestion; axe: AxeRef }[] = [];
+  if (!isCertified) {
+    for (const axe of referentiel.axes) {
+      if (recos.length >= 3) break;
+      const themeIds =
+        savedThemes && savedThemes[axe.id] ? savedThemes[axe.id] : [];
+      const formations = getFormationsForAxeAndThemes(axe.id, themeIds);
+      if (formations.length > 0) recos.push({ sug: formations[0], axe });
+    }
+  }
+
+  const refTotal = referentiel.actions_totales;
 
   return (
     <>
-      {/* ═══ Header perso ════════════════════════════════════ */}
+      {/* ═══ Notice cycle 2 ════════════════════════════════ */}
+      {isCycle2 && (
+        <Notice
+          severity="info"
+          title="Cycle 2 · démarré le 1ᵉʳ janvier 2032"
+          description="Votre nouveau cycle de certification a commencé. Vos thèmes préférentiels du cycle précédent ont été conservés."
+          link={{
+            linkProps: { to: "/maquette/synthese" } as never,
+            text: "Consulter mon cycle précédent",
+          }}
+        />
+      )}
+
+      {/* ═══ Header band ═══════════════════════════════════ */}
       <div className="maq-dash-header-band">
         <div className={fr.cx("fr-container")}>
           <Breadcrumb
             currentPageLabel="Tableau de bord"
-            homeLinkProps={{ to: "/maquette" }}
+            homeLinkProps={{ to: "/" }}
             segments={[]}
           />
 
           <div className="maq-dash-header">
-            <div className="maq-dash-header__left">
-              <p className={fr.cx("fr-text--sm", "fr-mb-1v")} style={{ color: "var(--text-mention-grey)" }}>
-                Espace professionnel · {profileMock.specialite}
-              </p>
-              <h1 className={fr.cx("fr-mb-3w")}>
+            <MiniRing
+              done={totalActions}
+              total={totalRequired}
+              capped={isCertified}
+              overflow={overflow}
+            />
+
+            <div className="maq-dash-header__text">
+              <p className="maq-dash-header__role">{profileMock.specialite}</p>
+              <h1 className="maq-dash-header__title">
                 Bonjour, {profileMock.prenom}
               </h1>
+              {isCertified ? (
+                <p className="maq-dash-header__deadline">
+                  <strong>Certification complète pour ce cycle</strong>
+                  <span aria-hidden="true"> · </span>
+                  Cycle en cours jusqu'au {formatDateLong(cycleEndDate)}
+                </p>
+              ) : (
+                <p className="maq-dash-header__deadline">
+                  Échéance de votre cycle :{" "}
+                  <strong>{cycleRemaining}</strong>
+                  <span aria-hidden="true"> · </span>
+                  {formatDateLong(cycleEndDate)}
+                </p>
+              )}
+            </div>
 
-              {/* Countdown */}
-              <div className="maq-dash-countdown">
-                <span className="fr-icon-timer-line" aria-hidden="true" />
-                <span>
-                  Echeance de votre cycle :{" "}
-                  <strong>{tempsRestant.text}</strong>
-                  <span style={{ color: "var(--text-mention-grey)", marginLeft: "0.5rem" }}>
-                    · {profileMock.finCycle}
-                  </span>
-                </span>
-              </div>
-
-              <div className={fr.cx("fr-mt-4w")} style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+            <div className="maq-dash-header__cta">
+              {isCertified ? (
+                <div className="maq-dash-header__ctas">
+                  <Button
+                    priority="primary"
+                    iconId="fr-icon-download-line"
+                    iconPosition="left"
+                    linkProps={{ to: "/maquette/synthese" }}
+                  >
+                    Télécharger ma synthèse
+                  </Button>
+                  <Button
+                    priority="secondary"
+                    iconId="fr-icon-add-line"
+                    iconPosition="left"
+                    onClick={() => navigate("/maquette/declarer")}
+                  >
+                    Déclarer une action
+                  </Button>
+                </div>
+              ) : (
                 <Button
                   priority="primary"
                   iconId="fr-icon-add-line"
                   iconPosition="left"
                   onClick={() => navigate("/maquette/declarer")}
                 >
-                  Declarer une action
+                  Déclarer une action
                 </Button>
-                <Button
-                  priority="secondary"
-                  onClick={() => navigate("/maquette/axe/axe-1/referentiel")}
-                >
-                  Voir mon referentiel
-                </Button>
-              </div>
+              )}
             </div>
-
-            <GlobalRing done={totalActions} total={totalRequired} />
           </div>
         </div>
       </div>
 
       <div className={fr.cx("fr-container", "fr-pb-6w")}>
-        {/* ═══ Celebration ════════════════════════════════════ */}
-        {celebratedAxes.length > 0 && (
+        {/* ═══ Bandeau certification ═════════════════════════ */}
+        {isCertified && (
+          <div className="maq-cert-banner">
+            <div className="maq-cert-banner__icon" aria-hidden="true">
+              <span className="fr-icon-check-line" />
+            </div>
+            <div className="maq-cert-banner__body">
+              <h2 className="maq-cert-banner__title">
+                Votre certification périodique est complète pour ce cycle.
+              </h2>
+              <p className="maq-cert-banner__sub">
+                Votre Ordre sera informé de la complétion de votre parcours.
+              </p>
+              <a
+                className={fr.cx("fr-link")}
+                href="/maquette/synthese"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate("/maquette/synthese");
+                }}
+              >
+                <span
+                  className="fr-icon-download-line"
+                  aria-hidden="true"
+                  style={{ fontSize: "0.875rem", marginRight: "0.375rem" }}
+                />
+                Télécharger ma synthèse PDF
+              </a>
+            </div>
+          </div>
+        )}
+
+        {celebratedAxes.length > 0 && !isCertified && (
           <Alert
             severity="success"
             title="Bravo !"
             description={
               celebratedAxes.length === 1
-                ? `L'axe ${celebratedAxes[0].id.split("-")[1]} est desormais couvert.`
-                : `Les axes ${celebratedAxes.map((a) => a.id.split("-")[1]).join(", ")} sont desormais couverts.`
+                ? `L'axe ${celebratedAxes[0].id.split("-")[1]} est désormais couvert.`
+                : `Les axes ${celebratedAxes
+                    .map((a) => a.id.split("-")[1])
+                    .join(", ")} sont désormais couverts.`
             }
             className={fr.cx("fr-mt-4w")}
             closable
           />
         )}
 
-        {/* ═══ Section: 4 cartes axes ════════════════════════ */}
-        <div className="maq-section-header" style={{ marginTop: "2rem" }}>
-          <h2 className={fr.cx("fr-h4", "fr-mb-0")}>Mes 4 axes de certification</h2>
-          <p className={fr.cx("fr-text--sm", "fr-mb-0")} style={{ color: "var(--text-mention-grey)" }}>
-            Minimum <strong>2 actions par axe</strong> sur le cycle
-          </p>
-        </div>
+        {/* ═══ Section: Votre parcours ═════════════════════ */}
+        <h2 className={fr.cx("fr-h4", "fr-mt-5w", "fr-mb-3w")}>
+          Votre parcours
+        </h2>
 
-        <div className="maq-grid" style={{ marginBottom: "2rem" }}>
-          {referentiel.axes.map((axe) => {
-            const axeActions = getActionsForAxe(axe.id, actions);
-            const themeIds = savedThemes && savedThemes[axe.id] ? savedThemes[axe.id] : [];
-            const themes = axe.themes.filter((t) => themeIds.includes(t.id));
-            const formations = getFormationsForAxeAndThemes(axe.id, themeIds);
-            const suggestion = formations[0] || null;
-
-            return (
-              <AxeCard
-                key={axe.id}
-                axe={axe}
-                actions={axeActions}
-                themes={themes}
-                suggestion={suggestion}
-                onClick={() => navigate(`/maquette/axe/${axe.id}`)}
-              />
-            );
-          })}
-        </div>
-
-        {/* ═══ Recommandations ════════════════════════════════ */}
-        <div className="maq-reco-section">
-          <div className="maq-section-header">
-            <h2 className={fr.cx("fr-h4", "fr-mb-0")}>Recommandations pour vous</h2>
-            <a
-              className={fr.cx("fr-link")}
-              href="/maquette/axe/axe-1/referentiel"
-              onClick={(e) => { e.preventDefault(); navigate("/maquette/axe/axe-1/referentiel"); }}
-            >
-              Tout le referentiel
-              <span className="fr-icon-arrow-right-s-line" aria-hidden="true" style={{ fontSize: "0.75rem", marginLeft: "0.25rem" }} />
-            </a>
-          </div>
-          <p className={fr.cx("fr-text--sm", "fr-mb-3w")} style={{ color: "var(--text-mention-grey)" }}>
-            Basees sur les themes que vous avez choisis lors de votre inscription.
-          </p>
-
-          <div className="maq-reco-grid">
-            {(() => {
-              // Pick one suggestion per uncovered axis, up to 3
-              const recos: { sug: FormationSuggestion; axe: AxeRef }[] = [];
-              for (const axe of referentiel.axes) {
-                if (recos.length >= 3) break;
-                const themeIds = savedThemes && savedThemes[axe.id] ? savedThemes[axe.id] : [];
-                const formations = getFormationsForAxeAndThemes(axe.id, themeIds);
-                if (formations.length > 0) {
-                  recos.push({ sug: formations[0], axe });
-                }
-              }
-              return recos.map(({ sug, axe }, i) => {
-                const { color, bgTint } = getAxeColor(axe.id);
-                const axeNum = axe.id.split("-")[1];
-                return (
-                  <article
-                    key={i}
-                    className="maq-reco-card"
-                    onClick={() => navigate(`/maquette/axe/${axe.id}`)}
-                  >
-                    <div className="maq-reco-card__top">
-                      <span className="maq-reco-card__axe" style={{ background: bgTint, color }}>
-                        Axe {axeNum}
-                      </span>
-                      {sug.themes[0] && (
-                        <span className="maq-reco-card__theme">
-                          · {getThemeLabel(axe.id, sug.themes[0])}
-                        </span>
-                      )}
-                    </div>
-                    <h4 className="maq-reco-card__title">{sug.titre}</h4>
-                    <p className="maq-reco-card__org">{sug.organisme}</p>
-                    <div className="maq-reco-card__meta">
-                      {sug.duree && (
-                        <span>
-                          <span className="fr-icon-time-line" aria-hidden="true" style={{ fontSize: "0.75rem", opacity: 0.6 }} />
-                          {sug.duree}
-                        </span>
-                      )}
-                      {sug.modalite && <span>· {sug.modalite}</span>}
-                    </div>
-                  </article>
-                );
-              });
-            })()}
-          </div>
-        </div>
-
-        {/* ═══ Demo link to success screen ═══════════════════ */}
-        {allCovered && (
-          <div className={fr.cx("fr-mt-4w")}>
-            <Alert
-              severity="success"
-              title="Tous les axes sont couverts"
-              description="Felicitations ! Consultez votre synthese de certification."
-              className={fr.cx("fr-mb-2w")}
+        <div className="maq-axe-grid">
+          {referentiel.axes.map((axe) => (
+            <AxeCard
+              key={axe.id}
+              axe={axe}
+              actions={getActionsForAxe(axe.id, actions)}
+              onClick={() => navigate(`/maquette/axe/${axe.id}`)}
             />
-            <Button
-              priority="secondary"
-              linkProps={{ to: "/maquette/succes" }}
-            >
-              Voir l'ecran de succes
-            </Button>
-          </div>
+          ))}
+        </div>
+
+        {/* ═══ Section conditionnelle ════════════════════════ */}
+        {isCertified ? (
+          <>
+            <h2 className={fr.cx("fr-h4", "fr-mt-6w", "fr-mb-3w")}>
+              Récapitulatif de votre cycle
+            </h2>
+            <div className="maq-summary">
+              <p className="maq-summary__intro">
+                <strong>{totalActions} actions</strong> réalisées sur{" "}
+                {referentiel.axes.length} axes
+                {overflow > 0 && (
+                  <>
+                    {" "}
+                    <span className="maq-summary__overflow">
+                      ({overflow > 0 ? `+${overflow} au-delà du minimum` : ""})
+                    </span>
+                  </>
+                )}
+                .
+              </p>
+              <ul className="maq-summary__list">
+                {referentiel.axes.map((axe) => {
+                  const count = getActionsForAxe(axe.id, actions).length;
+                  return (
+                    <li key={axe.id} className="maq-summary__item">
+                      <span className="maq-summary__axe">
+                        Axe {axe.id.split("-")[1]} · {axe.label_court}
+                      </span>
+                      <span className="maq-summary__count">
+                        {count} action{count > 1 ? "s" : ""}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </>
+        ) : (
+          <>
+            <h2 className={fr.cx("fr-h4", "fr-mt-6w", "fr-mb-3w")}>
+              Actions recommandées
+            </h2>
+
+            <div className="maq-reco-grid">
+              {recos.map(({ sug, axe }) => (
+                <RecoCard
+                  key={sug.id}
+                  sug={sug}
+                  axe={axe}
+                  onClick={() => navigate(`/maquette/axe/${axe.id}`)}
+                />
+              ))}
+            </div>
+
+            <div className={fr.cx("fr-mt-3w")}>
+              <Button
+                priority="secondary"
+                iconId="fr-icon-external-link-line"
+                iconPosition="left"
+                linkProps={{ to: "/referentiel" }}
+              >
+                Consulter tout le référentiel ({refTotal} actions)
+              </Button>
+            </div>
+          </>
         )}
       </div>
     </>

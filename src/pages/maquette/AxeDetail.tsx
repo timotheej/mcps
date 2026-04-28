@@ -681,6 +681,9 @@ export function AxeDetail() {
         onDeclare={onDeclare}
         allActions={axeActions}
         onNavigate={openDrawer}
+        onNavigateRef={(code) =>
+          navigate(`/maquette/axe/${id}/referentiel#${code}`)
+        }
       />
     </div>
   );

@@ -1,0 +1,256 @@
+/* ═══════════════════════════════════════════════════════════
+   Parcours d'authentification — styles custom sobres
+   Tokens DSFR uniquement, pas de shadow custom, pas de couleurs en dur.
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── Accueil public — carte PSC ───────────────────────── */
+
+.maq-auth-psc-card {
+  max-width: 30rem;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  background: var(--background-alt-grey);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.maq-auth-psc-card .fr-accordion {
+  width: 100%;
+}
+
+@media (max-width: 575px) {
+  .maq-auth-psc-card {
+    padding: 1.5rem 1rem;
+  }
+}
+
+/* ─── Ecran de chargement ──────────────────────────────── */
+
+.maq-auth-loader {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--background-default-grey);
+  text-align: center;
+  padding: 1.5rem;
+  z-index: 10;
+}
+
+.maq-auth-loader__spinner {
+  width: 3rem;
+  height: 3rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-title-blue-france);
+  animation: maq-spin 1.2s linear infinite;
+}
+
+.maq-auth-loader__spinner::before {
+  --icon-size: 2rem;
+}
+
+@keyframes maq-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .maq-auth-loader__spinner {
+    animation: none;
+  }
+}
+
+/* ─── CGU — bloc scrollable ────────────────────────────── */
+
+.maq-cgu-scroll {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--border-default-grey);
+  background: var(--background-default-grey);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.maq-cgu-scroll h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.maq-cgu-scroll h3:first-child {
+  margin-top: 0;
+}
+
+.maq-cgu-scroll p {
+  margin-bottom: 1rem;
+  color: var(--text-default-grey);
+}
+
+.maq-cgu-scroll p:last-child {
+  margin-bottom: 0;
+}
+
+.maq-cgu-scroll:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+
+@media (max-width: 767px) {
+  .maq-cgu-scroll {
+    max-height: 300px;
+    padding: 1rem;
+  }
+}
+
+/* ─── Themes — compteur ────────────────────────────────── */
+
+.maq-themes-counter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--background-default-grey);
+  border: 1px solid var(--border-default-grey);
+  font-size: 0.875rem;
+  color: var(--text-mention-grey);
+  margin-bottom: 1.5rem;
+}
+
+.maq-themes-counter strong {
+  color: var(--text-default-success);
+  font-weight: 700;
+}
+
+.maq-themes-counter__sep {
+  color: var(--border-default-grey);
+}
+
+@media (max-width: 767px) {
+  .maq-themes-counter {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+  }
+}
+
+/* ─── Themes — sections axe ────────────────────────────── */
+
+.maq-themes-axe {
+  padding: 1.25rem 0 1.5rem;
+  border-top: 1px solid var(--border-default-grey);
+}
+
+.maq-themes-axe:last-of-type {
+  border-bottom: 1px solid var(--border-default-grey);
+  margin-bottom: 1.5rem;
+}
+
+.maq-themes-axe__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.maq-themes-axe__title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0;
+  color: var(--text-title-grey);
+}
+
+.maq-themes-axe__state {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.maq-themes-axe__state--ok {
+  color: var(--text-default-success);
+}
+
+.maq-themes-axe__state--todo {
+  color: var(--text-mention-grey);
+}
+
+.maq-themes-axe__desc {
+  font-size: 0.875rem;
+  color: var(--text-mention-grey);
+  margin-bottom: 1rem;
+}
+
+.maq-themes-hint {
+  color: var(--text-default-error);
+  font-size: 0.875rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+/* ─── Boutons de validation CGU/Themes — stack mobile ─── */
+
+@media (max-width: 575px) {
+  .maq-activation-box__actions--between {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+  .maq-activation-box__actions--between > * {
+    width: 100%;
+  }
+  .maq-activation-box__actions--between .fr-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ─── Profil card — valeurs multi-lignes (badges) ──────── */
+
+.maq-profil-card__value--rich {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+@media (max-width: 575px) {
+  .maq-profil-card__row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .maq-profil-card__value {
+    text-align: left;
+  }
+  .maq-profil-card__value--rich {
+    justify-content: flex-start;
+  }
+}
+
+/* ─── Liens groupes (pattern DSFR basique) ─────────────── */
+
+.maq-auth-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}

@@ -133,7 +133,7 @@ export const profileMock = {
   prenom: "Marie",
   nom: "Dubois",
   profession: "Infirmiere",
-  specialite: "IDE Generaliste",
+  specialite: "Infirmière en soins généraux",
   rpps: "10003123456",
   debutCycle: "01/01/2023",
   finCycle: "31/12/2031",
@@ -333,6 +333,60 @@ export const actionsRealiseesMock: ActionRealisee[] = [
       { date: "02/07/2025", label: "Complement demande — attestation illisible" },
     ],
   },
+];
+
+// ─── Mocks d'états pour la maquette ─────────────────────
+// Ces jeux de données alimentent les vues "vierge / complet / dépassement"
+// utilisées pour montrer les différents états du tableau de bord.
+
+const baseValidated = (
+  id: string,
+  axeId: string,
+  code: string,
+  libelle: string,
+  org: string,
+  date: string,
+  themeId: string,
+  source: string = "andpc"
+): ActionRealisee => ({
+  id,
+  axeId,
+  code,
+  type: "Formation",
+  themeId,
+  libelle,
+  title: libelle,
+  org,
+  date,
+  duration: "14h",
+  modality: "Mixte",
+  source,
+  receivedOn: date,
+  validation: "validated",
+  triennat: "2023-2031",
+  historique: [
+    { date, label: "Action réalisée" },
+    { date, label: "Validée automatiquement" },
+  ],
+});
+
+// État "complet" : exactement 2 actions par axe = 8/8
+export const actionsCompletMock: ActionRealisee[] = [
+  baseValidated("c1", "axe-1", "REF.60.04_1-AXE1-1", "DPC — Prise en charge de la plaie chronique", "ANDPC", "08/09/2024", "dpc-fc"),
+  baseValidated("c2", "axe-1", "REF.60.04_1-AXE1-3", "Prescription infirmière — Cadre réglementaire", "CEFIEC", "12/03/2025", "dpc-fc"),
+  baseValidated("c3", "axe-2", "REF.60.04_1-AXE2-15", "Audit clinique — Pratiques en hygiène", "CHU Nantes", "20/01/2025", "epp"),
+  baseValidated("c4", "axe-2", "REF.60.04_1-AXE2-31", "RMM — Prise en charge des plaies chroniques", "CPTS Sud-Loire", "15/04/2025", "risques"),
+  baseValidated("c5", "axe-3", "REF.60.04_1-AXE3-6", "Relation d'aide et gestion des douleurs", "AFEDI", "10/06/2025", "relation-aide"),
+  baseValidated("c6", "axe-3", "REF.60.04_1-AXE3-12", "Communication interculturelle en soins", "GRIEPS", "22/09/2025", "interculturel"),
+  baseValidated("c7", "axe-4", "REF.60.04_1-AXE4-7", "Prévention des risques psychosociaux", "INRS", "05/11/2025", "sante-travail"),
+  baseValidated("c8", "axe-4", "REF.60.04_1-AXE4-14", "Mise à jour du calendrier vaccinal 2025", "Santé Publique France", "14/12/2025", "prevention"),
+];
+
+// État "dépassement" : 3 + 3 + 2 + 2 = 10/8
+export const actionsDepassementMock: ActionRealisee[] = [
+  ...actionsCompletMock,
+  baseValidated("d-extra-1", "axe-1", "REF.60.04_1-AXE1-10", "Conférence ANFIIDE — Innovations en soins infirmiers", "ANFIIDE", "18/01/2026", "congres"),
+  baseValidated("d-extra-2", "axe-2", "REF.60.04_1-AXE2-23", "Démarche d'accréditation — Spécialité à risque", "HAS", "02/03/2026", "accreditation"),
 ];
 
 // ─── Formations suggerees ───────────────────────────────

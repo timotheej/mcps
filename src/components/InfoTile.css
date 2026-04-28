@@ -1,0 +1,30 @@
+.maq-info-tile {
+  padding: 1.5rem 1.25rem;
+  border: 1px solid var(--border-default-grey);
+  background: var(--background-default-grey);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.maq-info-tile__num {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-title-blue-france);
+  margin-bottom: 0.25rem;
+  line-height: 1.1;
+}
+
+.maq-info-tile__label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-title-grey);
+  margin-bottom: 0.5rem;
+}
+
+.maq-info-tile__desc {
+  font-size: 0.8125rem;
+  color: var(--text-mention-grey);
+  margin-bottom: 0;
+  line-height: 1.4;
+}

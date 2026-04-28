@@ -1675,186 +1675,297 @@
 /* ─── Dashboard header band ──────────────────────────── */
 
 .maq-dash-header-band {
-  background: var(--background-default-grey);
-  border-bottom: 1px solid var(--border-default-grey);
-  padding-bottom: 2rem;
+  background: var(--background-alt-blue-france);
+  padding-bottom: 2.5rem;
 }
 
 .maq-dash-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
+  gap: 1.75rem;
+  margin-top: 0.5rem;
 }
 
-.maq-dash-header__left {
+.maq-dash-header__text {
   flex: 1;
   min-width: 0;
 }
 
-.maq-dash-countdown {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.625rem 1rem;
-  background: var(--background-action-low-blue-france);
-  border: 1px solid var(--border-action-low-blue-france);
-  font-size: 0.875rem;
-  color: var(--text-default-grey);
-}
-
-.maq-dash-countdown .fr-icon-timer-line {
-  font-size: 1.25rem;
+.maq-dash-header__role {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--text-action-high-blue-france);
+  margin: 0 0 0.25rem;
 }
 
-/* ─── Card V2 (axis cards on dashboard) ──────────────── */
+.maq-dash-header__title {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.15;
+  margin: 0 0 0.75rem;
+  color: var(--text-title-grey);
+}
 
-.maq-card2 {
-  background: var(--background-default-grey);
-  border: 1px solid var(--border-default-grey);
-  padding: 1.5rem 1.5rem 1.25rem;
+.maq-dash-header__deadline {
+  font-size: 0.9375rem;
+  color: var(--text-default-grey);
+  margin: 0;
+}
+
+.maq-dash-header__deadline strong {
+  font-weight: 700;
+}
+
+.maq-dash-header__cta {
+  flex-shrink: 0;
+  align-self: flex-start;
+  padding-top: 0.5rem;
+}
+
+.maq-dash-header__ctas {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  position: relative;
-  cursor: pointer;
-  transition: border-color 0.15s;
-  min-height: 17.5rem;
+  gap: 0.5rem;
+  align-items: stretch;
 }
 
-.maq-card2:hover {
-  border-color: var(--border-action-high-blue-france);
-}
-
-.maq-card2--complete {
-  border-width: 2px;
-  border-color: var(--border-plain-success);
-}
-
-.maq-card2__accent {
+.maq-mini-ring__badge {
   position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 4px;
+  transform: translate(-50%, -50%);
+  background: var(--success-425-625);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
+  padding: 0.25rem 0.4375rem;
+  border-radius: 999px;
+  border: 2px solid var(--background-alt-blue-france);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
 }
 
-.maq-card2__top {
+/* ─── Certification banner ───────────────────────────── */
+
+.maq-cert-banner {
   display: flex;
   align-items: flex-start;
-  gap: 1rem;
+  gap: 1.25rem;
+  padding: 1.5rem 1.75rem;
+  margin-top: 2rem;
+  background: var(--background-contrast-success);
+  border-left: 4px solid var(--border-plain-success);
 }
 
-.maq-card2__num {
-  width: 2.75rem;
-  height: 2.75rem;
+.maq-cert-banner__icon {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: var(--success-425-625);
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 800;
-  font-size: 1.125rem;
   flex-shrink: 0;
-  border: 1px solid;
 }
 
-.maq-card2__title-group {
+.maq-cert-banner__icon .fr-icon-check-line::before {
+  font-size: 1.25rem;
+}
+
+.maq-cert-banner__body {
   flex: 1;
   min-width: 0;
 }
 
-.maq-card2__axe-label {
-  font-size: 0.6875rem;
+.maq-cert-banner__title {
+  font-size: 1.125rem;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-bottom: 0.125rem;
-  display: block;
+  margin: 0 0 0.375rem;
+  color: var(--text-default-success);
 }
 
-.maq-card2__title {
+.maq-cert-banner__sub {
+  font-size: 0.875rem;
+  color: var(--text-default-grey);
+  margin: 0 0 0.75rem;
+}
+
+/* ─── Summary (cycle bilan) ──────────────────────────── */
+
+.maq-summary {
+  background: var(--background-alt-grey);
+  padding: 1.5rem 1.75rem;
+}
+
+.maq-summary__intro {
+  font-size: 0.9375rem;
+  color: var(--text-default-grey);
+  margin: 0 0 1rem;
+}
+
+.maq-summary__overflow {
+  color: var(--text-default-success);
+  font-weight: 500;
+}
+
+.maq-summary__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.maq-summary__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.625rem 0;
+  border-bottom: 1px solid var(--border-default-grey);
+}
+
+.maq-summary__item:last-child {
+  border-bottom: none;
+}
+
+.maq-summary__axe {
+  font-size: 0.9375rem;
+  color: var(--text-default-grey);
+}
+
+.maq-summary__count {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text-default-success);
+  white-space: nowrap;
+}
+
+/* ─── Mini ring (header) ─────────────────────────────── */
+
+.maq-mini-ring {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.maq-mini-ring__center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.maq-mini-ring__num {
+  font-weight: 700;
+  font-size: 1.375rem;
+  line-height: 1;
+  color: var(--text-title-grey);
+}
+
+.maq-mini-ring__label {
+  font-size: 0.75rem;
+  color: var(--text-mention-grey);
+  margin-top: 0.25rem;
+}
+
+/* ─── Axe cards (Votre parcours) ─────────────────────── */
+
+.maq-axe-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.maq-axe-card {
+  background: var(--background-default-grey);
+  border: 1px solid var(--border-default-grey);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.maq-axe-card:hover,
+.maq-axe-card:focus-visible {
+  border-color: var(--border-action-high-blue-france);
+  outline: none;
+}
+
+.maq-axe-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.maq-axe-card__label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-mention-grey);
+}
+
+.maq-axe-card__progress {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.maq-axe-card__progress-text {
+  font-size: 0.8125rem;
+  color: var(--text-mention-grey);
+}
+
+.maq-axe-card__dots {
+  display: flex;
+  gap: 0.375rem;
+}
+
+.maq-axe-dot {
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 50%;
+  border: 1.5px dashed var(--text-mention-grey);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.maq-axe-dot--done {
+  background: var(--success-425-625);
+  border: none;
+  color: #fff;
+}
+
+.maq-axe-dot--done .fr-icon-check-line::before {
+  font-size: 0.75rem;
+}
+
+.maq-axe-card__title {
   font-size: 1.0625rem;
   font-weight: 700;
   line-height: 1.35;
   margin: 0;
+  color: var(--text-title-grey);
 }
 
-.maq-card2__progress {
-  display: flex;
-  align-items: center;
-  gap: 0.875rem;
-  padding-bottom: 0.875rem;
-  border-bottom: 1px solid var(--border-default-grey);
-}
-
-.maq-card2__status {
+.maq-axe-card__desc {
   font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--text-default-grey);
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
-}
-
-.maq-card2__status--success {
-  color: var(--text-default-success);
-}
-
-.maq-card2__themes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem;
-}
-
-.maq-card2__theme {
-  font-size: 0.75rem;
-  font-weight: 500;
-  padding: 0.1875rem 0.5rem;
-}
-
-.maq-card2__theme-more {
-  font-size: 0.75rem;
   color: var(--text-mention-grey);
-  padding: 0.1875rem 0.25rem;
+  margin: 0;
 }
 
-.maq-card2__nudge {
-  margin-top: auto;
-}
-
-.maq-card2__nudge-label {
-  font-size: 0.75rem;
-  color: var(--text-mention-grey);
-  margin-bottom: 0.25rem;
-}
-
-.maq-card2__link {
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: var(--text-action-high-blue-france);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.maq-card2__link .fr-icon-arrow-right-s-line {
-  font-size: 0.75rem;
-  transition: margin-left 0.15s;
-}
-
-.maq-card2:hover .maq-card2__link .fr-icon-arrow-right-s-line {
-  margin-left: 0.25rem;
-}
-
-/* ─── Recommendations section ────────────────────────── */
-
-.maq-reco-section {
-  background: var(--background-default-grey);
-  border: 1px solid var(--border-default-grey);
-  padding: 1.75rem 2rem;
-}
+/* ─── Recommendations grid ───────────────────────────── */
 
 .maq-reco-grid {
   display: grid;
@@ -1863,8 +1974,9 @@
 }
 
 .maq-reco-card {
+  background: var(--background-default-grey);
   border: 1px solid var(--border-default-grey);
-  padding: 1.125rem 1.25rem;
+  padding: 1.25rem 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.625rem;
@@ -1872,27 +1984,32 @@
   transition: border-color 0.15s;
 }
 
-.maq-reco-card:hover {
+.maq-reco-card:hover,
+.maq-reco-card:focus-visible {
   border-color: var(--border-action-high-blue-france);
+  outline: none;
 }
 
-.maq-reco-card__top {
+.maq-reco-card__head {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: space-between;
+  gap: 0.75rem;
 }
 
-.maq-reco-card__axe {
+.maq-reco-card__tag {
   font-size: 0.6875rem;
-  font-weight: 500;
-  padding: 0.125rem 0.5rem;
-  text-transform: uppercase;
+  font-weight: 700;
   letter-spacing: 0.04em;
+  padding: 0.1875rem 0.5rem;
+  background: var(--background-contrast-info);
+  color: var(--text-action-high-blue-france);
 }
 
-.maq-reco-card__theme {
+.maq-reco-card__ref {
   font-size: 0.75rem;
   color: var(--text-mention-grey);
+  white-space: nowrap;
 }
 
 .maq-reco-card__title {
@@ -1900,27 +2017,14 @@
   font-weight: 700;
   line-height: 1.4;
   margin: 0;
+  color: var(--text-title-grey);
 }
 
-.maq-reco-card__org {
-  font-size: 0.8125rem;
-  color: var(--text-default-grey);
-  margin: 0;
-}
-
-.maq-reco-card__meta {
-  display: flex;
-  gap: 0.75rem;
-  font-size: 0.75rem;
+.maq-reco-card__type {
+  font-size: 0.875rem;
   color: var(--text-mention-grey);
-  align-items: center;
+  margin: 0;
   margin-top: auto;
-}
-
-.maq-reco-card__meta span {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
 }
 
 /* ─── Axe Detail — colored header band ───────────────── */
@@ -2710,6 +2814,85 @@
   margin: 0 0 1.5rem;
 }
 
+/* Rattachement au referentiel — bloc dedie */
+.maq-drawer__rattachement {
+  padding: 0.875rem 1rem 1rem;
+  margin-bottom: 1.5rem;
+  background: var(--background-alt-grey);
+  border-left: 2px solid var(--border-default-grey);
+}
+
+.maq-drawer__rattachement-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-mention-grey);
+  margin: 0 0 0.5rem;
+}
+
+.maq-drawer__rattachement-body {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.maq-drawer__rattachement-arrow {
+  color: var(--text-mention-grey);
+  font-size: 1rem;
+  flex-shrink: 0;
+  line-height: 1.4;
+}
+
+.maq-drawer__rattachement-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.maq-drawer__rattachement-code {
+  display: inline-block;
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-size: 0.75rem;
+  color: var(--text-mention-grey);
+  margin-bottom: 0.25rem;
+}
+
+.maq-drawer__rattachement-libelle {
+  font-size: 0.9375rem;
+  line-height: 1.4;
+  color: var(--text-default-grey);
+  margin: 0 0 0.375rem;
+  font-weight: 500;
+}
+
+.maq-drawer__rattachement-type {
+  font-size: 0.8125rem;
+  color: var(--text-mention-grey);
+  margin: 0 0 0.625rem;
+}
+
+.maq-drawer__rattachement-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.8125rem;
+  color: var(--text-action-high-blue-france);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.maq-drawer__rattachement-link:hover {
+  text-decoration: none;
+}
+
+.maq-drawer__rattachement-link .fr-icon-arrow-right-s-line::before {
+  --icon-size: 0.875rem;
+}
+
 /* Section */
 .maq-drawer__section {
   margin-bottom: 1.5rem;
@@ -2896,6 +3079,16 @@
   .maq-dash-header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 1.25rem;
+  }
+
+  .maq-dash-header__cta {
+    align-self: stretch;
+    padding-top: 0;
+  }
+
+  .maq-axe-grid {
+    grid-template-columns: 1fr;
   }
 
   .maq-reco-grid {

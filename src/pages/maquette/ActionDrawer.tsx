@@ -7,6 +7,7 @@ import {
   SOURCES,
   VALIDATION_STATES,
   getAxeColor,
+  getAxeById,
   getThemeLabel,
   getActionTypeLabel,
   formationsMock,
@@ -25,6 +26,7 @@ export function ActionDrawer({
   onDeclare,
   allActions,
   onNavigate,
+  onNavigateRef,
 }: {
   action: ActionRealisee | null;
   axeId: string;
@@ -32,6 +34,7 @@ export function ActionDrawer({
   onDeclare: () => void;
   allActions?: ActionRealisee[];
   onNavigate?: (a: ActionRealisee) => void;
+  onNavigateRef?: (code: string) => void;
 }) {
   const drawerRef = useRef<HTMLDivElement>(null);
 
@@ -64,6 +67,12 @@ export function ActionDrawer({
   const validation: ValidationState = action.validation || "validated";
   const v = VALIDATION_STATES[validation];
   const { color: axeColor, bgTint } = getAxeColor(axeId);
+
+  // Rattachement referentiel
+  const axe = getAxeById(axeId);
+  const refEntry = action.code && axe
+    ? axe.actions.find((ra) => ra.code === action.code)
+    : undefined;
 
   // Navigation
   const currentIdx = allActions ? allActions.findIndex(a => a.id === action.id) : -1;
@@ -153,9 +162,50 @@ export function ActionDrawer({
           {action.title || action.libelle}
         </h2>
 
-        {/* ─── Informations ──────────────────────────────── */}
+        {/* ─── Rattachement au référentiel ───────────────── */}
+        {refEntry && (
+          <div className="maq-drawer__rattachement">
+            <p className="maq-drawer__rattachement-label">
+              Rattachement au référentiel
+            </p>
+            <div className="maq-drawer__rattachement-body">
+              <span
+                aria-hidden="true"
+                className="maq-drawer__rattachement-arrow"
+              >
+                ↳
+              </span>
+              <div className="maq-drawer__rattachement-content">
+                <span className="maq-drawer__rattachement-code">
+                  {refEntry.code}
+                </span>
+                <p className="maq-drawer__rattachement-libelle">
+                  {refEntry.libelle}
+                </p>
+                <p className="maq-drawer__rattachement-type">
+                  Type : {refEntry.type}
+                </p>
+                {onNavigateRef && (
+                  <button
+                    type="button"
+                    className="maq-drawer__rattachement-link"
+                    onClick={() => onNavigateRef(refEntry.code)}
+                  >
+                    Voir cette entrée dans le référentiel
+                    <span
+                      className="fr-icon-arrow-right-s-line"
+                      aria-hidden="true"
+                    />
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ─── Ma déclaration ────────────────────────────── */}
         <div className="maq-drawer__section">
-          <h3 className="maq-drawer__section-title">Informations</h3>
+          <h3 className="maq-drawer__section-title">Ma déclaration</h3>
           <dl className="maq-drawer__dl">
             {action.org && (
               <>
@@ -165,24 +215,14 @@ export function ActionDrawer({
             )}
             {action.duration && (
               <>
-                <dt>Duree</dt>
+                <dt>Durée</dt>
                 <dd>{action.duration}</dd>
               </>
             )}
             {action.modality && (
               <>
-                <dt>Modalite</dt>
+                <dt>Modalité</dt>
                 <dd>{action.modality}</dd>
-              </>
-            )}
-            <dt>Type</dt>
-            <dd>{action.type}</dd>
-            {action.code && (
-              <>
-                <dt>Code referentiel</dt>
-                <dd style={{ fontFamily: "var(--font-mono, monospace)", fontSize: "0.8125rem" }}>
-                  {action.code}
-                </dd>
               </>
             )}
             {action.triennat && (
@@ -195,7 +235,7 @@ export function ActionDrawer({
             <dd>
               {isAuto
                 ? `${sourceDef.fullName} (${sourceDef.label})`
-                : "Declaration manuelle"}
+                : "Déclaration manuelle"}
             </dd>
           </dl>
         </div>
