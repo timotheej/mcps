@@ -57,277 +57,369 @@
             "code": "REF.60.04_1-AXE1-1",
             "type": "Formation",
             "libelle": "Actions menées dans le cadre des orientations prioritaires nationales au titre du Développement Professionnel Continu (DPC) et de la Formation Continue (FC) et dans le respect des fiches de cadrages répondant aux orientations scientifiques fixées par le CNCP",
-            "themeId": "dpc-fc"
+            "themeId": "dpc-fc",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-2",
             "type": "Formation",
             "libelle": "Participation à des actions de formation, à caractère scientifique ou professionnel, dispensées par des organismes de formation listés par arrêté (liste publique des organismes de formation) ou à toute action de formation (dispensée par association, société savante agréée, …) préalablement validée par le CNP de référence",
-            "themeId": "dpc-fc"
+            "themeId": "dpc-fc",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-3",
             "type": "Formation",
             "libelle": "Formations d'accompagnement à l'évolution réglementaire de la pratique professionnelle",
-            "themeId": "dpc-fc"
+            "themeId": "dpc-fc",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-4",
             "type": "Formation",
             "libelle": "Formations obligatoires pour certaines professions de santé (menées par exemple au titre de la formation continue (liste générale et spécifique aux modes d'exercice).",
-            "themeId": "dpc-fc"
+            "themeId": "dpc-fc",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-5",
             "type": "Formation",
             "libelle": "Formations dédiées aux responsabilités professionnelles",
-            "themeId": "dpc-fc"
+            "themeId": "dpc-fc",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-6",
             "type": "Formation",
             "libelle": "Activités d'enseignement délivrées dans le cadre d'une université et/ou d'institut de formation en lien avec la filière métier",
-            "themeId": "enseignement"
+            "themeId": "enseignement",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-7",
             "type": "Formation",
             "libelle": "Formations diplômantes ou certifiantes organisées par les universités et/ou des organismes agréés",
-            "themeId": "dpc-fc"
+            "themeId": "dpc-fc",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-8",
             "type": "Formation",
             "libelle": "Formations ciblées sur les expertises professionnelles infirmières (liste CNPI)",
-            "themeId": "dpc-fc"
+            "themeId": "dpc-fc",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-9",
             "type": "Formation",
             "libelle": "Participation à des formations reconnues certifiantes ou diplômantes, dispensées par des professionnels de santé dans des établissements à caractère universitaire ou non (critères communs)",
-            "themeId": "dpc-fc"
+            "themeId": "dpc-fc",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-10",
             "type": "Formation",
             "libelle": "Participation à l'organisation (comité logistique — comité scientifique) ou intervention lors de conférences, colloques ou journées professionnelles en lien avec l'activité, selon des modalités précisées par le CNPI",
-            "themeId": "congres"
+            "themeId": "congres",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-11",
             "type": "Formation",
             "libelle": "Préparation et mise en oeuvre de communications orales/e. poster",
-            "themeId": "congres"
+            "themeId": "congres",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-12",
             "type": "Formation",
             "libelle": "Contribution scientifique ou pédagogique lors de journées, colloques, ou conférences à caractère scientifique ayant un lien avec l'activité professionnelle et sans lien d'intérêt avec des industries de santé (critères spécifiques et communs validés par le CNCP)",
-            "themeId": "congres"
+            "themeId": "congres",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-13",
             "type": "Formation",
             "libelle": "Participation à des travaux pilotés par des instances nationales et/ou régionales ou d'académie",
-            "themeId": "expertise"
+            "themeId": "expertise",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-14",
             "type": "Formation",
             "libelle": "Travaux d'expertise, publication ou revues de littérature, commentaires d'articles",
-            "themeId": "expertise"
+            "themeId": "expertise",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-15",
             "type": "Formation",
             "libelle": "Participation à des commissions scientifiques",
-            "themeId": "expertise"
+            "themeId": "expertise",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-16",
             "type": "Formation",
             "libelle": "Production d'expertises scientifiques dès lors qu'elles se déroulent dans un cadre de traçabilité, de rigueur et d'indépendance (sociétés savantes, CNP, universités et instituts de formation des professionnels de santé, CHU, instituts de recherche, HAS, ANSM, SPF ou autres instances suite à des appels à candidatures)",
-            "themeId": "expertise"
+            "themeId": "expertise",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-17",
             "type": "Formation",
             "libelle": "Expertises dans les agences nationales, européennes ou internationales",
-            "themeId": "expertise"
+            "themeId": "expertise",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-18",
             "type": "Formation",
             "libelle": "Expertises judiciaires",
-            "themeId": "expertise"
+            "themeId": "expertise",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-19",
             "type": "Formation",
             "libelle": "Publication de travaux à caractère scientifique et/ou dans des revues de la profession avec une part active à la rédaction de l'article",
-            "themeId": "recherche"
+            "themeId": "recherche",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-20",
             "type": "Formation",
             "libelle": "Participation au comité éditorial de revues scientifiques et à un comité de lecture",
-            "themeId": "recherche"
+            "themeId": "recherche",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-21",
             "type": "Formation",
             "libelle": "Réunions de revues bibliographiques ou de journal club réalisées selon une méthode HAS",
-            "themeId": "recherche"
+            "themeId": "recherche",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-22",
             "type": "Formation",
             "libelle": "Réunions de revues de littérature en pratique infirmière",
-            "themeId": "recherche"
+            "themeId": "recherche",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-23",
             "type": "Formation",
             "libelle": "Commentaires d'articles lors des réunions d'évaluation des pratiques professionnelles (EPP) ou de gestion des risques (GDR)",
-            "themeId": "recherche"
+            "themeId": "recherche",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-24",
             "type": "Formation",
             "libelle": "Compagnonnage (étudiant — pair en intégration — évolution de pratiques)",
-            "themeId": "tutorat"
+            "themeId": "tutorat",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-25",
             "type": "Formation",
             "libelle": "Activités de conduite de projet dans les différents domaines en Sciences infirmières, notamment dans le cadre de la promotion de la santé",
-            "themeId": "recherche"
+            "themeId": "recherche",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-26",
             "type": "Formation",
             "libelle": "Activités d'enseignement et d'encadrement des travaux d'étudiants de santé",
-            "themeId": "enseignement"
+            "themeId": "enseignement",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-27",
             "type": "Formation",
             "libelle": "Activités d'enseignement et d'encadrement de travaux de professionnels diplômés",
-            "themeId": "enseignement"
+            "themeId": "enseignement",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-28",
             "type": "Formation",
             "libelle": "Tutorat d'apprenant (étudiant — pair en intégration)",
-            "themeId": "tutorat"
+            "themeId": "tutorat",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-29",
             "type": "Formation",
             "libelle": "Contribution formalisée au processus d'intégration des étudiants et des pairs (apports théoriques - animation d'atelier d'analyse des pratiques - conception/mise en oeuvre/évaluation de séances de simulation)",
-            "themeId": "tutorat"
+            "themeId": "tutorat",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-30",
             "type": "Formation",
             "libelle": "Tutorat et/ou direction de mémoire de fin d'études ou de formations post diplôme (type DU, master ou doctorat)",
-            "themeId": "enseignement"
+            "themeId": "enseignement",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-31",
             "type": "Formation",
             "libelle": "Mentorat des professionnels",
-            "themeId": "tutorat"
+            "themeId": "tutorat",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-32",
             "type": "Formation",
             "libelle": "Participation aux commissions pédagogiques des structures d'enseignement",
-            "themeId": "enseignement"
+            "themeId": "enseignement",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-33",
             "type": "Formation",
             "libelle": "Participation/Contribution aux instances professionnelles",
-            "themeId": "expertise"
+            "themeId": "expertise",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-34",
             "type": "Action d'analyse des pratiques",
             "libelle": "Séances d'analyse des pratiques/pratique réflexive individuelle ou en groupe",
-            "themeId": "simulation-1"
+            "themeId": "simulation-1",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-35",
             "type": "Action d'analyse des pratiques",
             "libelle": "Animation d'ateliers d'analyse des pratiques",
-            "themeId": "simulation-1"
+            "themeId": "simulation-1",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-36",
             "type": "Action d'analyse des pratiques",
             "libelle": "Contribution à l'élaboration de chemins cliniques",
-            "themeId": "simulation-1"
+            "themeId": "simulation-1",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-37",
             "type": "Action d'analyse des pratiques",
             "libelle": "Revues de pertinence.- Vignettes cliniques",
-            "themeId": "simulation-1"
+            "themeId": "simulation-1",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-38",
             "type": "Action de gestion des risques",
             "libelle": "Rédaction/actualisation de protocoles, d'aides cognitives",
-            "themeId": "simulation-1"
+            "themeId": "simulation-1",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-39",
             "type": "Action de gestion des risques",
             "libelle": "Conception/mise en oeuvre/évaluation de séances de simulation",
-            "themeId": "simulation-1"
+            "themeId": "simulation-1",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-40",
             "type": "Action de gestion des risques",
             "libelle": "Vignettes cliniques",
-            "themeId": "simulation-1"
+            "themeId": "simulation-1",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-41",
             "type": "Programmes intégrés",
             "libelle": "Participation à un programme intégré dans le cadre des Orientations prioritaires nationales",
-            "themeId": "dpc-fc"
+            "themeId": "dpc-fc",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-42",
             "type": "Programmes intégrés",
             "libelle": "Tests de Concordance de Scripts",
-            "themeId": "simulation-1"
+            "themeId": "simulation-1",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-43",
             "type": "Programmes intégrés",
             "libelle": "Simulation en santé",
-            "themeId": "simulation-1"
+            "themeId": "simulation-1",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-44",
             "type": "Programmes intégrés",
             "libelle": "Analyse de cas cliniques",
-            "themeId": "simulation-1"
+            "themeId": "simulation-1",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-45",
             "type": "Programmes intégrés",
             "libelle": "Sessions de simulation haute-fidélité interprofessionnelle",
-            "themeId": "simulation-1"
+            "themeId": "simulation-1",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE1-46",
             "type": "Action libre",
             "libelle": "Possibilité pour les professionnels infirmiers généralistes de proposer une action à valider par le CNP : action de formation (a priori) ou sur justificatif (a posteriori)",
-            "themeId": "dpc-fc"
+            "themeId": "dpc-fc",
+            "attestation_honneur": false,
+            "action_libre": true
           }
         ]
       },
@@ -381,253 +473,337 @@
             "code": "REF.60.04_1-AXE2-1",
             "type": "Formation",
             "libelle": "Démarche d'accréditation des spécialités médicales à risque pour les professionnels de santé",
-            "themeId": "accreditation"
+            "themeId": "accreditation",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-2",
             "type": "Formation",
             "libelle": "Démarche d'habilitations des pratiques à risque chez les paramédicaux (à lister par profession)",
-            "themeId": "accreditation"
+            "themeId": "accreditation",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-3",
             "type": "Formation",
             "libelle": "Actions menées au titre du DPC et de la FC intégrant les aspects QGDR spécifiques aux thématiques abordées (et répondant aux orientations scientifiques et aux référentiels de certification)",
-            "themeId": "risques"
+            "themeId": "risques",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-4",
             "type": "Formation",
             "libelle": "Participation à des actions de formation à caractère scientifique ou professionnel, intégrant les aspects QGDR spécifiques aux thématiques abordées, qu'elles soient dispensées par des organismes de formation listés par arrêté (ceux correspondants à des fonds d'assurance formation agréés par arrêté ministériel, label Qualiopi, ANDPC, ANFH, OPCO Santé, FIFPL, …) ou toute entité (société savante, organisation, …) dont le programme a été préalablement validé par le CNP de référence.",
-            "themeId": "risques"
+            "themeId": "risques",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-5",
             "type": "Formation",
             "libelle": "Formations obligatoires pour certaines professions de santé à périodicité définie dont gestes d'urgence et recyclage AFGSU - NRBC (actions menées au titre de la formation continue) - Ergonomie/TMS (articulation avec prévention des risques et prévention des douleurs induites)",
-            "themeId": "risques"
+            "themeId": "risques",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-6",
             "type": "Formation",
             "libelle": "Contribution/Participation au sein du lieu d'exercice à la structuration des modalités d'exercice (fiches de poste, protocoles, organisation du travail, schéma d'intégration, critères d'évaluation, …)",
-            "themeId": "protocoles"
+            "themeId": "protocoles",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-7",
             "type": "Formation",
             "libelle": "Participation à des groupes de travail tels que ceux élaborant les recommandations de la HAS, à des actions pour leur mise en place dans la pratique de soins…",
-            "themeId": "protocoles"
+            "themeId": "protocoles",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-8",
             "type": "Formation",
             "libelle": "Participation à des recommandations de bonnes pratiques encadrées par le CNP",
-            "themeId": "protocoles"
+            "themeId": "protocoles",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-9",
             "type": "Formation",
             "libelle": "Participation à des réunions de concertation pluridisciplinaire avec pondération selon le rôle (rapporteur, animateur, participant) et selon des critères définis par les CNP",
-            "themeId": "equipe"
+            "themeId": "equipe",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-10",
             "type": "Formation",
             "libelle": "Coordination au sein d'une équipe pluri professionnelle dans tout mode d'exercice notamment sanitaire et médico-social (liste CNPI)",
-            "themeId": "equipe"
+            "themeId": "equipe",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-11",
             "type": "Formation",
             "libelle": "Organisation de la coordination des soins ambulatoires, notamment en exercice coordonné",
-            "themeId": "equipe"
+            "themeId": "equipe",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-12",
             "type": "Formation",
             "libelle": "Participation à des audits par les pairs en tant qu'auditeurs et/ou à des audits ciblés sur des activités interprofessionnelles (processus / ressources…) selon la méthode HAS",
-            "themeId": "epp"
+            "themeId": "epp",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-13",
             "type": "Formation",
             "libelle": "Participation à des EPP, APP, débouchant sur des actions permettant l'amélioration de la pratique selon la méthode HAS",
-            "themeId": "epp"
+            "themeId": "epp",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-14",
             "type": "Formation",
             "libelle": "Encadrement professionnel : dont compagnonnage tutorat, maitrise de stage ou autres formes d'encadrement (stages DES…) aidant notamment à l'appropriation opérationnelle des démarches QGDR dans la réalisation des activités professionnelles",
-            "themeId": "risques"
+            "themeId": "risques",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-15",
             "type": "Formation",
             "libelle": "Mise en oeuvre d'actions de formations en présentiel et/ou en distanciel, formations courtes/Diplômes universitaires/masters",
-            "themeId": "risques"
+            "themeId": "risques",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-16",
             "type": "Formation",
             "libelle": "Direction de mémoire de fin d'études, de DU/DIU, de master ou doctorat",
-            "themeId": "risques"
+            "themeId": "risques",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-17",
             "type": "Formation",
             "libelle": "Apports cognitifs ciblés en regard de sa pratique notamment travail en équipe — prévention et gestion des risques - APP - chemins cliniques — méthodologie d'élaboration de protocoles et procédures de soins - EPP",
-            "themeId": "protocoles"
+            "themeId": "protocoles",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-18",
             "type": "Formation",
             "libelle": "Préparation et mise en oeuvre de communications orales/posters dans le domaine de l'amélioration continue de la qualité, de la gestion des risques, des vigilances",
-            "themeId": "risques"
+            "themeId": "risques",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-19",
             "type": "Formation",
             "libelle": "Contribution à la formation des pairs et des apprenants dans le domaine de l'amélioration continue de la qualité, de la prévention et de gestion des risques, des vigilances.\no Conception/mise en oeuvre/évaluation de séances de simulation.\no Apports théoriques.\no Animation d'atelier d'analyse des pratiques.\no Développement durable.\no Contribution aux tests de dispositifs médicaux.\no Rédaction d'articles scientifiques et professionnels dans le domaine de l'amélioration continue de la qualité, de la gestion des risques, des vigilances.\no Conception/mise en oeuvre/évaluation d'actions de promotion de la santé.\no Conception/mise en oeuvre/évaluation d'actions de prévention en santé",
-            "themeId": "risques"
+            "themeId": "risques",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-20",
             "type": "Action d'analyse des pratiques",
             "libelle": "Staff d'une équipe médico-soignante, groupe d'analyse des pratiques",
-            "themeId": "equipe"
+            "themeId": "equipe",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-21",
             "type": "Action d'analyse des pratiques",
             "libelle": "Conception/participation/animation contribuant à une réflexion commune (ex : Café éthique/ Café qualité).",
-            "themeId": "epp"
+            "themeId": "epp",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-22",
             "type": "Action d'analyse des pratiques",
             "libelle": "Réunions de concertation pluriprofessionnelle",
-            "themeId": "equipe"
+            "themeId": "equipe",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-23",
             "type": "Action d'analyse des pratiques",
             "libelle": "Audit clinique, Patients traceurs,Traceur ciblé",
-            "themeId": "epp"
+            "themeId": "epp",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-24",
             "type": "Action d'analyse des pratiques",
             "libelle": "Conception, implication, participation, animation au sein de communautés interprofessionnelles d'amélioration de pratiques",
-            "themeId": "epp"
+            "themeId": "epp",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-25",
             "type": "Action de gestion des risques",
             "libelle": "Rédaction/actualisation de protocoles, d'aides cognitives",
-            "themeId": "protocoles"
+            "themeId": "protocoles",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-26",
             "type": "Action de gestion des risques",
             "libelle": "Actions visant à améliorer la traçabilité des interventions dans le dossier de la personne soignée et le partage de données interprofessionnelles quelle qu'en soit la forme sécurisée",
-            "themeId": "risques"
+            "themeId": "risques",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-27",
             "type": "Action de gestion des risques",
             "libelle": "Participation aux retours d'expériences pour les soins de premier recours, les situations sanitaires de crise et pour d'autres thématiques analysées selon l'une des méthodes QGDR RETEX / CREX / Patient traceur / Traceur ciblé ou autre méthodologie d'évaluation",
-            "themeId": "risques"
+            "themeId": "risques",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-28",
             "type": "Action de gestion des risques",
             "libelle": "Prise en compte d'une contribution significative aux autres démarches qualité telles que :\no l'élaboration de registres (maladies rares, cancers et/ou pratiques emblématiques, communautaires, épidémiologiques, événements indésirables liés aux soins, pratiques nouvelles, …),\no le renseignement de registres,\no les démarches de certification et d'accréditation de structures de soins sous réserve de critères sur l'amélioration des pratiques du professionnel concerné,\no les démarches qualité sectorielles portées par les pouvoirs publics ou les professions (ordres, syndicats professionnels, CNP…).",
-            "themeId": "accreditation"
+            "themeId": "accreditation",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-29",
             "type": "Action de gestion des risques",
             "libelle": "Gestion des risques en équipe",
-            "themeId": "risques"
+            "themeId": "risques",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-30",
             "type": "Action de gestion des risques",
             "libelle": "Comité de Retour d'Expérience - CREX",
-            "themeId": "risques"
+            "themeId": "risques",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-31",
             "type": "Action de gestion des risques",
             "libelle": "Revue Morbi-Mortalité - RMM",
-            "themeId": "risques"
+            "themeId": "risques",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-32",
             "type": "Action de gestion des risques",
             "libelle": "Participation à un réseau de vigilance",
-            "themeId": "risques"
+            "themeId": "risques",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-33",
             "type": "Action de gestion des risques",
             "libelle": "Déclaration et gestion d'évènements porteurs de risques",
-            "themeId": "risques"
+            "themeId": "risques",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-34",
             "type": "Action de gestion des risques",
             "libelle": "Participation à un comité d'établissement (CLUD-SP, CLIN, CLAN, Comité éthique, …), à une instance/entité Qualité sécurité des soins ou à une instance équivalente en exercice coordonné :\n• CPTS (communauté professionnelle territoriale de santé)\n• MSP (maison de santé pluriprofessionnelle)\n• ESP (équipe de soins primaires)\n• ESS (équipe de soins spécialisés)\n• ESP CLAP (équipe de soins primaires coordonnée localement autour du patient)\n• ESCAP (équipe de soins coordonnée autour du patient)\n• CDS (centre de soins)\n• DAC (dispositif d'appui à la coordination)",
-            "themeId": "instances"
+            "themeId": "instances",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-35",
             "type": "Programmes intégrés",
             "libelle": "Elaboration, participation, animation de mise en situation apprenante",
-            "themeId": "simulation-2"
+            "themeId": "simulation-2",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-36",
             "type": "Programmes intégrés",
             "libelle": "Réalisation de pratiques innovantes et notamment travail sur simulateur : rôle de concepteur, de formateur relais/compagnonnage, d'apprenant",
-            "themeId": "simulation-2"
+            "themeId": "simulation-2",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-37",
             "type": "Programmes intégrés",
             "libelle": "Sessions de simulation haute-fidélité mono, inter et pluriprofessionnelle",
-            "themeId": "simulation-2"
+            "themeId": "simulation-2",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-38",
             "type": "Programmes intégrés",
             "libelle": "Participation à un programme intégré proposé par ODPC dans le cadre des orientations prioritaires",
-            "themeId": "simulation-2"
+            "themeId": "simulation-2",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-39",
             "type": "Programmes intégrés",
             "libelle": "Tests de Concordance de Scripts",
-            "themeId": "simulation-2"
+            "themeId": "simulation-2",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-40",
             "type": "Programmes intégrés",
             "libelle": "Simulation en santé",
-            "themeId": "simulation-2"
+            "themeId": "simulation-2",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-41",
             "type": "Programmes intégrés",
             "libelle": "Analyse de cas cliniques",
-            "themeId": "simulation-2"
+            "themeId": "simulation-2",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE2-42",
             "type": "Action libre",
             "libelle": "Possibilité pour les professionnels IDE généralistes de proposer une action à valider par le CNPI : action de formation (a priori) ou sur justificatif (a posteriori)",
-            "themeId": "risques"
+            "themeId": "risques",
+            "attestation_honneur": false,
+            "action_libre": true
           }
         ]
       },
@@ -681,193 +857,257 @@
             "code": "REF.60.04_1-AXE3-1",
             "type": "Formation",
             "libelle": "Formations adaptées aux différents modes d'exercice dans un objectif plus général de prise en compte de la souffrance physique et psychique de la personne soignée et/ou des aidants",
-            "themeId": "relation-aide"
+            "themeId": "relation-aide",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-2",
             "type": "Formation",
             "libelle": "Formations ciblées sur le dépistage, la prévention, la prise en charge (dont signalement) et l'orientation d'une personne ou d'un groupe en situation de violence intra-familiale ou de maltraitance",
-            "themeId": "violences"
+            "themeId": "violences",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-3",
             "type": "Formation",
             "libelle": "Formations ciblées sur l'identification des facteurs générateurs de tensions ou créateurs de sérénité",
-            "themeId": "violences"
+            "themeId": "violences",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-4",
             "type": "Formation",
             "libelle": "Formations ciblées à la prévention, la gestion de toutes formes de violences en direction d'une personne soignée/des proches, d'un professionnel de santé et d'une équipe pluriprofessionnelle.",
-            "themeId": "violences"
+            "themeId": "violences",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-5",
             "type": "Formation",
             "libelle": "Formations à la transculturalité, à l'ethnologie et aux spécificités liés à l'âge",
-            "themeId": "interculturalite"
+            "themeId": "interculturalite",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-6",
             "type": "Formation",
             "libelle": "Apports cognitifs et pratiques ciblés : Relation d'aide et relation aidante, DU thématiques renforçant les modalités relationnelles, de confort, de gestion des douleurs provoquées par les soins, approches non médicamenteuses, utilisation du numérique en santé, coanimation avec un patient expert, …)",
-            "themeId": "relation-aide"
+            "themeId": "relation-aide",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-7",
             "type": "Formation",
             "libelle": "Formations à la collaboration avec les patients-experts, les patients-partenaires et les pairs-aidants",
-            "themeId": "education"
+            "themeId": "education",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-8",
             "type": "Formation",
             "libelle": "Interventions lors de journées organisées par/avec les associations d'usagers/de patients ou fonctions exercées au sein de celles-ci",
-            "themeId": "education"
+            "themeId": "education",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-9",
             "type": "Formation",
             "libelle": "Contribution active à l'élaboration de fiches d'information pour les usagers, les personnes soignées et les aidants (initiative CNP, en lien avec les autorités sanitaires, …)",
-            "themeId": "education"
+            "themeId": "education",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-10",
             "type": "Formation",
             "libelle": "Participation/contribution aux travaux des différentes commissions des usagers (CDU ou commission équivalente)",
-            "themeId": "mediation"
+            "themeId": "mediation",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-11",
             "type": "Formation",
             "libelle": "Participation/contribution aux médiations (médiateur médical et médiateur non médical)",
-            "themeId": "mediation"
+            "themeId": "mediation",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-12",
             "type": "Formation",
             "libelle": "Conception ou participation à des informations ou actions de formation sur les droits des usagers/patients, l'éthique, les droits des personnes en situation de handicap, de vulnérabilité (enfants, personne âgée, mineur/majeur protégé, personne sous tutelle), les droits et les recours sociaux",
-            "themeId": "ethique"
+            "themeId": "ethique",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-13",
             "type": "Formation",
             "libelle": "Accompagnement professionnel : dont tutorat, maitrise de stage ou autres formes d'encadrement aidant à l'appropriation et la modélisation des modalités relationnelles, d'écoute, d'information et d'éducation centrée sur la personne soignée dans la réalisation des activités professionnelles.",
-            "themeId": "relation-aide"
+            "themeId": "relation-aide",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-14",
             "type": "Formation",
             "libelle": "Contribution formalisée à l'analyse des plaintes et des éloges guidant l'élaboration d'actions d'amélioration",
-            "themeId": "mediation"
+            "themeId": "mediation",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-15",
             "type": "Formation",
             "libelle": "Contribution à la formation des pairs dans le domaine de la relation interpersonnelle soigné/soignant, dans la co-construction avec les patients experts",
-            "themeId": "relation-aide"
+            "themeId": "relation-aide",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-16",
             "type": "Formation",
             "libelle": "Rédaction d'articles scientifiques et professionnels dans le domaine de la relation interpersonnelle soigné/soignant",
-            "themeId": "relation-aide"
+            "themeId": "relation-aide",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-17",
             "type": "Formation",
             "libelle": "Sensibilisation à l'Interculturalité et dissonance (ethno soins)",
-            "themeId": "interculturalite"
+            "themeId": "interculturalite",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-18",
             "type": "Action d'analyse des pratiques",
             "libelle": "Pratique régulière de l'auto-évaluation par le professionnel ou sur la base de grilles d'évaluation de la personne soignée",
-            "themeId": "relation-aide"
+            "themeId": "relation-aide",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-19",
             "type": "Action d'analyse des pratiques",
             "libelle": "Conception/mise en oeuvre/évaluation de séances de simulation, d'apports théoriques et animation d'ateliers d'analyse des pratiques",
-            "themeId": "relation-aide"
+            "themeId": "relation-aide",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-20",
             "type": "Action d'analyse des pratiques",
             "libelle": "Mise en situation par jeux de rôle ou ateliers de pratiques et d'échanges de pratiques avec les pairs dans la formation au savoir être, séances d'analyse des pratique/pratique réflexive",
-            "themeId": "relation-aide"
+            "themeId": "relation-aide",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-21",
             "type": "Action d'analyse des pratiques",
             "libelle": "Participation à un dispositif d'annonce : diagnostic d'un cancer, dommage associé aux soins, mauvaise nouvelle, maladie chronique, …",
-            "themeId": "annonce"
+            "themeId": "annonce",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-22",
             "type": "Action d'analyse des pratiques",
             "libelle": "Vignettes cliniques",
-            "themeId": "relation-aide"
+            "themeId": "relation-aide",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-23",
             "type": "Action de gestion des risques",
             "libelle": "Participation/conception/animation d'actions de prévention et de construction d'outils et/ou de démarche améliorant la relation interpersonnelle (soigné/soignant — professionnels)",
-            "themeId": "relation-aide"
+            "themeId": "relation-aide",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-24",
             "type": "Action de gestion des risques",
             "libelle": "RETEX - CREX en lien avec les situations d'agressivité et/ou de violences (personne soignée — proches — professionnel).",
-            "themeId": "violences"
+            "themeId": "violences",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-25",
             "type": "Action de gestion des risques",
             "libelle": "RETEX - CREX en lien avec les situations d'agressivité et/ou de violences (personne soignée — proches — professionnel)",
-            "themeId": "violences"
+            "themeId": "violences",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-26",
             "type": "Action de gestion des risques",
             "libelle": "RETEX - CREX en lien avec une situation de maltraitance interne ou de maltraitance externe",
-            "themeId": "violences"
+            "themeId": "violences",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-27",
             "type": "Action de gestion des risques",
             "libelle": "Contribution aux registres, aux observatoires, aux bases de données mis en place dans le cadre des politiques publiques, ou prévus par la règlementation ou à l'initiative des CNP notamment",
-            "themeId": "ethique"
+            "themeId": "ethique",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-28",
             "type": "Action de gestion des risques",
             "libelle": "Conception et/ou animation et/ou participation à la mise en place de programmes associant des usagers/personnes soignées/aidants (par exemple, éducation à la santé, éducation thérapeutique, patients experts, …)",
-            "themeId": "education"
+            "themeId": "education",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-29",
             "type": "Action de gestion des risques",
             "libelle": "Contribution à des infos Santé : conception, animation ; participation aux actions ; évaluation des actions",
-            "themeId": "education"
+            "themeId": "education",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-30",
             "type": "Action de gestion des risques",
             "libelle": "Préparation et mise en oeuvre de communications orales/e. posters dans le domaine de la relation interpersonnelle soigné/soignant en binôme usager/IDE",
-            "themeId": "relation-aide"
+            "themeId": "relation-aide",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-31",
             "type": "Programmes intégrés",
             "libelle": "Participation à des sessions de simulation haute-fidélité interprofessionnelle",
-            "themeId": "relation-aide"
+            "themeId": "relation-aide",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE3-32",
             "type": "Action libre",
             "libelle": "Possibilité pour les professionnels infirmiers généralistes de proposer une action à valider par le CNP : action de formation (a priori) ou sur justificatif (a posteriori)",
-            "themeId": "relation-aide"
+            "themeId": "relation-aide",
+            "attestation_honneur": false,
+            "action_libre": true
           }
         ]
       },
@@ -916,133 +1156,177 @@
             "code": "REF.60.04_1-AXE4-1",
             "type": "Formation",
             "libelle": "Formations ciblées sur le travail d'équipe et la santé",
-            "themeId": "sante-travail"
+            "themeId": "sante-travail",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE4-2",
             "type": "Formation",
             "libelle": "Approfondissement des connaissances sur ses déterminants de santé et sur les liens entre l'environnement et la santé (PNNS 4)",
-            "themeId": "determinants"
+            "themeId": "determinants",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE4-3",
             "type": "Formation",
             "libelle": "Conception, contribution, animation d'ateliers dédiés à la prévention en santé et aux conduites à tenir en fonction des risques associés",
-            "themeId": "prevention"
+            "themeId": "prevention",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE4-4",
             "type": "Formation",
             "libelle": "Formations à la promotion de santé et à la prévention en santé",
-            "themeId": "prevention"
+            "themeId": "prevention",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE4-5",
             "type": "Formation",
             "libelle": "Actions concrètes pour réduire les risques liés aux substances chimiques, aux agents physiques (bruits, ondes, écrans, lumières) et infectieux dans le cadre de la démarche « Une seule santé »(PNSE4).",
-            "themeId": "environnement"
+            "themeId": "environnement",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE4-6",
             "type": "Formation",
             "libelle": "Participation à des actions de recherche sur l'exposome et les maladies liées aux atteintes à l'environnement",
-            "themeId": "environnement"
+            "themeId": "environnement",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE4-7",
             "type": "Formation",
             "libelle": "Intervention dans le cadre de la prévention et de maîtrise des risques psychosociaux",
-            "themeId": "sante-travail"
+            "themeId": "sante-travail",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE4-8",
             "type": "Formation",
             "libelle": "Actions de repérage des situations à risque et des conduites à tenir s'y rapportant",
-            "themeId": "prevention"
+            "themeId": "prevention",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE4-9",
             "type": "Formation",
             "libelle": "Lutte contre les discriminations, et/ou d'action de qualité de vie au travail",
-            "themeId": "sante-travail"
+            "themeId": "sante-travail",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE4-10",
             "type": "Formation",
             "libelle": "Contribution/participation à des actions de santé communautaire et de santé publique",
-            "themeId": "communautaire"
+            "themeId": "communautaire",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE4-11",
             "type": "Action d'analyse des pratiques",
             "libelle": "Participation à un groupe d'analyse de pratique et/ou de supervision ou de RETEX",
-            "themeId": "sante-travail"
+            "themeId": "sante-travail",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE4-12",
             "type": "Action d'analyse des pratiques",
             "libelle": "Auto-évaluation de son état de santé et son suivi, avec proposition d'outils de suivi ou de prise en charge pour toute action qui permettrait de faire de l'\"auto-repérage\" ou de l'\"auto-dépistage\"",
-            "themeId": "autoeval"
+            "themeId": "autoeval",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE4-13",
             "type": "Action d'analyse des pratiques",
             "libelle": "Vignettes cliniques",
-            "themeId": "autoeval"
+            "themeId": "autoeval",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE4-14",
             "type": "Action de gestion des risques",
             "libelle": "Calendrier vaccinal à jour selon la réglementation en vigueur (action socle obligatoire)",
-            "themeId": "prevention"
+            "themeId": "prevention",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE4-15",
             "type": "Action de gestion des risques",
             "libelle": "Déclaration d'un médecin traitant et/ou, s'agissant des professionnels salariés, d'un médecin du travail",
-            "themeId": "sante-travail"
+            "themeId": "sante-travail",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE4-16",
             "type": "Action de gestion des risques",
             "libelle": "Pratique régulière d'une activité extra-professionnelle de type activités physiques, sportives, culturelles, communautaires, associatives...",
-            "themeId": "determinants"
+            "themeId": "determinants",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE4-17",
             "type": "Action de gestion des risques",
             "libelle": "Actions ciblées sur la prévention et la gestion des risques associés aux activités du métier",
-            "themeId": "sante-travail"
+            "themeId": "sante-travail",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE4-18",
             "type": "Action de gestion des risques",
             "libelle": "Participation à des actions ou des instances des risques professionnels et de santé au travail (CHS, F3SCT, audit, cellule de veille et d'urgence, CUM, …)",
-            "themeId": "sante-travail"
+            "themeId": "sante-travail",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE4-19",
             "type": "Action de gestion des risques",
             "libelle": "Prévention des risques professionnels et risques en santé, sur le modèle des expérimentations des programmes de prévention des risques professionnels conduits avec les ARS et/ou autres organismes agréés pour objectiver les modalités reproductibles : ergonomie, gestion des déchets, gestion du risque infectieux…",
-            "themeId": "sante-travail"
+            "themeId": "sante-travail",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE4-20",
             "type": "Action de gestion des risques",
             "libelle": "Veille documentaire et consultation à périodicité de l'actualisation des risques associés au poste de travail (contenu du document unique ou équivalent)",
-            "themeId": "sante-travail"
+            "themeId": "sante-travail",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE4-21",
             "type": "Programmes intégrés",
             "libelle": "Participation à un programme intégré proposé par un ODPC sur le thème de la santé personnelle ou des risques psychosociaux",
-            "themeId": "sante-travail"
+            "themeId": "sante-travail",
+            "attestation_honneur": false,
+            "action_libre": false
           },
           {
             "code": "REF.60.04_1-AXE4-22",
             "type": "Action libre",
             "libelle": "Possibilité pour les professionnels infirmiers généralistes de proposer une action à valider par le CNPI : action de formation (a priori) ou sur justificatif (a posteriori)",
-            "themeId": "prevention"
+            "themeId": "prevention",
+            "attestation_honneur": false,
+            "action_libre": true
           }
         ]
       }

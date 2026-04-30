@@ -20,6 +20,7 @@ import {
   type ActionRealisee,
 } from "../../data/maquette";
 import { ReferentielActionDrawer } from "./ReferentielActionDrawer";
+import { DeclarationDrawer } from "./DeclarationDrawer";
 import "./maquette.css";
 
 function ReferentielActionCard({
@@ -133,6 +134,8 @@ export function ReferentielComplet({
   });
   const [typeFilter, setTypeFilter] = useState<string | null>(null);
   const [drawerAction, setDrawerAction] = useState<ActionRef | null>(null);
+  const [declDrawerOpen, setDeclDrawerOpen] = useState(false);
+  const [declDrawerCode, setDeclDrawerCode] = useState<string | undefined>(undefined);
 
   if (!axe || !id) {
     return <Navigate to={isPublic ? "/referentiel" : "/maquette/tableau-de-bord"} replace />;
@@ -259,7 +262,10 @@ export function ReferentielComplet({
                   iconId="fr-icon-add-line"
                   iconPosition="left"
                   size="small"
-                  onClick={() => navigate(`/maquette/declarer?axe=${id}`)}
+                  onClick={() => {
+                    setDeclDrawerCode(undefined);
+                    setDeclDrawerOpen(true);
+                  }}
                 >
                   Declarer une action
                 </Button>
@@ -412,13 +418,14 @@ export function ReferentielComplet({
                       declared={decl}
                       mode={mode}
                       onOpen={() => setDrawerAction(action)}
-                      onDeclare={() =>
-                        navigate(
-                          isPublic
-                            ? "/maquette"
-                            : `/maquette/declarer?axe=${id}&code=${action.code}`
-                        )
-                      }
+                      onDeclare={() => {
+                        if (isPublic) {
+                          navigate("/maquette");
+                          return;
+                        }
+                        setDeclDrawerCode(action.code);
+                        setDeclDrawerOpen(true);
+                      }}
                       onViewDeclaration={() =>
                         decl && navigate(`/maquette/axe/${id}?action=${decl.id}`)
                       }
@@ -451,7 +458,10 @@ export function ReferentielComplet({
               buttonProps={{
                 priority: "primary",
                 children: "Declarer une action libre",
-                onClick: () => navigate(`/maquette/declarer?axe=${id}&type=action-libre`),
+                onClick: () => {
+                  setDeclDrawerCode(undefined);
+                  setDeclDrawerOpen(true);
+                },
               }}
             >
               Vous pouvez declarer une action libre. Elle sera examinee par votre CNP pour validation au titre de cet axe.
@@ -524,12 +534,15 @@ export function ReferentielComplet({
         onClose={() => setDrawerAction(null)}
         onDeclare={() => {
           if (!drawerAction) return;
+          if (isPublic) {
+            setDrawerAction(null);
+            navigate("/maquette");
+            return;
+          }
+          const code = drawerAction.code;
           setDrawerAction(null);
-          navigate(
-            isPublic
-              ? "/maquette"
-              : `/maquette/declarer?axe=${id}&code=${drawerAction.code}`
-          );
+          setDeclDrawerCode(code);
+          setDeclDrawerOpen(true);
         }}
         onViewDeclaration={() => {
           if (!drawerAction) return;
@@ -539,6 +552,14 @@ export function ReferentielComplet({
             navigate(`/maquette/axe/${id}?action=${decl.id}`);
           }
         }}
+      />
+
+      {/* ═══ Declaration drawer ═════════════════════════════ */}
+      <DeclarationDrawer
+        open={declDrawerOpen}
+        onClose={() => setDeclDrawerOpen(false)}
+        preAxeId={id}
+        preCode={declDrawerCode}
       />
     </div>
   );

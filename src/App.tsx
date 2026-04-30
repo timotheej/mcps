@@ -3,7 +3,7 @@ import { MaquetteLayout } from "./pages/maquette/MaquetteLayout";
 import { Dashboard } from "./pages/maquette/Dashboard";
 import { AxeDetail } from "./pages/maquette/AxeDetail";
 import { ReferentielComplet } from "./pages/maquette/ReferentielComplet";
-import { Declaration } from "./pages/maquette/Declaration";
+import { DeclarationRedirect } from "./pages/maquette/DeclarationRedirect";
 import { Synthese } from "./pages/maquette/Synthese";
 import { Success } from "./pages/maquette/Success";
 import { AxeDetailTabs } from "./pages/maquette/AxeDetailTabs";
@@ -83,7 +83,7 @@ export function App() {
           path="/maquette/axe/:id/referentiel"
           element={<ReferentielComplet />}
         />
-        <Route path="/maquette/declarer" element={<Declaration />} />
+        <Route path="/maquette/declarer" element={<DeclarationRedirect />} />
         <Route path="/maquette/synthese" element={<Synthese />} />
         <Route path="/maquette/succes" element={<Success />} />
       </Route>

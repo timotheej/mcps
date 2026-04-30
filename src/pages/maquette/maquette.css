@@ -101,6 +101,119 @@
   text-align: right;
 }
 
+/* Hero référentiel — étape Vérification */
+.maq-ref-hero {
+  border-left: 4px solid var(--border-action-high-blue-france);
+  padding: 1.25rem 1.5rem 1.5rem;
+  background: var(--background-default-grey);
+}
+
+.maq-ref-hero__eyebrow {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-mention-grey);
+  margin-bottom: 0.5rem;
+}
+
+.maq-ref-hero__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0 0 0.375rem;
+  color: var(--text-title-grey);
+}
+
+.maq-ref-hero__author {
+  font-size: 0.9375rem;
+  color: var(--text-mention-grey);
+  margin: 0 0 1.5rem;
+}
+
+.maq-ref-hero__stats {
+  list-style: none;
+  margin: 0;
+  padding: 1.25rem 0 0;
+  border-top: 1px solid var(--border-default-grey);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.maq-ref-hero__stats li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.maq-ref-hero__stat-value {
+  font-size: 1.625rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--text-action-high-blue-france);
+}
+
+.maq-ref-hero__stat-label {
+  font-size: 0.8125rem;
+  color: var(--text-mention-grey);
+  line-height: 1.35;
+}
+
+@media (max-width: 575px) {
+  .maq-ref-hero__stats {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+/* dl compact dans l'accordéon "Vérifier mes infos PSC" */
+.maq-profil-dl {
+  margin: 0;
+}
+
+.maq-profil-dl__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.625rem 0;
+  gap: 1rem;
+  border-bottom: 1px solid var(--border-default-grey);
+}
+
+.maq-profil-dl__row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.maq-profil-dl__row:first-child {
+  padding-top: 0;
+}
+
+.maq-profil-dl__row dt {
+  font-size: 0.8125rem;
+  color: var(--text-mention-grey);
+  margin: 0;
+}
+
+.maq-profil-dl__row dd {
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: right;
+  margin: 0;
+}
+
+@media (max-width: 575px) {
+  .maq-profil-dl__row {
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+  .maq-profil-dl__row dd {
+    text-align: left;
+  }
+}
+
 .maq-onboarding__counter {
   font-size: 0.875rem;
   color: var(--text-mention-grey);
@@ -1219,250 +1332,244 @@
   padding-top: 0.5rem;
 }
 
-/* ─── Declaration ────────────────────────────────────── */
+/* ─── Declaration — formulaire single-page cascade ─── */
 
-/* Type selection tiles */
-.maq-decl__types {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  max-width: 44rem;
+/* Sections en cascade */
+.maq-decl-section {
+  margin-top: 2.5rem; /* fr-mt-5w équivalent */
 }
 
-.maq-decl__type-tile {
+.maq-decl-section:first-of-type {
+  margin-top: 0;
+}
+
+.maq-decl-section--visible {
+  animation: maq-decl-cascade 280ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes maq-decl-cascade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .maq-decl-section--visible {
+    animation: none;
+  }
+}
+
+/* Mode lecture seule (entrée pré-remplie) */
+.maq-decl-readonly {
   display: flex;
-  align-items: center;
-  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.75rem 1rem;
   padding: 1rem 1.25rem;
-  border: 1px solid var(--border-default-grey);
-  background: var(--background-default-grey);
-  cursor: pointer;
-  text-align: left;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  background: var(--background-alt-grey);
+  border-left: 2px solid var(--border-plain-grey);
 }
 
-.maq-decl__type-tile:hover {
-  border-color: var(--border-action-high-blue-france);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
-}
-
-.maq-decl__type-tile-icon {
-  font-size: 1.25rem;
-  color: var(--text-action-high-blue-france);
-  flex-shrink: 0;
-}
-
-.maq-decl__type-tile-content {
-  flex: 1;
-  min-width: 0;
-}
-
-.maq-decl__type-tile-title {
-  display: block;
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.35;
-}
-
-.maq-decl__type-tile-desc {
-  display: block;
-  font-size: 0.8125rem;
-  color: var(--text-mention-grey);
-  margin-top: 0.125rem;
-}
-
-.maq-decl__type-tile-arrow {
-  color: var(--text-mention-grey);
-  font-size: 1rem;
-  flex-shrink: 0;
-}
-
-.maq-decl__type-tile:hover .maq-decl__type-tile-arrow {
-  color: var(--text-action-high-blue-france);
-}
-
-/* Type badge in form header */
-.maq-decl__type-badge {
-  display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 0.125rem 0.5rem;
-  border: 1px solid var(--border-default-grey);
-  border-radius: 0.25rem;
-  margin-right: 0.5rem;
-  vertical-align: middle;
-}
-
-/* Axe selection */
-.maq-decl__axes {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-.maq-decl__axe-tile {
-  display: flex;
+.maq-decl-readonly--block {
   flex-direction: column;
   align-items: flex-start;
-  padding: 1.25rem 1.5rem;
-  border: 1px solid var(--border-default-grey);
-  background: var(--background-default-grey);
-  cursor: pointer;
-  text-align: left;
-  transition: border-color 0.15s, box-shadow 0.15s;
-  position: relative;
+  gap: 0.375rem;
 }
 
-.maq-decl__axe-tile:hover {
-  border-color: var(--border-action-high-blue-france);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
-}
-
-.maq-decl__axe-tile-num {
-  font-size: 0.6875rem;
+.maq-decl-readonly__label {
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
+  font-weight: 700;
   color: var(--text-mention-grey);
-  font-weight: 600;
-  margin-bottom: 0.375rem;
 }
 
-.maq-decl__axe-tile-title {
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.35;
+.maq-decl-readonly__code {
+  font-size: 0.8125rem;
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  color: var(--text-mention-grey);
+}
+
+.maq-decl-readonly__value {
+  font-size: 0.9375rem;
+  color: var(--text-default-grey);
+  font-weight: 500;
+  flex: 1;
+  line-height: 1.45;
+}
+
+.maq-decl-readonly__edit {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: auto;
+  font-size: 0.875rem;
+  color: var(--text-action-high-blue-france);
+  text-decoration: underline;
+  cursor: pointer;
+  font-family: inherit;
+  align-self: flex-start;
+}
+
+.maq-decl-readonly__edit:hover {
+  color: var(--text-action-high-blue-france-hover);
+}
+
+/* Aperçu du libellé complet de l'action après sélection (drawer) */
+.maq-decl-action-preview {
+  margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--background-alt-grey);
+  border-left: 2px solid var(--border-action-high-blue-france);
+}
+
+.maq-decl-action-preview__code {
+  display: block;
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-size: 0.75rem;
+  color: var(--text-mention-grey);
   margin-bottom: 0.25rem;
 }
 
-.maq-decl__axe-tile-ps {
-  font-size: 0.8125rem;
-  color: var(--text-mention-grey);
-  font-style: italic;
-}
-
-.maq-decl__axe-tile-arrow {
-  position: absolute;
-  top: 1.25rem;
-  right: 1.25rem;
-  color: var(--text-mention-grey);
-  font-size: 1rem;
-}
-
-.maq-decl__axe-tile:hover .maq-decl__axe-tile-arrow {
-  color: var(--text-action-high-blue-france);
-}
-
-/* Referentiel context banner */
-.maq-decl__ref-context {
-  max-width: 44rem;
-  padding: 1rem 1.25rem;
-  background: var(--background-alt-grey);
-  border-left: 3px solid var(--border-action-high-blue-france);
-  margin-bottom: 2rem;
-}
-
-.maq-decl__ref-label {
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--text-mention-grey);
-  margin: 0 0 0.375rem;
-}
-
-.maq-decl__ref-code {
-  font-size: 0.75rem;
-  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
-  color: var(--text-mention-grey);
-  margin: 0 0 0.5rem;
-}
-
-.maq-decl__ref-libelle {
-  font-size: 0.9375rem;
-  line-height: 1.5;
+.maq-decl-action-preview__libelle {
+  font-size: 0.875rem;
+  line-height: 1.45;
   color: var(--text-default-grey);
   margin: 0;
 }
 
-/* Form */
-.maq-decl__form {
-  max-width: 44rem;
+/* Récapitulatif (dl à l'intérieur du CallOut) */
+.maq-decl-recap {
+  margin: 0;
 }
 
-.maq-decl__actions {
+.maq-decl-recap__row {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 2rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--border-default-grey);
+  gap: 1rem;
+  padding: 0.625rem 0;
+  border-bottom: 1px solid var(--border-default-grey);
 }
 
-/* Recap */
-.maq-decl__recap {
+.maq-decl-recap__row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.maq-decl-recap__row:first-child {
+  padding-top: 0;
+}
+
+.maq-decl-recap__row dt {
+  font-size: 0.875rem;
+  color: var(--text-mention-grey);
+  min-width: 8.5rem;
+  flex-shrink: 0;
+  margin: 0;
+}
+
+.maq-decl-recap__row dd {
+  font-size: 0.9375rem;
+  color: var(--text-default-grey);
+  margin: 0;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.maq-decl-recap__code {
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-size: 0.8125rem;
+  color: var(--text-mention-grey);
+  font-weight: 400;
+}
+
+/* Drawer "Déclarer une action" — variante du drawer */
+.maq-drawer--decl {
+  width: 36rem;
+  padding-bottom: 6rem; /* place pour footer sticky */
+}
+
+@media (max-width: 575px) {
+  .maq-drawer--decl {
+    width: 100vw;
+    padding-bottom: 6rem;
+  }
+}
+
+.maq-drawer--decl .maq-drawer__title {
+  margin-bottom: 0.75rem;
+}
+
+.maq-drawer--decl .maq-drawer__footer {
+  position: sticky;
+  bottom: -2rem;
+  left: 0;
+  right: 0;
+  margin: 2rem -2rem -2rem;
+  padding: 1rem 2rem 1.25rem;
+  background: var(--background-default-grey);
+  border-top: 1px solid var(--border-default-grey);
+  z-index: 2;
+}
+
+@media (max-width: 575px) {
+  .maq-drawer--decl .maq-drawer__footer {
+    margin: 1.5rem -1.25rem -1.5rem;
+    padding: 1rem 1.25rem 1rem;
+  }
+}
+
+/* Écran de succès post-déclaration */
+.maq-decl-success {
   max-width: 40rem;
-  border: 1px solid var(--border-default-grey);
+  margin: 1rem auto 0;
+  text-align: center;
+}
+
+.maq-decl-success--drawer {
+  margin: 0;
+  max-width: none;
+}
+
+.maq-decl-success--drawer .maq-decl-success__icon {
+  width: 3rem;
+  height: 3rem;
+  font-size: 1.5rem;
   margin-bottom: 1rem;
 }
 
-.maq-decl__recap-row {
-  display: flex;
-  padding: 0.75rem 1.25rem;
-  border-bottom: 1px solid var(--border-default-grey);
-  gap: 1rem;
-}
-
-.maq-decl__recap-row:last-child {
-  border-bottom: none;
-}
-
-.maq-decl__recap-label {
-  font-size: 0.8125rem;
-  color: var(--text-mention-grey);
-  min-width: 7rem;
-  flex-shrink: 0;
-}
-
-.maq-decl__recap-value {
-  font-size: 0.9375rem;
-}
-
-.maq-decl__recap-value--strong {
-  font-weight: 600;
-}
-
-/* Success */
-.maq-decl__success {
-  max-width: 40rem;
-}
-
-.maq-decl__success-recap {
-  padding: 1.25rem 1.5rem;
-  background: var(--background-alt-grey);
-  margin-bottom: 2rem;
-}
-
-.maq-decl__success-count {
-  font-size: 1rem;
-  line-height: 1.6;
-}
-
-.maq-decl__success-badge {
+.maq-decl-success__icon {
   display: inline-flex;
+  width: 4rem;
+  height: 4rem;
+  margin-bottom: 1.5rem;
   align-items: center;
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 0.125rem 0.5rem;
-  border-radius: 0.25rem;
+  justify-content: center;
   background: var(--background-contrast-success);
+  border-radius: 50%;
   color: var(--text-default-success);
-  margin-left: 0.5rem;
+  font-size: 2rem;
 }
 
-.maq-decl__success-actions {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
+.maq-decl-success .fr-callout {
+  text-align: left;
+  margin-bottom: 0;
+}
+
+@media (max-width: 575px) {
+  .maq-decl-recap__row {
+    flex-direction: column;
+    gap: 0.125rem;
+    padding: 0.625rem 0;
+  }
+  .maq-decl-recap__row dt {
+    min-width: 0;
+    font-size: 0.8125rem;
+  }
 }
 
 /* ─── Synthese ──────────────────────────────────────── */
@@ -1566,24 +1673,6 @@
   .maq-axe-main__header {
     flex-direction: column;
     align-items: flex-start;
-  }
-
-  .maq-decl__axes {
-    grid-template-columns: 1fr;
-  }
-
-  .maq-decl__actions {
-    flex-direction: column-reverse;
-    gap: 0.75rem;
-  }
-
-  .maq-decl__recap-row {
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  .maq-decl__success-actions {
-    flex-direction: column;
   }
 
   .maq-synthese__header {

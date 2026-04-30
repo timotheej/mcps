@@ -4,6 +4,7 @@ import { fr } from "@codegouvfr/react-dsfr";
 import { Button } from "@codegouvfr/react-dsfr/Button";
 import { Breadcrumb } from "@codegouvfr/react-dsfr/Breadcrumb";
 import { ActionDrawer } from "./ActionDrawer";
+import { DeclarationDrawer } from "./DeclarationDrawer";
 import {
   getAxeById,
   loadActions,
@@ -295,6 +296,7 @@ export function AxeDetailTabs() {
   const axeThemeIds = savedThemes && id ? savedThemes[id] || [] : [];
   const [activeFilters, setActiveFilters] = useState<string[]>(axeThemeIds);
   const [drawerAction, setDrawerAction] = useState<ActionRealisee | null>(null);
+  const [declDrawerOpen, setDeclDrawerOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<TabValue>("actions");
 
   const openDrawer = useCallback((a: ActionRealisee) => setDrawerAction(a), []);
@@ -322,7 +324,7 @@ export function AxeDetailTabs() {
     setActiveFilters((f) => f.includes(tid) ? f.filter((x) => x !== tid) : [...f, tid]);
   };
 
-  const onDeclare = () => navigate(`/maquette/declarer?axe=${id}`);
+  const onDeclare = () => setDeclDrawerOpen(true);
 
   return (
     <div style={{ background: "var(--background-default-grey)", minHeight: "100vh" }}>
@@ -535,6 +537,13 @@ export function AxeDetailTabs() {
         onNavigateRef={(code) =>
           navigate(`/maquette/axe/${id}/referentiel#${code}`)
         }
+      />
+
+      {/* ═══ Declaration drawer ═════════════════════════════ */}
+      <DeclarationDrawer
+        open={declDrawerOpen}
+        onClose={() => setDeclDrawerOpen(false)}
+        preAxeId={id}
       />
     </div>
   );

@@ -13,6 +13,10 @@ export type ActionRef = {
   type: string;
   libelle: string;
   themeId?: string;
+  /** Vraie certif sur l'honneur (drapeau du référentiel). Aucun upload demandé. */
+  attestation_honneur?: boolean;
+  /** Action libre (hors liste). Exclue du MVP "de fait". */
+  action_libre?: boolean;
 };
 
 export type AxeRef = {
@@ -979,4 +983,212 @@ export function getAdjacentAxes(
         ? referentiel.axes[idx + 1]
         : null,
   };
+}
+
+// ─── Actions déclarables (référentiel IDE) ──────────────
+//
+// Pour le MVP, le PS ne peut déclarer que des actions "de fait" (présentes au
+// référentiel et non libres). Les helpers ci-dessous filtrent et exposent la
+// liste d'actions sélectionnables dans le drawer de déclaration.
+//
+// La nature de la preuve attendue est inférée à partir du type d'action et de
+// patterns textuels dans le libellé — le JSON IDE ne contient pas (encore) de
+// champ explicite. À remplacer dès que le CNP livre un référentiel enrichi.
+
+export type PreuveType = "Attestation" | "Diplôme" | "Autres";
+
+export type PreuveSpec = {
+  type: PreuveType;
+  /** Sous-label affiché sous l'Upload pour préciser ce qu'on attend. */
+  precision: string;
+  /** Conditions méthodologiques à respecter (affichées en Alert info). */
+  conditions?: string;
+};
+
+export type DeclarableAction = ActionRef & {
+  axeId: string;
+  preuve: PreuveSpec;
+};
+
+function inferPreuve(action: ActionRef): PreuveSpec {
+  const lib = action.libelle.toLowerCase();
+
+  // Diplôme universitaire / certifiant
+  if (
+    /diplôm|diplomant|certifiant|université|universitaire|du\/diu|master|doctorat/i.test(
+      action.libelle
+    )
+  ) {
+    return {
+      type: "Diplôme",
+      precision: "Copie du diplôme ou attestation de réussite délivrée par l'établissement.",
+    };
+  }
+
+  // Publications, communications scientifiques
+  if (/publication|article|tiré à part|communication oral|poster|e-poster/i.test(action.libelle)) {
+    return {
+      type: "Autres",
+      precision: "Tiré à part de la publication ou DOI, ou attestation du congrès pour les communications.",
+    };
+  }
+
+  // Tutorat, encadrement, direction de mémoire
+  if (/tutorat|maîtrise de stage|encadrement|direction de mémoire|enseignement/i.test(action.libelle)) {
+    return {
+      type: "Attestation",
+      precision: "Attestation délivrée par l'institution (université, IFSI, employeur).",
+    };
+  }
+
+  // RMM / CREX / morbi-mortalité
+  if (/rmm|crex|morbi-mortalité|retour d'expérience|retex/i.test(action.libelle)) {
+    return {
+      type: "Attestation",
+      precision: "Compte-rendu anonymisé de la séance signé par le coordonnateur.",
+    };
+  }
+
+  // Audit clinique
+  if (/audit/i.test(action.libelle)) {
+    return {
+      type: "Attestation",
+      precision: "Rapport d'audit signé.",
+      conditions: "Méthode HAS d'audit clinique appliquée.",
+    };
+  }
+
+  // RCP / réunion de concertation
+  if (/rcp|réunion de concertation|concertation pluridisciplinaire/i.test(action.libelle)) {
+    return {
+      type: "Attestation",
+      precision: "Attestation de présence + compte-rendu de la RCP.",
+    };
+  }
+
+  // Accréditation / certification
+  if (/accréditation|certification.*structure|démarche.*accréditation/i.test(action.libelle)) {
+    return {
+      type: "Attestation",
+      precision: "Certificat délivré + rapport d'audit de certification.",
+    };
+  }
+
+  // Protocoles / recommandations / référentiel
+  if (/protocole|recommandation|référentiel|fiches de pratique|aide cognitive/i.test(action.libelle)) {
+    return {
+      type: "Attestation",
+      precision: "Lettre de mission + copie du protocole ou de la recommandation produite.",
+    };
+  }
+
+  // Simulation
+  if (/simulation|simulateur|mise en situation/i.test(action.libelle)) {
+    return {
+      type: "Attestation",
+      precision: "Attestation de session de simulation délivrée par le centre.",
+    };
+  }
+
+  // Analyse de pratiques en groupe / journal club / revue biblio
+  if (/groupe d'analyse|groupe de pairs|staff|journal club|revue bibliographique|analyse des pratiques/i.test(action.libelle)) {
+    return {
+      type: "Attestation",
+      precision: "Attestation de participation + compte-rendu de séance.",
+      conditions: "≥ 4 réunions sur 12 mois, méthode HAS.",
+    };
+  }
+
+  // Vigilance / signalement
+  if (/vigilance|signalement|événement.*risque|déclaration.*risque/i.test(action.libelle)) {
+    return {
+      type: "Attestation",
+      precision: "Attestation de l'établissement ou de l'autorité de vigilance.",
+    };
+  }
+
+  // Conférences, colloques, congrès, journées
+  if (/conférence|colloque|congrès|journée|symposium/i.test(action.libelle)) {
+    return {
+      type: "Attestation",
+      precision: "Attestation de participation délivrée par l'organisateur.",
+    };
+  }
+
+  // Comités d'établissement (CLUD, CLIN, CLAN, éthique...)
+  if (/clud|clin|clan|comité.*établissement|comité.*éthique|cdu|commission des usagers|instance/i.test(action.libelle)) {
+    return {
+      type: "Attestation",
+      precision: "Attestation de l'établissement précisant la nature et la fréquence des participations.",
+    };
+  }
+
+  // DPC / orientations prioritaires
+  if (/dpc|développement professionnel continu|orientations prioritaires|andpc|odpc/i.test(action.libelle)) {
+    return {
+      type: "Attestation",
+      precision: "Attestation de formation délivrée par l'organisme DPC.",
+      conditions: "Programme enregistré à l'ANDPC dans le cadre des orientations triennales.",
+    };
+  }
+
+  // Formations obligatoires (gestes d'urgence, hygiène...)
+  if (/obligatoire|gestes d'urgence|recyclage/i.test(action.libelle)) {
+    return {
+      type: "Attestation",
+      precision: "Attestation ou certificat de réussite à jour.",
+      conditions: "Périodicité réglementaire à respecter.",
+    };
+  }
+
+  // ─── Fallback par type_action ──
+  switch (action.type) {
+    case "Formation":
+      return {
+        type: "Attestation",
+        precision: "Attestation de formation signée par l'organisme formateur.",
+      };
+    case "Programmes intégrés":
+      return {
+        type: "Attestation",
+        precision: "Attestation de participation au programme intégré.",
+      };
+    case "Action d'analyse des pratiques":
+      return {
+        type: "Attestation",
+        precision: "Attestation de participation + compte-rendu.",
+      };
+    case "Action de gestion des risques":
+      return {
+        type: "Attestation",
+        precision: "Attestation de participation à la démarche de gestion des risques.",
+      };
+    default:
+      return {
+        type: "Attestation",
+        precision: "Document justifiant la réalisation de l'action.",
+      };
+  }
+  // Suppression de unused 'lib' pour éviter le warning
+  void lib;
+}
+
+function enrichDeclarableAction(action: ActionRef, axeId: string): DeclarableAction {
+  return { ...action, axeId, preuve: inferPreuve(action) };
+}
+
+export function getDeclarableActionsForAxe(axeId: string): DeclarableAction[] {
+  const axe = getAxeById(axeId);
+  if (!axe) return [];
+  return axe.actions
+    .filter((a) => !a.action_libre)
+    .map((a) => enrichDeclarableAction(a, axeId));
+}
+
+export function getDeclarableAction(code: string): DeclarableAction | undefined {
+  for (const axe of referentiel.axes) {
+    const found = axe.actions.find((a) => a.code === code && !a.action_libre);
+    if (found) return enrichDeclarableAction(found, axe.id);
+  }
+  return undefined;
 }

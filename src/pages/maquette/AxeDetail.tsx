@@ -4,6 +4,7 @@ import { fr } from "@codegouvfr/react-dsfr";
 import { Button } from "@codegouvfr/react-dsfr/Button";
 import { Breadcrumb } from "@codegouvfr/react-dsfr/Breadcrumb";
 import { ActionDrawer } from "./ActionDrawer";
+import { DeclarationDrawer } from "./DeclarationDrawer";
 // Badge not needed in this version
 import {
   getAxeById,
@@ -354,6 +355,8 @@ export function AxeDetail() {
     savedAxeFilters.length > 0 ? savedAxeFilters : axeThemeIds
   );
   const [drawerAction, setDrawerAction] = useState<ActionRealisee | null>(null);
+  const [declDrawerOpen, setDeclDrawerOpen] = useState(false);
+  const [declDrawerCode, setDeclDrawerCode] = useState<string | undefined>(undefined);
   const [mobileTab, setMobileTab] = useState<"actions" | "recommandations">("actions");
   const [statusFilter, setStatusFilter] = useState<ValidationState | "all">("all");
 
@@ -422,7 +425,14 @@ export function AxeDetail() {
     setActiveFilters((f) => f.includes(tid) ? f.filter((x) => x !== tid) : [...f, tid]);
   };
 
-  const onDeclare = () => navigate(`/maquette/declarer?axe=${id}`);
+  const onDeclare = () => {
+    setDeclDrawerCode(undefined);
+    setDeclDrawerOpen(true);
+  };
+  const onDeclareCode = (code: string) => {
+    setDeclDrawerCode(code);
+    setDeclDrawerOpen(true);
+  };
 
   return (
     <div style={{ background: "var(--background-default-grey)", minHeight: "100vh" }}>
@@ -628,7 +638,7 @@ export function AxeDetail() {
                   action={a}
                   axeId={id}
                   declared={declaredCodes.has(a.code)}
-                  onDeclare={() => navigate(`/maquette/declarer?axe=${id}&code=${a.code}`)}
+                  onDeclare={() => onDeclareCode(a.code)}
                 />
               ))}
             </div>
@@ -678,12 +688,20 @@ export function AxeDetail() {
         action={drawerAction}
         axeId={id}
         onClose={closeDrawer}
-        onDeclare={onDeclare}
+        onDeclare={() => onDeclare()}
         allActions={axeActions}
         onNavigate={openDrawer}
         onNavigateRef={(code) =>
           navigate(`/maquette/axe/${id}/referentiel#${code}`)
         }
+      />
+
+      {/* ═══ Declaration drawer ═════════════════════════════ */}
+      <DeclarationDrawer
+        open={declDrawerOpen}
+        onClose={() => setDeclDrawerOpen(false)}
+        preAxeId={id}
+        preCode={declDrawerCode}
       />
     </div>
   );

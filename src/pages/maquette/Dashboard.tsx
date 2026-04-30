@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { fr } from "@codegouvfr/react-dsfr";
 import { Button } from "@codegouvfr/react-dsfr/Button";
 import { Breadcrumb } from "@codegouvfr/react-dsfr/Breadcrumb";
 import { Alert } from "@codegouvfr/react-dsfr/Alert";
 import { Notice } from "@codegouvfr/react-dsfr/Notice";
+import { DeclarationDrawer } from "./DeclarationDrawer";
 import {
   referentiel,
   profileMock,
@@ -258,6 +259,37 @@ type DashboardProps = {
 
 export function Dashboard({ mockState = "default" }: DashboardProps) {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [drawerOpen, setDrawerOpen] = useState<boolean>(searchParams.get("declarer") === "1");
+  const [drawerPreAxe, setDrawerPreAxe] = useState<string | undefined>(
+    searchParams.get("axe") || undefined
+  );
+  const [drawerPreCode, setDrawerPreCode] = useState<string | undefined>(
+    searchParams.get("code") || undefined
+  );
+
+  function openDeclarer(preAxeId?: string, preCode?: string) {
+    setDrawerPreAxe(preAxeId);
+    setDrawerPreCode(preCode);
+    setDrawerOpen(true);
+  }
+
+  function closeDeclarer() {
+    setDrawerOpen(false);
+    // Nettoyer les query params si présents
+    if (
+      searchParams.get("declarer") === "1" ||
+      searchParams.get("axe") ||
+      searchParams.get("code")
+    ) {
+      const next = new URLSearchParams(searchParams);
+      next.delete("declarer");
+      next.delete("axe");
+      next.delete("code");
+      setSearchParams(next, { replace: true });
+    }
+  }
+
   const actions = getActionsForState(mockState);
   const savedThemes = loadSelectedThemes();
   const totalActions = actions.length;
@@ -367,7 +399,7 @@ export function Dashboard({ mockState = "default" }: DashboardProps) {
                     priority="secondary"
                     iconId="fr-icon-add-line"
                     iconPosition="left"
-                    onClick={() => navigate("/maquette/declarer")}
+                    onClick={() => openDeclarer()}
                   >
                     Déclarer une action
                   </Button>
@@ -377,7 +409,7 @@ export function Dashboard({ mockState = "default" }: DashboardProps) {
                   priority="primary"
                   iconId="fr-icon-add-line"
                   iconPosition="left"
-                  onClick={() => navigate("/maquette/declarer")}
+                  onClick={() => openDeclarer()}
                 >
                   Déclarer une action
                 </Button>
@@ -426,10 +458,10 @@ export function Dashboard({ mockState = "default" }: DashboardProps) {
             title="Bravo !"
             description={
               celebratedAxes.length === 1
-                ? `L'axe ${celebratedAxes[0].id.split("-")[1]} est désormais couvert.`
-                : `Les axes ${celebratedAxes
+                ? `Vous avez complété l'axe ${celebratedAxes[0].id.split("-")[1]}.`
+                : `Vous avez complété les axes ${celebratedAxes
                     .map((a) => a.id.split("-")[1])
-                    .join(", ")} sont désormais couverts.`
+                    .join(", ")}.`
             }
             className={fr.cx("fr-mt-4w")}
             closable
@@ -519,6 +551,13 @@ export function Dashboard({ mockState = "default" }: DashboardProps) {
           </>
         )}
       </div>
+
+      <DeclarationDrawer
+        open={drawerOpen}
+        onClose={closeDeclarer}
+        preAxeId={drawerPreAxe}
+        preCode={drawerPreCode}
+      />
     </>
   );
 }

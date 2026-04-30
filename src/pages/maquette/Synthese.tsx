@@ -36,7 +36,7 @@ export function Synthese() {
   ): { label: string; severity: "success" | "warning" | "info" } {
     const count = getActionsForAxe(axe.id, actions).length;
     if (count >= axe.min_actions) {
-      return { label: "Couvert", severity: "success" };
+      return { label: "Complété", severity: "success" };
     }
     if (count > 0) {
       return { label: "En cours", severity: "warning" };
@@ -112,7 +112,7 @@ export function Synthese() {
         <p className={fr.cx("fr-text--sm", "fr-mb-2w")}>
           <strong>{totalActions} / {referentiel.min_total}</strong> actions
           {" "}&middot;{" "}
-          <strong>{axesCoveredCount} / {totalAxes}</strong> axes couverts
+          <strong>{axesCoveredCount} / {totalAxes}</strong> axes complétés
         </p>
         <div className="maq-progress__track" style={{ height: "6px" }}>
           <div

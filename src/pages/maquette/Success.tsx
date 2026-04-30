@@ -127,7 +127,7 @@ export function Success() {
               {totalActions} actions declarees sur {referentiel.min_total} requises
             </p>
             <p className={fr.cx("fr-text--sm", "fr-mb-0")} style={{ color: "var(--text-default-success)" }}>
-              4 axes couverts{totalExtra > 0 && <> · {totalExtra} action{totalExtra > 1 ? "s" : ""} au-dela du minimum</>}
+              4 axes complétés{totalExtra > 0 && <> · {totalExtra} action{totalExtra > 1 ? "s" : ""} au-dela du minimum</>}
             </p>
           </div>
         </div>
