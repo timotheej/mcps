@@ -1,13 +1,17 @@
 import { useState, useEffect, useMemo, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { fr } from "@codegouvfr/react-dsfr";
-import { Button } from "@codegouvfr/react-dsfr/Button";
 import { ButtonsGroup } from "@codegouvfr/react-dsfr/ButtonsGroup";
+import type { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 import { Input } from "@codegouvfr/react-dsfr/Input";
 import { Select } from "@codegouvfr/react-dsfr/SelectNext";
 import { Upload } from "@codegouvfr/react-dsfr/Upload";
 import { Checkbox } from "@codegouvfr/react-dsfr/Checkbox";
 import { Alert } from "@codegouvfr/react-dsfr/Alert";
+import { Badge } from "@codegouvfr/react-dsfr/Badge";
 import { CallOut } from "@codegouvfr/react-dsfr/CallOut";
+import { MiniRing } from "../../components/MiniRing";
+import { ActionSearch } from "./ActionSearch";
 import {
   referentiel,
   getAxeById,
@@ -15,6 +19,7 @@ import {
   saveActions,
   getDeclarableActionsForAxe,
   getDeclarableAction,
+  getTempsRestant,
   type ActionRealisee,
   type DeclarableAction,
 } from "../../data/maquette";
@@ -62,6 +67,7 @@ export function DeclarationDrawer({
   preCode,
   onDeclared,
 }: DeclarationDrawerProps) {
+  const navigate = useNavigate();
   const drawerRef = useRef<HTMLDivElement>(null);
   const section2Ref = useRef<HTMLElement | null>(null);
   const section3Ref = useRef<HTMLElement | null>(null);
@@ -73,6 +79,9 @@ export function DeclarationDrawer({
   // ─── Mode locks (entry B/C) ─────────────────────────────
   const [axeLocked, setAxeLocked] = useState<boolean>(!!effectivePreAxe);
   const [actionLocked, setActionLocked] = useState<boolean>(!!preCnpAction);
+  // Bascule "Choisir manuellement par axe" depuis la recherche.
+  // Ignoré en entrée C (preCode) : la cascade est imposée.
+  const [manualMode, setManualMode] = useState<boolean>(false);
 
   // ─── Form state ─────────────────────────────────────────
   const [selectedAxeId, setSelectedAxeId] = useState<string>(effectivePreAxe);
@@ -94,6 +103,7 @@ export function DeclarationDrawer({
       setActionLocked(!!preCnpAction);
       setSelectedAxeId(effectivePreAxe);
       setSelectedActionCode(preCnpAction?.code || "");
+      setManualMode(false);
       resetSection3();
       setSubmitted(false);
     }
@@ -143,6 +153,11 @@ export function DeclarationDrawer({
     });
     return map;
   }, [declaredActions]);
+  // Codes déjà déclarés (toutes axes confondus) — utile pour la recherche.
+  const declaredCodes = useMemo(
+    () => new Set(declaredActions.map((a) => a.code).filter(Boolean) as string[]),
+    [declaredActions]
+  );
 
   const selectedAxe = selectedAxeId ? getAxeById(selectedAxeId) : null;
   const axeNum = selectedAxeId ? selectedAxeId.split("-")[1] : "";
@@ -209,6 +224,18 @@ export function DeclarationDrawer({
   }
 
   function handleEditAxe() {
+    // Si on vient de la recherche (entrée A, pas en mode manuel),
+    // "Modifier l'axe" = retour complet à la recherche.
+    if (!effectivePreAxe && !manualMode) {
+      setSelectedAxeId("");
+      setSelectedActionCode("");
+      setAxeLocked(false);
+      setActionLocked(false);
+      resetSection3();
+      return;
+    }
+    // Sinon (mode manuel ou entrée B/C avec pré-fill) : on déverrouille
+    // simplement, l'utilisateur reste dans la cascade.
     setAxeLocked(false);
     setActionLocked(false);
     setSelectedActionCode("");
@@ -218,6 +245,39 @@ export function DeclarationDrawer({
   function handleEditAction() {
     setActionLocked(false);
     setSelectedActionCode("");
+    resetSection3();
+  }
+
+  function handleSearchSelect(action: DeclarableAction, query: string) {
+    setSelectedAxeId(action.axeId);
+    setSelectedActionCode(action.code);
+    setAxeLocked(true);
+    setActionLocked(true);
+    resetSection3();
+    // Pré-remplit l'intitulé avec le texte de recherche (modifiable)
+    setTitre(query.trim());
+  }
+
+  function handleSwitchToManual() {
+    setManualMode(true);
+    // En entrée A on reste sur l'axe vide, en entrée B on garde l'axe pré-fill.
+    if (!effectivePreAxe) {
+      setSelectedAxeId("");
+    }
+    setSelectedActionCode("");
+    setAxeLocked(!!effectivePreAxe);
+    setActionLocked(false);
+    resetSection3();
+  }
+
+  function handleBackToSearch() {
+    setManualMode(false);
+    if (!effectivePreAxe) {
+      setSelectedAxeId("");
+    }
+    setSelectedActionCode("");
+    setAxeLocked(!!effectivePreAxe);
+    setActionLocked(false);
     resetSection3();
   }
 
@@ -255,15 +315,33 @@ export function DeclarationDrawer({
     const all = loadActions();
     all.push(newAction);
     saveActions(all);
+
+    // ─── Détection cycle complet (8 actions ET 4 axes couverts) ───
+    const allAxesCovered = referentiel.axes.every((axe) => {
+      const count = all.filter((a) => a.axeId === axe.id).length;
+      return count >= axe.min_actions;
+    });
+    if (all.length >= 8 && allAxesCovered) {
+      onDeclared?.(newAction);
+      onClose();
+      navigate("/maquette/succes");
+      return;
+    }
+
     setSubmitted(true);
     onDeclared?.(newAction);
   }
 
-  function resetFormForAnother() {
-    setSelectedAxeId(effectivePreAxe);
-    setSelectedActionCode(preCnpAction?.code || "");
-    setAxeLocked(!!effectivePreAxe);
-    setActionLocked(!!preCnpAction);
+  function resetFormForAnother(opts?: {
+    keepAxe?: boolean;
+    keepAction?: boolean;
+  }) {
+    const keepAxe = opts?.keepAxe ?? !!effectivePreAxe;
+    const keepAction = opts?.keepAction ?? !!preCnpAction;
+    setSelectedAxeId(keepAxe ? effectivePreAxe : "");
+    setSelectedActionCode(keepAction ? preCnpAction?.code || "" : "");
+    setAxeLocked(keepAxe);
+    setActionLocked(keepAction);
     resetSection3();
     setSubmitted(false);
     drawerRef.current?.scrollTo({ top: 0, behavior: "smooth" });
@@ -274,7 +352,80 @@ export function DeclarationDrawer({
   // ─── ÉCRAN DE SUCCÈS dans le drawer ─────────────────────
   if (submitted && selectedAxe && selectedAction) {
     const axeCount = (declaredByAxe[selectedAxeId] || 0) + 1;
-    const isCovered = axeCount >= selectedAxe.min_actions;
+    const totalActions = declaredActions.length + 1;
+    const minActions = selectedAxe.min_actions;
+    const axeJustCovered = axeCount === minActions;
+    const axeOverflow = axeCount > minActions;
+    const remaining = minActions - axeCount;
+    const { years, months } = getTempsRestant();
+
+    const cameFromReferentiel = !!preCode;
+    const cameFromAxe = !cameFromReferentiel && !!preAxeId;
+
+    let footerButtons: [ButtonProps, ...ButtonProps[]];
+    if (cameFromReferentiel) {
+      footerButtons = [
+        {
+          priority: "primary",
+          children: "Retour au référentiel",
+          onClick: onClose,
+        },
+        {
+          priority: "secondary",
+          iconId: "fr-icon-add-line",
+          iconPosition: "left",
+          children: "Déclarer une autre action",
+          onClick: () =>
+            resetFormForAnother({ keepAxe: false, keepAction: false }),
+        },
+        {
+          priority: "tertiary no outline",
+          children: "Fermer",
+          onClick: onClose,
+        },
+      ];
+    } else if (cameFromAxe) {
+      footerButtons = [
+        {
+          priority: "primary",
+          iconId: "fr-icon-add-line",
+          iconPosition: "left",
+          children: "Déclarer une autre action sur cet axe",
+          onClick: () => resetFormForAnother({ keepAxe: true }),
+        },
+        {
+          priority: "secondary",
+          children: "Voir le détail de l'axe",
+          onClick: () => {
+            onClose();
+            navigate(`/maquette/axe/${selectedAxeId}`);
+          },
+        },
+        {
+          priority: "tertiary no outline",
+          children: "Fermer",
+          onClick: onClose,
+        },
+      ];
+    } else {
+      footerButtons = [
+        {
+          priority: "primary",
+          iconId: "fr-icon-add-line",
+          iconPosition: "left",
+          children: axeJustCovered
+            ? "Déclarer pour un autre axe"
+            : "Déclarer une autre action",
+          onClick: () => resetFormForAnother({ keepAxe: false }),
+        },
+        {
+          priority: "tertiary no outline",
+          children: "Fermer",
+          onClick: onClose,
+        },
+      ];
+    }
+
     return (
       <>
         <div className="maq-drawer-overlay" onClick={onClose} />
@@ -283,7 +434,7 @@ export function DeclarationDrawer({
           className="maq-drawer maq-drawer--decl"
           role="dialog"
           aria-modal="true"
-          aria-label="Action déclarée"
+          aria-label="Déclaration enregistrée"
           tabIndex={-1}
         >
           <div className="maq-drawer__header">
@@ -298,54 +449,104 @@ export function DeclarationDrawer({
             </button>
           </div>
 
-          <div className="maq-decl-success maq-decl-success--drawer">
-            <span className="maq-decl-success__icon" aria-hidden="true">
-              <span className="fr-icon-check-line" aria-hidden="true" />
-            </span>
-            <h2 className={fr.cx("fr-h4", "fr-mb-2w")}>Action déclarée</h2>
-            <p
-              className={fr.cx("fr-text--md", "fr-mb-4w")}
-              style={{ color: "var(--text-mention-grey)" }}
-            >
-              « {titre} » a été ajoutée à l'axe {axeNum}.
-            </p>
+          {/* ZONE 1 — Confirmation sobre */}
+          <Alert
+            severity="success"
+            small
+            description="Déclaration enregistrée. Votre Ordre pourra la consulter dans les prochains jours."
+            className={fr.cx("fr-mb-4w")}
+          />
 
-            <CallOut title={`Axe ${axeNum} — ${selectedAxe.label_court}`}>
-              <p className={fr.cx("fr-mb-1w")} style={{ fontSize: "1rem", fontWeight: 600 }}>
-                {axeCount} action{axeCount > 1 ? "s" : ""} sur {selectedAxe.min_actions} requise
-                {selectedAxe.min_actions > 1 ? "s" : ""}
+          {/* ZONE 2 — Votre progression */}
+          <section className="maq-decl-progress">
+            <h3 className={fr.cx("fr-h6", "fr-mb-2w")}>Votre progression</h3>
+
+            <div className="maq-decl-progress__row">
+              <MiniRing done={totalActions} total={8} size={72} />
+
+              <div className="maq-decl-progress__details">
+                <p className="maq-decl-progress__axe-label">
+                  Axe {axeNum} — {selectedAxe.label_court}
+                </p>
+
+                <div className="maq-decl-progress__axe-state">
+                  <span className="maq-decl-progress__dots">
+                    {Array.from({ length: minActions }).map((_, i) => (
+                      <span
+                        key={i}
+                        className={
+                          i < axeCount
+                            ? "maq-axe-dot maq-axe-dot--done"
+                            : "maq-axe-dot"
+                        }
+                        aria-hidden="true"
+                      >
+                        {i < axeCount && (
+                          <span className="fr-icon-check-line" />
+                        )}
+                      </span>
+                    ))}
+                  </span>
+                  {axeOverflow ? (
+                    <span className="maq-decl-progress__status">
+                      {axeCount} actions (min. {minActions})
+                    </span>
+                  ) : axeJustCovered ? (
+                    <span className="maq-decl-progress__status maq-decl-progress__status--success">
+                      Couvert
+                    </span>
+                  ) : (
+                    <span className="maq-decl-progress__status">
+                      Encore {remaining} action{remaining > 1 ? "s" : ""}
+                    </span>
+                  )}
+                </div>
+
+                <p className="maq-decl-progress__time">
+                  {years} ans {months} mois restants
+                </p>
+              </div>
+            </div>
+          </section>
+
+          {/* ZONE 3 — Ce que vous venez de déclarer */}
+          <section className={fr.cx("fr-mt-4w")}>
+            <div className="maq-decl-recap-card">
+              <span className="maq-decl-recap-card__overline">
+                Action déclarée
+              </span>
+              <h4 className="maq-decl-recap-card__title">{titre}</h4>
+              <p className="maq-decl-recap-card__meta">
+                <span>{organisme}</span>
+                <span
+                  className="maq-decl-recap-card__sep"
+                  aria-hidden="true"
+                >
+                  ·
+                </span>
+                <span>{formatDateLong(dateRealisation)}</span>
               </p>
-              {isCovered ? (
-                <p
-                  className={fr.cx("fr-mb-0", "fr-text--sm")}
-                  style={{ color: "var(--text-default-success)", fontWeight: 600 }}
-                >
-                  <span className="fr-icon-check-line" aria-hidden="true" /> Vous avez complété cet axe.
-                </p>
-              ) : (
-                <p
-                  className={fr.cx("fr-mb-0", "fr-text--sm")}
-                  style={{ color: "var(--text-mention-grey)" }}
-                >
-                  Encore {selectedAxe.min_actions - axeCount} action
-                  {selectedAxe.min_actions - axeCount > 1 ? "s" : ""} pour couvrir cet axe.
-                </p>
-              )}
-            </CallOut>
-          </div>
+              <p className="maq-decl-recap-card__ref">
+                <span className="maq-decl-recap__code">
+                  {selectedAction.code}
+                </span>
+                <span className="maq-decl-recap-card__libelle">
+                  {selectedAction.libelle}
+                </span>
+              </p>
+              <Badge severity="warning" small noIcon>
+                En attente de validation
+              </Badge>
+            </div>
+          </section>
 
+          {/* FOOTER — CTA contextuels */}
           <div className="maq-drawer__footer">
-            <Button
-              priority="primary"
-              iconId="fr-icon-add-line"
-              iconPosition="left"
-              onClick={resetFormForAnother}
-            >
-              Déclarer une autre action
-            </Button>
-            <Button priority="tertiary no outline" onClick={onClose}>
-              Fermer
-            </Button>
+            <ButtonsGroup
+              inlineLayoutWhen="never"
+              buttonsEquisized
+              buttons={footerButtons}
+            />
           </div>
         </aside>
       </>
@@ -389,47 +590,72 @@ export function DeclarationDrawer({
             : "Décrivez l'action que vous avez réalisée. Les sections apparaissent au fur et à mesure."}
         </p>
 
-        {/* Slot future barre de recherche */}
-        <div id="search-slot" className={fr.cx("fr-mb-2w")} aria-hidden="true" />
+        {/* ═══ Barre de recherche (entrées A et B, jusqu'à sélection) ═══ */}
+        {/* La search ne s'affiche qu'à l'état vierge : pas de preCode, pas
+            de mode manuel, et aucune sélection en cours (ni axe ni action).
+            Une fois la cascade engagée, on n'affiche plus la search pour
+            éviter la double UI. */}
+        {!preCode && !manualMode && !selectedAxeId && !selectedActionCode && (
+          <ActionSearch
+            axeIdFilter={effectivePreAxe || undefined}
+            declaredCodes={declaredCodes}
+            onSelect={handleSearchSelect}
+            onSwitchToManual={handleSwitchToManual}
+          />
+        )}
 
-        {/* ═══ SECTION 1 — Axe ═══════════════════════════════ */}
-        <section className="maq-decl-section maq-decl-section--visible">
-          <h3 className={fr.cx("fr-h6", "fr-mb-1w")}>Dans quel axe ?</h3>
+        {/* Lien retour vers la recherche (uniquement en mode manuel A/B) */}
+        {manualMode && !preCode && (
+          <button
+            type="button"
+            className="maq-decl-back-to-search"
+            onClick={handleBackToSearch}
+          >
+            <span className="fr-icon-arrow-left-line" aria-hidden="true" />
+            Revenir à la recherche
+          </button>
+        )}
 
-          {axeLocked && selectedAxe ? (
-            <div className="maq-decl-readonly">
-              <span className="maq-decl-readonly__label">Axe</span>
-              <span className="maq-decl-readonly__value">
-                Axe {axeNum} — {selectedAxe.label_court}
-              </span>
-              <button
-                type="button"
-                className="maq-decl-readonly__edit"
-                onClick={handleEditAxe}
-              >
-                Modifier
-              </button>
-            </div>
-          ) : (
-            <Select
-              label="Axe de certification"
-              hint="Chaque action doit être liée à un des 4 axes."
-              nativeSelectProps={{
-                value: selectedAxeId,
-                onChange: (e) => handleSelectAxe(e.target.value),
-              }}
-              options={referentiel.axes.map((axe) => {
-                const num = axe.id.split("-")[1];
-                const done = declaredByAxe[axe.id] || 0;
-                return {
-                  value: axe.id,
-                  label: `Axe ${num} — ${axe.label_court} (${done}/${axe.min_actions})`,
-                };
-              })}
-              placeholder="Sélectionnez un axe"
-            />
-          )}
-        </section>
+        {/* ═══ SECTION 1 — Axe (cascade visible si pré-fill, mode manuel ou après sélection) ═══ */}
+        {(preCode || manualMode || selectedAxeId || selectedActionCode) && (
+          <section className="maq-decl-section maq-decl-section--visible">
+            <h3 className={fr.cx("fr-h6", "fr-mb-1w")}>Dans quel axe ?</h3>
+
+            {axeLocked && selectedAxe ? (
+              <div className="maq-decl-readonly">
+                <span className="maq-decl-readonly__label">Axe</span>
+                <span className="maq-decl-readonly__value">
+                  Axe {axeNum} — {selectedAxe.label_court}
+                </span>
+                <button
+                  type="button"
+                  className="maq-decl-readonly__edit"
+                  onClick={handleEditAxe}
+                >
+                  Modifier
+                </button>
+              </div>
+            ) : (
+              <Select
+                label="Axe de certification"
+                hint="Chaque action doit être liée à un des 4 axes."
+                nativeSelectProps={{
+                  value: selectedAxeId,
+                  onChange: (e) => handleSelectAxe(e.target.value),
+                }}
+                options={referentiel.axes.map((axe) => {
+                  const num = axe.id.split("-")[1];
+                  const done = declaredByAxe[axe.id] || 0;
+                  return {
+                    value: axe.id,
+                    label: `Axe ${num} — ${axe.label_court} (${done}/${axe.min_actions})`,
+                  };
+                })}
+                placeholder="Sélectionnez un axe"
+              />
+            )}
+          </section>
+        )}
 
         {/* ═══ SECTION 2 — Action ═══════════════════════════ */}
         {showSection2 && (

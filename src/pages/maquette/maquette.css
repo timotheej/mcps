@@ -1334,6 +1334,173 @@
 
 /* ─── Declaration — formulaire single-page cascade ─── */
 
+/* Barre de recherche d'action */
+.maq-decl-search {
+  margin-bottom: 1rem;
+}
+
+.maq-decl-search__field {
+  position: relative;
+}
+
+.maq-decl-search__field .fr-input-group {
+  margin-bottom: 0;
+}
+
+.maq-decl-search__field .fr-input {
+  padding-right: 2.5rem;
+}
+
+.maq-decl-search__icon {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  pointer-events: none;
+  color: var(--text-mention-grey);
+}
+
+.maq-decl-search__icon::before {
+  --icon-size: 1.25rem;
+}
+
+.maq-decl-search__results {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.maq-decl-search__card {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: var(--background-alt-grey);
+  border: 1px solid transparent;
+  border-left: 2px solid var(--border-plain-grey);
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+  transition: background-color 100ms ease, border-color 100ms ease;
+}
+
+.maq-decl-search__card:hover:not(:disabled) {
+  background: var(--background-contrast-grey);
+  border-left-color: var(--border-action-high-blue-france);
+}
+
+.maq-decl-search__card:focus-visible {
+  outline: 2px solid var(--border-action-high-blue-france);
+  outline-offset: 2px;
+}
+
+.maq-decl-search__card--disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.maq-decl-search__card-head {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-bottom: 0.375rem;
+  flex-wrap: wrap;
+}
+
+.maq-decl-search__card-axe {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-mention-grey);
+}
+
+.maq-decl-search__card-libelle {
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: var(--text-default-grey);
+  margin: 0;
+}
+
+.maq-decl-search__card-code {
+  font-size: 0.75rem;
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  color: var(--text-mention-grey);
+  margin: 0.375rem 0 0;
+}
+
+.maq-decl-search__match {
+  background: transparent;
+  color: inherit;
+  font-weight: 700;
+}
+
+.maq-decl-search__card-state {
+  color: var(--text-mention-grey);
+  font-style: italic;
+}
+
+/* État vide : message + CTA primaire vers le mode manuel */
+.maq-decl-search__empty {
+  margin-top: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--background-alt-grey);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.maq-decl-search__empty p {
+  margin: 0;
+  color: var(--text-default-grey);
+}
+
+/* État repos (avant saisie) : ligne discrète "Choisir manuellement par axe" */
+.maq-decl-search__idle {
+  margin: 0.75rem 0 0;
+  color: var(--text-mention-grey);
+}
+
+.maq-decl-search__manual-link {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: inherit;
+  color: var(--text-action-high-blue-france);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.maq-decl-search__manual-link:hover {
+  color: var(--text-active-blue-france);
+}
+
+/* Lien retour vers la recherche depuis le mode manuel */
+.maq-decl-back-to-search {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-bottom: 1.5rem;
+  font-family: inherit;
+  font-size: 0.875rem;
+  color: var(--text-action-high-blue-france);
+  cursor: pointer;
+}
+
+.maq-decl-back-to-search:hover {
+  color: var(--text-active-blue-france);
+  text-decoration: underline;
+}
+
+.maq-decl-back-to-search .fr-icon-arrow-left-line::before {
+  --icon-size: 1rem;
+}
+
 /* Sections en cascade */
 .maq-decl-section {
   margin-top: 2.5rem; /* fr-mt-5w équivalent */
@@ -1523,41 +1690,123 @@
   }
 }
 
-/* Écran de succès post-déclaration */
-.maq-decl-success {
-  max-width: 40rem;
-  margin: 1rem auto 0;
-  text-align: center;
+/* ─── Drawer succès — zone progression ─────────────────── */
+
+.maq-decl-progress {
+  margin-top: 0;
 }
 
-.maq-decl-success--drawer {
-  margin: 0;
-  max-width: none;
-}
-
-.maq-decl-success--drawer .maq-decl-success__icon {
-  width: 3rem;
-  height: 3rem;
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.maq-decl-success__icon {
-  display: inline-flex;
-  width: 4rem;
-  height: 4rem;
-  margin-bottom: 1.5rem;
+.maq-decl-progress__row {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  background: var(--background-contrast-success);
-  border-radius: 50%;
-  color: var(--text-default-success);
-  font-size: 2rem;
+  gap: 1rem;
 }
 
-.maq-decl-success .fr-callout {
-  text-align: left;
-  margin-bottom: 0;
+.maq-decl-progress__details {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.maq-decl-progress__axe-label {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--text-title-grey);
+  line-height: 1.35;
+  margin: 0;
+}
+
+.maq-decl-progress__axe-state {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.maq-decl-progress__dots {
+  display: inline-flex;
+  gap: 0.375rem;
+}
+
+.maq-decl-progress__status {
+  font-size: 0.875rem;
+  color: var(--text-mention-grey);
+  line-height: 1.4;
+}
+
+.maq-decl-progress__status--success {
+  color: var(--text-default-success);
+  font-weight: 600;
+}
+
+.maq-decl-progress__time {
+  font-size: 0.8125rem;
+  color: var(--text-mention-grey);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ─── Drawer succès — bloc récap action ────────────────── */
+
+.maq-decl-recap-card {
+  background: var(--background-alt-grey);
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.maq-decl-recap-card__overline {
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  color: var(--text-mention-grey);
+  margin-bottom: 0.125rem;
+}
+
+.maq-decl-recap-card__title {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--text-title-grey);
+  margin: 0;
+}
+
+.maq-decl-recap-card__meta {
+  font-size: 0.875rem;
+  color: var(--text-mention-grey);
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 0.5rem;
+  line-height: 1.4;
+}
+
+.maq-decl-recap-card__sep {
+  color: var(--text-disabled-grey);
+}
+
+.maq-decl-recap-card__ref {
+  margin: 0.25rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--text-default-grey);
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.maq-decl-recap-card__libelle {
+  color: var(--text-default-grey);
+}
+
+.maq-decl-recap-card .fr-badge {
+  align-self: flex-start;
+  margin-top: 0.25rem;
 }
 
 @media (max-width: 575px) {

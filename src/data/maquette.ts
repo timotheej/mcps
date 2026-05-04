@@ -1192,3 +1192,160 @@ export function getDeclarableAction(code: string): DeclarableAction | undefined 
   }
   return undefined;
 }
+
+// ─── Recherche d'actions (sémantique simulée) ──────────────
+// Matching insensible à la casse et aux accents, score-based.
+// On enrichit ~20 actions clés avec un map de mots-clés (synonymes, acronymes,
+// expressions courantes que le PS pourrait taper) pour simuler du sémantique
+// dans la maquette. À remplacer par une vraie recherche par embeddings côté
+// backend en production.
+
+const DIACRITICS = new RegExp("[\\u0300-\\u036f]", "g");
+
+export function normalizeForSearch(s: string): string {
+  return s.toLowerCase().normalize("NFD").replace(DIACRITICS, "");
+}
+
+export function normalizeWithMap(s: string): { norm: string; map: number[] } {
+  let norm = "";
+  const map: number[] = [];
+  for (let i = 0; i < s.length; i++) {
+    const ch = s[i].normalize("NFD").replace(DIACRITICS, "").toLowerCase();
+    for (let j = 0; j < ch.length; j++) {
+      norm += ch[j];
+      map.push(i);
+    }
+  }
+  return { norm, map };
+}
+
+// Stopwords FR — mots fonctionnels qui n'apportent pas de signal de recherche.
+// "du" est volontairement absent : il sert d'acronyme (Diplôme Universitaire).
+const STOPWORDS_FR = new Set([
+  "de", "des", "la", "le", "les", "et", "ou", "a", "au", "aux", "en", "dans",
+  "par", "pour", "avec", "sur", "sans", "sous", "vers", "chez", "entre",
+  "un", "une", "ce", "cet", "cette", "ces", "mon", "ma", "mes", "ton", "ta",
+  "tes", "son", "sa", "ses", "notre", "votre", "leur", "leurs", "qui", "que",
+  "quoi", "dont", "ne", "pas", "plus", "tres", "tout", "tous", "toute", "toutes",
+]);
+
+/** Tokenise la query, retire les stopwords FR et les tokens trop courts (<2). */
+export function tokenizeQuery(query: string): string[] {
+  return normalizeForSearch(query.trim())
+    .split(/[\s,;.!?'"()/—–-]+/)
+    .filter((t) => t.length >= 2 && !STOPWORDS_FR.has(t));
+}
+
+// Mots-clés / synonymes / acronymes par code action — enrichissement curé
+// pour la démo. Chaque entrée représente "ce que le PS pourrait taper" pour
+// arriver à cette action du référentiel.
+export const ACTION_KEYWORDS: Record<string, string[]> = {
+  // ─── AXE 1 — Connaissances et compétences ───
+  "REF.60.04_1-AXE1-1": ["DPC", "ANDPC", "ODPC", "formation continue", "orientations prioritaires", "fiche cadrage"],
+  "REF.60.04_1-AXE1-7": ["DU", "DIU", "diplôme universitaire", "master", "doctorat", "université", "certifiant", "post-graduate"],
+  "REF.60.04_1-AXE1-9": ["formation certifiante", "diplômante", "validation acquis", "VAE"],
+  "REF.60.04_1-AXE1-10": ["conférence", "colloque", "congrès", "journée professionnelle", "symposium", "JFPS"],
+  "REF.60.04_1-AXE1-11": ["communication orale", "poster", "e-poster", "présentation"],
+  "REF.60.04_1-AXE1-19": ["publication", "article", "revue scientifique", "rédaction", "auteur"],
+  "REF.60.04_1-AXE1-21": ["revue bibliographique", "bibliographie", "biblio", "journal club", "club lecture", "HAS"],
+  "REF.60.04_1-AXE1-30": ["tutorat", "mémoire", "encadrement", "direction mémoire", "étudiant", "DU", "master"],
+  "REF.60.04_1-AXE1-34": ["analyse pratique", "pratique réflexive", "réflexion individuelle", "auto-analyse"],
+  "REF.60.04_1-AXE1-43": ["simulation", "simulateur", "haute fidélité", "mannequin", "centre simulation"],
+
+  // ─── AXE 2 — Qualité des pratiques ───
+  "REF.60.04_1-AXE2-12": ["audit pair", "audit ciblé", "peer review", "audit interprofessionnel"],
+  "REF.60.04_1-AXE2-13": ["EPP", "APP", "évaluation pratiques professionnelles", "amélioration"],
+  "REF.60.04_1-AXE2-20": ["staff", "GAP", "groupe analyse pratiques", "groupe pairs", "confrères", "réunion équipe", "discussion cas", "pluridisciplinaire"],
+  "REF.60.04_1-AXE2-23": ["audit clinique", "patient traceur", "traceur ciblé", "parcours patient"],
+  "REF.60.04_1-AXE2-25": ["protocole", "recommandation", "fiche pratique", "aide cognitive", "procédure", "rédaction protocole"],
+  "REF.60.04_1-AXE2-30": ["CREX", "comité retour expérience", "retour expérience", "RETEX"],
+  "REF.60.04_1-AXE2-31": ["RMM", "morbi-mortalité", "revue morbidité"],
+  "REF.60.04_1-AXE2-34": ["CLUD", "CLIN", "CLAN", "CDU", "comité éthique", "commission usagers", "CPTS", "MSP", "ESCAP", "instance qualité"],
+
+  // ─── AXE 3 — Relation patient ───
+  "REF.60.04_1-AXE3-6": ["relation aide", "communication patient", "écoute", "douleur", "DU thématique", "approche non médicamenteuse", "patient expert"],
+  "REF.60.04_1-AXE3-10": ["CDU", "commission usagers", "satisfaction patient", "plainte"],
+  "REF.60.04_1-AXE3-11": ["médiation", "médiateur", "conflit", "dialogue patient"],
+
+  // ─── AXE 4 — Santé du soignant ───
+  "REF.60.04_1-AXE4-11": ["supervision", "groupe analyse santé soignant", "RETEX santé", "soutien équipe"],
+  "REF.60.04_1-AXE4-14": ["vaccin", "vaccination", "rappel vaccinal", "DTP", "grippe", "hépatite", "COVID", "calendrier vaccinal", "tétanos", "polio"],
+};
+
+export type SearchResult = {
+  action: DeclarableAction;
+  alreadyDeclared: boolean;
+  /** Score de pertinence (somme keyword + libellé), pour info / tri. */
+  score: number;
+};
+
+export type SearchOptions = {
+  /** Filtre sur un seul axe (entrée B). */
+  axeIdFilter?: string;
+  /** Codes des actions déjà déclarées (toutes sources confondues). */
+  declaredCodes?: Set<string>;
+  /** Nombre max de résultats. Défaut 8. */
+  limit?: number;
+};
+
+/** Découpe une chaîne normalisée en mots (tokens de référence). */
+function splitWords(s: string): string[] {
+  return s.split(/[\s,;.!?'"()/—–-]+/).filter(Boolean);
+}
+
+/**
+ * Match d'un token contre une liste de mots du haystack.
+ * - Égalité exacte : toujours un match.
+ * - Préfixe partagé (token / mot >= 3 chars) : couvre les variantes pluriel /
+ *   singulier ("vaccinations" ↔ "vaccination", "pratiques" ↔ "pratique") sans
+ *   produire les faux positifs d'un substring naïf ("du" dans "procedure").
+ */
+function tokenMatchesWords(token: string, words: string[]): boolean {
+  for (const w of words) {
+    if (w === token) return true;
+    if (token.length >= 3 && w.length >= 3) {
+      if (w.startsWith(token) || token.startsWith(w)) return true;
+    }
+  }
+  return false;
+}
+
+export function searchDeclarableActions(
+  query: string,
+  opts: SearchOptions = {}
+): SearchResult[] {
+  const limit = opts.limit ?? 8;
+  const tokens = tokenizeQuery(query);
+  if (tokens.length === 0) return [];
+
+  const out: SearchResult[] = [];
+  for (const axe of referentiel.axes) {
+    if (opts.axeIdFilter && axe.id !== opts.axeIdFilter) continue;
+    for (const action of axe.actions) {
+      if (action.action_libre) continue;
+      const libWords = splitWords(normalizeForSearch(action.libelle));
+      const kwRaw = ACTION_KEYWORDS[action.code] || [];
+      const kwWords = kwRaw.length
+        ? splitWords(normalizeForSearch(kwRaw.join(" ")))
+        : [];
+      let score = 0;
+      for (const t of tokens) {
+        // Match dans les keywords (boost x3) sinon dans le libellé.
+        if (kwWords.length && tokenMatchesWords(t, kwWords)) score += 3;
+        else if (tokenMatchesWords(t, libWords)) score += 1;
+      }
+      if (score === 0) continue;
+      out.push({
+        action: enrichDeclarableAction(action, axe.id),
+        alreadyDeclared: opts.declaredCodes?.has(action.code) ?? false,
+        score,
+      });
+    }
+  }
+  // Tri : score desc, puis libellé alpha
+  out.sort((a, b) => {
+    if (b.score !== a.score) return b.score - a.score;
+    return a.action.libelle.localeCompare(b.action.libelle, "fr");
+  });
+  return out.slice(0, limit);
+}
