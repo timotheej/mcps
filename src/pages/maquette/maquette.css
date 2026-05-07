@@ -101,11 +101,10 @@
   text-align: right;
 }
 
-/* Hero référentiel — étape Vérification */
+/* Hero référentiel — bloc read-only sur l'écran d'activation */
 .maq-ref-hero {
-  border-left: 4px solid var(--border-action-high-blue-france);
   padding: 1.25rem 1.5rem 1.5rem;
-  background: var(--background-default-grey);
+  background: var(--background-alt-blue-france);
 }
 
 .maq-ref-hero__eyebrow {
@@ -115,57 +114,21 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--text-mention-grey);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
 }
 
 .maq-ref-hero__title {
-  font-size: 1.5rem;
+  font-size: 1.375rem;
   font-weight: 700;
   line-height: 1.3;
   margin: 0 0 0.375rem;
-  color: var(--text-title-grey);
+  color: var(--text-action-high-blue-france);
 }
 
 .maq-ref-hero__author {
   font-size: 0.9375rem;
   color: var(--text-mention-grey);
-  margin: 0 0 1.5rem;
-}
-
-.maq-ref-hero__stats {
-  list-style: none;
   margin: 0;
-  padding: 1.25rem 0 0;
-  border-top: 1px solid var(--border-default-grey);
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.25rem;
-}
-
-.maq-ref-hero__stats li {
-  display: flex;
-  flex-direction: column;
-  gap: 0.125rem;
-}
-
-.maq-ref-hero__stat-value {
-  font-size: 1.625rem;
-  font-weight: 700;
-  line-height: 1.1;
-  color: var(--text-action-high-blue-france);
-}
-
-.maq-ref-hero__stat-label {
-  font-size: 0.8125rem;
-  color: var(--text-mention-grey);
-  line-height: 1.35;
-}
-
-@media (max-width: 575px) {
-  .maq-ref-hero__stats {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
 }
 
 /* dl compact dans l'accordéon "Vérifier mes infos PSC" */
@@ -212,126 +175,6 @@
   .maq-profil-dl__row dd {
     text-align: left;
   }
-}
-
-.maq-onboarding__counter {
-  font-size: 0.875rem;
-  color: var(--text-mention-grey);
-  margin-bottom: 2rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.maq-onboarding__counter strong {
-  color: var(--text-default-success);
-}
-
-.maq-onboarding__axe {
-  border: 1px solid var(--border-default-grey);
-  padding: 1.5rem 1.5rem 1.25rem;
-  margin-bottom: 1.5rem;
-  transition: border-color 0.2s;
-}
-
-.maq-onboarding__axe--valid {
-  border-color: var(--border-plain-success);
-}
-
-.maq-onboarding__axe-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 1rem;
-  margin-bottom: 0.75rem;
-}
-
-.maq-onboarding__axe-num {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-mention-grey);
-  margin-bottom: 0.25rem;
-}
-
-.maq-onboarding__axe-title {
-  font-size: 1.125rem;
-  font-weight: 700;
-  margin-bottom: 0;
-}
-
-.maq-onboarding__axe-desc {
-  font-size: 0.8125rem;
-  color: var(--text-mention-grey);
-  margin-bottom: 1rem;
-  font-style: italic;
-}
-
-.maq-onboarding__tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.maq-onboarding__tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  padding: 0.5rem 0.875rem;
-  font-size: 0.875rem;
-  border: 1px solid var(--border-default-grey);
-  border-radius: 1.5rem;
-  background: var(--background-default-grey);
-  color: var(--text-default-grey);
-  cursor: pointer;
-  transition: all 0.15s;
-  user-select: none;
-}
-
-.maq-onboarding__tag:hover {
-  background: var(--background-contrast-warning);
-  border-color: var(--border-plain-warning);
-}
-
-.maq-onboarding__tag--selected {
-  background: var(--background-contrast-success);
-  border-color: var(--border-plain-success);
-  color: var(--text-default-success);
-  font-weight: 500;
-}
-
-.maq-onboarding__tag--selected:hover {
-  background: var(--background-contrast-success);
-  border-color: var(--border-plain-success);
-}
-
-.maq-onboarding__tag-icon {
-  font-size: 0.75rem;
-}
-
-.maq-onboarding__hint {
-  color: var(--text-default-error);
-  font-size: 0.875rem;
-  margin-top: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.maq-onboarding__axe-check {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  font-size: 0.8125rem;
-  color: var(--text-default-success);
-  font-weight: 500;
-}
-
-.maq-onboarding__footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 2rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--border-default-grey);
 }
 
 /* ─── Dashboard — Header (profil + circle chart) ────────── */

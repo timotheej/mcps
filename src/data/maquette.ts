@@ -144,6 +144,82 @@ export const profileMock = {
   cycleDureeAns: 9,
 };
 
+// ─── Ordres professionnels ──────────────────────────────
+// Lookup utilisé par la modale "Une de vos informations est incorrecte ?"
+// pour orienter le PS vers le bon ordre selon sa profession (RPPS).
+
+export type Ordre = {
+  nom: string;
+  site: string;
+  siteLabel: string;
+};
+
+export const ORDRES: Record<string, Ordre> = {
+  medecin: {
+    nom: "Conseil national de l'Ordre des médecins",
+    site: "https://www.conseil-national.medecin.fr",
+    siteLabel: "conseil-national.medecin.fr",
+  },
+  "chirurgien-dentiste": {
+    nom: "Ordre national des chirurgiens-dentistes",
+    site: "https://www.ordre-chirurgiens-dentistes.fr",
+    siteLabel: "ordre-chirurgiens-dentistes.fr",
+  },
+  "sage-femme": {
+    nom: "Ordre national des sages-femmes",
+    site: "https://www.ordre-sages-femmes.fr",
+    siteLabel: "ordre-sages-femmes.fr",
+  },
+  pharmacien: {
+    nom: "Ordre national des pharmaciens",
+    site: "https://www.ordre.pharmacien.fr",
+    siteLabel: "ordre.pharmacien.fr",
+  },
+  infirmier: {
+    nom: "Ordre national des infirmiers",
+    site: "https://www.ordre-infirmiers.fr",
+    siteLabel: "ordre-infirmiers.fr",
+  },
+  "masseur-kinesitherapeute": {
+    nom: "Ordre des masseurs-kinésithérapeutes",
+    site: "https://www.ordremk.fr",
+    siteLabel: "ordremk.fr",
+  },
+  "pedicure-podologue": {
+    nom: "Ordre national des pédicures-podologues",
+    site: "https://www.onpp.fr",
+    siteLabel: "onpp.fr",
+  },
+};
+
+const PROFESSION_ALIASES: Record<string, keyof typeof ORDRES> = {
+  medecin: "medecin",
+  médecin: "medecin",
+  "chirurgien-dentiste": "chirurgien-dentiste",
+  dentiste: "chirurgien-dentiste",
+  "chirurgienne-dentiste": "chirurgien-dentiste",
+  "sage-femme": "sage-femme",
+  sagefemme: "sage-femme",
+  pharmacien: "pharmacien",
+  pharmacienne: "pharmacien",
+  infirmier: "infirmier",
+  infirmiere: "infirmier",
+  infirmière: "infirmier",
+  "masseur-kinesitherapeute": "masseur-kinesitherapeute",
+  "masseur-kinésithérapeute": "masseur-kinesitherapeute",
+  "kinesitherapeute": "masseur-kinesitherapeute",
+  "kinésithérapeute": "masseur-kinesitherapeute",
+  "pedicure-podologue": "pedicure-podologue",
+  "pédicure-podologue": "pedicure-podologue",
+  podologue: "pedicure-podologue",
+};
+
+export function getOrdreFromProfession(profession: string): Ordre | null {
+  const key = profession.trim().toLowerCase();
+  const aliasKey = PROFESSION_ALIASES[key];
+  return aliasKey ? ORDRES[aliasKey] : null;
+}
+
 // ─── Actions realisees ──────────────────────────────────
 
 export type ActionRealisee = {

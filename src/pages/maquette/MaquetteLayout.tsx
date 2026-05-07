@@ -3,6 +3,10 @@ import { Header } from "@codegouvfr/react-dsfr/Header";
 import { Footer } from "@codegouvfr/react-dsfr/Footer";
 import { headerFooterDisplayItem } from "@codegouvfr/react-dsfr/Display";
 import { loadSelectedThemes } from "../../data/maquette";
+import {
+  SignalementInfosModal,
+  signalementInfosModal,
+} from "../../components/SignalementInfosModal";
 
 export function MaquetteLayout() {
   const location = useLocation();
@@ -56,8 +60,17 @@ export function MaquetteLayout() {
       <Footer
         accessibility="non compliant"
         contentDescription="Maquette interactive MCPS — Prototype de test"
-        bottomItems={[headerFooterDisplayItem]}
+        bottomItems={[
+          {
+            text: "Une donnée incorrecte ?",
+            buttonProps: {
+              onClick: () => signalementInfosModal.open(),
+            },
+          },
+          headerFooterDisplayItem,
+        ]}
       />
+      <SignalementInfosModal />
     </div>
   );
 }

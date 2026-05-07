@@ -1,71 +1,82 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fr } from "@codegouvfr/react-dsfr";
 import { Button } from "@codegouvfr/react-dsfr/Button";
-import { Stepper } from "@codegouvfr/react-dsfr/Stepper";
+import { Breadcrumb } from "@codegouvfr/react-dsfr/Breadcrumb";
 import { Accordion } from "@codegouvfr/react-dsfr/Accordion";
 import { Alert } from "@codegouvfr/react-dsfr/Alert";
-import { profileMock, referentiel } from "../../data/maquette";
+import { Checkbox } from "@codegouvfr/react-dsfr/Checkbox";
+import {
+  profileMock,
+  referentiel,
+  saveSelectedThemes,
+} from "../../data/maquette";
+import { signalementInfosModal } from "../../components/SignalementInfosModal";
 
+/**
+ * Activation de l'espace — écran unique du MVP.
+ * Fusionne les anciennes étapes Vérification + CGU + Thèmes.
+ */
 export function Verification() {
   const navigate = useNavigate();
-  const cycleYears = profileMock.cycleDureeAns;
+  const [accepted, setAccepted] = useState(false);
+
+  function handleConfirm() {
+    if (!accepted) return;
+    // Le choix des thèmes est repoussé hors de l'onboarding du MVP.
+    // On initialise le sessionStorage avec une carte vide pour que
+    // les helpers downstream (getNextStep, etc.) restent fonctionnels.
+    const empty: Record<string, string[]> = {};
+    referentiel.axes.forEach((a) => (empty[a.id] = []));
+    saveSelectedThemes(empty);
+    navigate("/maquette/tableau-de-bord");
+  }
 
   return (
-    <div className={fr.cx("fr-container", "fr-my-6w")}>
-      <h1 className={fr.cx("fr-mb-2w")}>Activation de votre espace</h1>
-      <p
-        className={`${fr.cx("fr-text--lead", "fr-mb-5w")} fr-text-mention--grey`}
-      >
-        Vérifiez votre référentiel de certification, acceptez les conditions
-        puis choisissez vos thèmes préférentiels.
-      </p>
+    <div className={fr.cx("fr-container", "fr-my-4w")}>
+      <Breadcrumb
+        currentPageLabel="Activation de votre espace"
+        segments={[{ label: "Accueil", linkProps: { to: "/" } }]}
+      />
 
-      <div className="maq-activation-box">
-        <Stepper
-          currentStep={1}
-          stepCount={3}
-          title="Vérification"
-          nextTitle="Conditions"
-        />
+      <h1 className={fr.cx("fr-mb-3w")}>Activation de votre espace</h1>
+      <hr className="maq-activation__divider" aria-hidden="true" />
 
-        <p className={fr.cx("fr-text--lead", "fr-mb-1v")}>
-          Bonjour <strong>{profileMock.prenom} {profileMock.nom}</strong>,
+      <div className="maq-activation">
+        <p className={fr.cx("fr-text--lead", "fr-mb-1v")}>Bonjour</p>
+        <p className={fr.cx("fr-text--lead", "fr-mb-1w")}>
+          <strong>
+            {profileMock.prenom} {profileMock.nom},
+          </strong>
         </p>
-        <p className={`${fr.cx("fr-text--sm", "fr-mb-4w")} fr-text-mention--grey`}>
-          Infirmier diplômé d'État · {profileMock.specialite}
+        <p
+          className={`${fr.cx("fr-text--sm", "fr-mb-3w")} fr-text-mention--grey`}
+        >
+          Ces informations proviennent du RPPS via Pro Santé Connect.
         </p>
 
-        {/* ─── Hero référentiel ───────────────────────────── */}
         <div className="maq-ref-hero">
-          <span className="maq-ref-hero__eyebrow">Votre référentiel de certification</span>
+          <span className="maq-ref-hero__eyebrow">
+            Votre référentiel de certification
+          </span>
           <h2 className="maq-ref-hero__title">{referentiel.label}</h2>
           <p className="maq-ref-hero__author">
             Rédigé par le Conseil National Professionnel infirmier
           </p>
-
-          <ul className="maq-ref-hero__stats">
-            <li>
-              <span className="maq-ref-hero__stat-value">{referentiel.axes.length}</span>
-              <span className="maq-ref-hero__stat-label">axes à couvrir</span>
-            </li>
-            <li>
-              <span className="maq-ref-hero__stat-value">{referentiel.min_total}</span>
-              <span className="maq-ref-hero__stat-label">actions minimum</span>
-            </li>
-            <li>
-              <span className="maq-ref-hero__stat-value">{cycleYears} ans</span>
-              <span className="maq-ref-hero__stat-label">
-                du {profileMock.debutCycle} au {profileMock.finCycle}
-              </span>
-            </li>
-          </ul>
         </div>
 
         <Accordion
-          label="Vérifier mes informations Pro Santé Connect"
+          label="Vérifier mes informations"
+          defaultExpanded
           className={fr.cx("fr-mt-3w")}
         >
           <dl className="maq-profil-dl">
+            <div className="maq-profil-dl__row">
+              <dt>Nom et prénom</dt>
+              <dd>
+                {profileMock.prenom} {profileMock.nom}
+              </dd>
+            </div>
             <div className="maq-profil-dl__row">
               <dt>Numéro RPPS</dt>
               <dd>{profileMock.rpps}</dd>
@@ -79,8 +90,12 @@ export function Verification() {
               <dd>{profileMock.specialite}</dd>
             </div>
             <div className="maq-profil-dl__row">
+              <dt>Référentiel attribué</dt>
+              <dd>{referentiel.label}</dd>
+            </div>
+            <div className="maq-profil-dl__row">
               <dt>Source</dt>
-              <dd>Annuaire Santé (RPPS) via Pro Santé Connect</dd>
+              <dd>Informations issues du RPPS</dd>
             </div>
           </dl>
 
@@ -88,10 +103,12 @@ export function Verification() {
             severity="info"
             small
             className={fr.cx("fr-mt-2w")}
+            title="Ces informations sont incorrectes ?"
             description={
               <>
-                Une information est incorrecte&nbsp;? Ma Certif' Pro Santé ne
-                peut pas la modifier — elle est gérée par votre ordre. Contactez{" "}
+                Ces informations sont gérées par votre ordre professionnel. Ma
+                Certif' Pro Santé ne peut pas les modifier. Pour toute
+                correction, contactez{" "}
                 <a
                   href="https://www.ordre-infirmiers.fr"
                   target="_blank"
@@ -105,12 +122,35 @@ export function Verification() {
           />
         </Accordion>
 
-        <div className="maq-activation-box__actions">
+        <div className={fr.cx("fr-mt-4w")}>
+          <Checkbox
+            options={[
+              {
+                label: (
+                  <span>
+                    J'ai lu et j'accepte les <a href="/cgu" target="_blank" rel="noreferrer">conditions générales d'utilisation</a> de Ma Certif' Pro Santé
+                  </span>
+                ),
+                nativeInputProps: {
+                  checked: accepted,
+                  onChange: (e) => setAccepted(e.target.checked),
+                },
+              },
+            ]}
+          />
+        </div>
+
+        <div className="maq-activation__actions">
+          <Button
+            priority="secondary"
+            onClick={() => signalementInfosModal.open()}
+          >
+            Une donnée incorrecte&nbsp;?
+          </Button>
           <Button
             priority="primary"
-            iconId="fr-icon-arrow-right-line"
-            iconPosition="right"
-            onClick={() => navigate("/auth/onboarding/cgu")}
+            disabled={!accepted}
+            onClick={handleConfirm}
           >
             Confirmer et continuer
           </Button>

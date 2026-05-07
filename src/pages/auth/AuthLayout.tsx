@@ -1,8 +1,12 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { Header } from "@codegouvfr/react-dsfr/Header";
-import { Footer } from "@codegouvfr/react-dsfr/Footer";
+import { Footer, type FooterProps } from "@codegouvfr/react-dsfr/Footer";
 import { headerFooterDisplayItem } from "@codegouvfr/react-dsfr/Display";
 import type { ReactNode } from "react";
+import {
+  SignalementInfosModal,
+  signalementInfosModal,
+} from "../../components/SignalementInfosModal";
 import "./auth.css";
 
 export type AuthLayoutMode = "deconnecte" | "masque" | "connecte-sans-nav";
@@ -12,6 +16,97 @@ type Props = {
   userName?: string;
   children?: ReactNode;
 };
+
+const CONTACT_EMAIL = "contact-mcps@esante.gouv.fr";
+
+const operatorLogo = {
+  orientation: "horizontal" as const,
+  imgUrl: "/operator-logo-ans.svg",
+  alt: "ANS — Agence du Numérique en Santé",
+};
+
+const footerLinkList: FooterProps.LinkList.List = [
+  {
+    categoryName: "Ma Certif' Pro Santé",
+    links: [
+      { text: "Accueil", linkProps: { to: "/" } },
+      {
+        text: "Consulter les référentiels",
+        linkProps: { to: "/referentiel" },
+      },
+      {
+        text: "Nous contacter",
+        linkProps: { href: `mailto:${CONTACT_EMAIL}` },
+      },
+    ],
+  },
+  {
+    categoryName: "Liens utiles",
+    links: [
+      {
+        text: "esante.gouv.fr",
+        linkProps: {
+          href: "https://esante.gouv.fr",
+          target: "_blank" as const,
+          rel: "noreferrer",
+        },
+      },
+      {
+        text: "Pro Santé Connect",
+        linkProps: {
+          href: "https://esante.gouv.fr/produits-services/pro-sante-connect",
+          target: "_blank" as const,
+          rel: "noreferrer",
+        },
+      },
+      {
+        text: "Loi du 26 avril 2021",
+        linkProps: {
+          href: "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000043407427",
+          target: "_blank" as const,
+          rel: "noreferrer",
+        },
+      },
+    ],
+  },
+  {
+    categoryName: "Gouvernement",
+    links: [
+      {
+        text: "sante.gouv.fr",
+        linkProps: {
+          href: "https://sante.gouv.fr",
+          target: "_blank" as const,
+          rel: "noreferrer",
+        },
+      },
+      {
+        text: "service-public.fr",
+        linkProps: {
+          href: "https://service-public.fr",
+          target: "_blank" as const,
+          rel: "noreferrer",
+        },
+      },
+      {
+        text: "legifrance.gouv.fr",
+        linkProps: {
+          href: "https://legifrance.gouv.fr",
+          target: "_blank" as const,
+          rel: "noreferrer",
+        },
+      },
+      {
+        text: "info.gouv.fr",
+        linkProps: {
+          href: "https://info.gouv.fr",
+          target: "_blank" as const,
+          rel: "noreferrer",
+        },
+      },
+    ],
+  },
+];
 
 /**
  * Layout du parcours d'authentification.
@@ -47,7 +142,28 @@ export function AuthLayout({ mode, userName, children }: Props) {
             },
           },
         ]
-      : [headerFooterDisplayItem];
+      : [
+          headerFooterDisplayItem,
+          {
+            iconId: "fr-icon-lock-line" as const,
+            text: "Se connecter",
+            linkProps: { to: "/#connexion" },
+          },
+        ];
+
+  const isConnecte = mode === "connecte-sans-nav";
+
+  const bottomItems = isConnecte
+    ? [
+        {
+          text: "Une donnée incorrecte ?",
+          buttonProps: {
+            onClick: () => signalementInfosModal.open(),
+          },
+        },
+        headerFooterDisplayItem,
+      ]
+    : [headerFooterDisplayItem];
 
   return (
     <div
@@ -67,6 +183,7 @@ export function AuthLayout({ mode, userName, children }: Props) {
           to: "/",
           title: "Accueil — Ma Certif' Pro Santé",
         }}
+        operatorLogo={operatorLogo}
         quickAccessItems={quickAccessItems}
       />
       <main role="main" id="content" style={{ flex: 1 }}>
@@ -74,9 +191,12 @@ export function AuthLayout({ mode, userName, children }: Props) {
       </main>
       <Footer
         accessibility="non compliant"
-        contentDescription="Ma Certif' Pro Santé — Service en ligne de l'Agence du Numérique en Santé pour suivre votre certification périodique."
-        bottomItems={[headerFooterDisplayItem]}
+        contentDescription="Ma Certif' Pro Santé est le service en ligne de l'Agence du Numérique en Santé pour suivre la certification périodique des professionnels de santé."
+        operatorLogo={operatorLogo}
+        linkList={footerLinkList}
+        bottomItems={bottomItems}
       />
+      {isConnecte && <SignalementInfosModal />}
     </div>
   );
 }

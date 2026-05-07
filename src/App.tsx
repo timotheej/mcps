@@ -14,8 +14,6 @@ import { Accueil } from "./pages/auth/Accueil";
 import { Loader } from "./pages/auth/Loader";
 import { Verification } from "./pages/auth/Verification";
 import { ReferentielIndisponible } from "./pages/auth/ReferentielIndisponible";
-import { CGU } from "./pages/auth/CGU";
-import { Themes } from "./pages/auth/Themes";
 import { ErreurAuth } from "./pages/auth/ErreurAuth";
 import { NonEligible } from "./pages/auth/NonEligible";
 import { profileMock } from "./data/maquette";
@@ -49,8 +47,6 @@ export function App() {
           path="/auth/onboarding/indisponible"
           element={<ReferentielIndisponible />}
         />
-        <Route path="/auth/onboarding/cgu" element={<CGU />} />
-        <Route path="/auth/onboarding/themes" element={<Themes />} />
       </Route>
 
       {/* ─── Espace applicatif (MaquetteLayout) ─── */}
@@ -92,6 +88,14 @@ export function App() {
       <Route path="/maquette" element={<Navigate to="/" replace />} />
       <Route
         path="/maquette/onboarding"
+        element={<Navigate to="/auth/onboarding/verification" replace />}
+      />
+      <Route
+        path="/auth/onboarding/cgu"
+        element={<Navigate to="/auth/onboarding/verification" replace />}
+      />
+      <Route
+        path="/auth/onboarding/themes"
         element={<Navigate to="/auth/onboarding/verification" replace />}
       />
     </Routes>
