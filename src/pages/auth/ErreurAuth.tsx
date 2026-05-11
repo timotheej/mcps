@@ -49,7 +49,7 @@ export function ErreurAuth() {
                   "fr-link--icon-left",
                   "fr-icon-question-line"
                 )}
-                href="/faq"
+                href="/aide"
               >
                 Besoin d'aide ?
               </a>

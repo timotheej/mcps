@@ -1,5 +1,5 @@
-import { Outlet, useNavigate } from "react-router-dom";
-import { Header } from "@codegouvfr/react-dsfr/Header";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Header, type HeaderProps } from "@codegouvfr/react-dsfr/Header";
 import { Footer, type FooterProps } from "@codegouvfr/react-dsfr/Footer";
 import { headerFooterDisplayItem } from "@codegouvfr/react-dsfr/Display";
 import type { ReactNode } from "react";
@@ -116,6 +116,7 @@ const footerLinkList: FooterProps.LinkList.List = [
  */
 export function AuthLayout({ mode, userName, children }: Props) {
   const navigate = useNavigate();
+  const location = useLocation();
 
   if (mode === "masque") {
     return (
@@ -124,6 +125,41 @@ export function AuthLayout({ mode, userName, children }: Props) {
       </main>
     );
   }
+
+  // Navigation principale du parcours public (mode "deconnecte" uniquement).
+  // En "connecte-sans-nav", on n'affiche pas de nav (l'utilisateur n'est pas
+  // encore dans l'app proprement dite).
+  const publicNavigation: HeaderProps.QuickAccessItem[] | undefined =
+    mode === "deconnecte"
+      ? undefined // navigation passée via props.navigation ci-dessous
+      : undefined;
+  void publicNavigation;
+
+  const navigation: HeaderProps["navigation"] =
+    mode === "deconnecte"
+      ? [
+          {
+            text: "Accueil",
+            linkProps: { to: "/" },
+            isActive: location.pathname === "/",
+          },
+          {
+            text: "En savoir plus",
+            linkProps: { to: "/en-savoir-plus" },
+            isActive: location.pathname.startsWith("/en-savoir-plus"),
+          },
+          {
+            text: "Tous les référentiels",
+            linkProps: { to: "/referentiel" },
+            isActive: location.pathname.startsWith("/referentiel"),
+          },
+          {
+            text: "Aide",
+            linkProps: { to: "/aide" },
+            isActive: location.pathname.startsWith("/aide"),
+          },
+        ]
+      : undefined;
 
   const quickAccessItems =
     mode === "connecte-sans-nav" && userName
@@ -185,6 +221,7 @@ export function AuthLayout({ mode, userName, children }: Props) {
         }}
         operatorLogo={operatorLogo}
         quickAccessItems={quickAccessItems}
+        navigation={navigation}
       />
       <main role="main" id="content" style={{ flex: 1 }}>
         {children ?? <Outlet />}

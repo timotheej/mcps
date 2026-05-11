@@ -8,9 +8,12 @@ import { Synthese } from "./pages/maquette/Synthese";
 import { Success } from "./pages/maquette/Success";
 import { AxeDetailTabs } from "./pages/maquette/AxeDetailTabs";
 import { ReferentielPublicIndex } from "./pages/maquette/ReferentielPublicIndex";
+import { ReferentielActions } from "./pages/maquette/ReferentielActions";
 
 import { AuthLayout } from "./pages/auth/AuthLayout";
 import { Accueil } from "./pages/auth/Accueil";
+import { EnSavoirPlus } from "./pages/auth/EnSavoirPlus";
+import { Aide } from "./pages/auth/Aide";
 import { Loader } from "./pages/auth/Loader";
 import { Verification } from "./pages/auth/Verification";
 import { ReferentielIndisponible } from "./pages/auth/ReferentielIndisponible";
@@ -26,6 +29,8 @@ export function App() {
       {/* ─── Parcours auth public ─── */}
       <Route element={<AuthLayout mode="deconnecte" />}>
         <Route path="/" element={<Accueil />} />
+        <Route path="/en-savoir-plus" element={<EnSavoirPlus />} />
+        <Route path="/aide" element={<Aide />} />
         <Route path="/auth/erreur" element={<ErreurAuth />} />
         <Route path="/auth/non-eligible" element={<NonEligible />} />
       </Route>
@@ -51,10 +56,15 @@ export function App() {
 
       {/* ─── Espace applicatif (MaquetteLayout) ─── */}
       <Route element={<MaquetteLayout />}>
-        <Route path="/referentiel" element={<ReferentielPublicIndex />} />
+        <Route path="/referentiel" element={<ReferentielActions mode="public" />} />
+        <Route path="/referentiel/index" element={<ReferentielPublicIndex />} />
         <Route
           path="/referentiel/:id"
           element={<ReferentielComplet mode="public" />}
+        />
+        <Route
+          path="/maquette/referentiel"
+          element={<ReferentielActions mode="private" />}
         />
         <Route path="/maquette/tableau-de-bord" element={<Dashboard />} />
         <Route

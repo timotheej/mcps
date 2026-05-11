@@ -1,4 +1,5 @@
 import referentielJson from "./referentiel-ide.json";
+import referentielsAllJson from "./referentiels-all.json";
 
 // ─── Types ──────────────────────────────────────────────
 
@@ -42,6 +43,56 @@ export type Referentiel = {
 };
 
 export const referentiel = referentielJson.referentiel as unknown as Referentiel;
+
+// ─── Référentiels multi-professions (data CSV ANS) ──────
+// Structure légère pour le sélecteur de référentiel (mode public).
+// Tous les référentiels publiés par les CNP sont disponibles. Le référentiel
+// IDE Généralistes existant ci-dessus reste utilisé comme référentiel actif
+// pour le PS connecté (cf. profileMock).
+
+export type ReferentielSummary = {
+  id: string;
+  code: string;
+  label: string;
+  ordre: string;
+  profession: string;
+  cycle_duree_ans: number;
+  actions_totales: number;
+  min_total: number;
+  axes: Array<{
+    id: string;
+    label_officiel: string;
+    label_court: string;
+    min_actions: number;
+    themes: Theme[];
+    actions_count: number;
+    actions: ActionRef[];
+  }>;
+};
+
+export type OrdreSummary = {
+  id: string;
+  label: string;
+  referentiels: Array<{
+    code: string;
+    label: string;
+    actions_totales: number;
+  }>;
+};
+
+export const referentielsAll = referentielsAllJson.referentiels as unknown as Record<
+  string,
+  ReferentielSummary
+>;
+
+export const ordresAvecReferentiels = referentielsAllJson.ordres as unknown as Record<
+  string,
+  OrdreSummary
+>;
+
+export function getReferentielByCode(code: string): ReferentielSummary | undefined {
+  return referentielsAll[code];
+}
 
 // ─── Couleurs par axe (DSFR illustratives) ─────────────
 

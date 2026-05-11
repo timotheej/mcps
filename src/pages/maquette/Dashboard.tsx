@@ -451,7 +451,7 @@ export function Dashboard({ mockState = "default" }: DashboardProps) {
                 priority="secondary"
                 iconId="fr-icon-external-link-line"
                 iconPosition="left"
-                linkProps={{ to: "/referentiel" }}
+                linkProps={{ to: "/maquette/referentiel" }}
               >
                 Consulter tout le référentiel ({refTotal} actions)
               </Button>

@@ -3328,3 +3328,221 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ─── Référentiel des actions (page sidebar + liste plate) ────── */
+
+/* Bandeau bleu pâle en haut de page */
+.maq-ref-band {
+  background: var(--background-alt-blue-france);
+  padding: 1rem 0 2rem;
+}
+
+.maq-ref-band__row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.maq-ref-band__heading {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.maq-ref-band__title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-title-blue-france);
+  margin: 0;
+  line-height: 2.25rem;
+}
+
+.maq-ref-band__context {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+}
+
+.maq-ref-band__context-label {
+  font-size: 0.875rem;
+  color: var(--text-mention-grey);
+  margin: 0;
+  white-space: nowrap;
+}
+
+.maq-ref-band__select {
+  background-color: var(--background-default-grey);
+  max-width: 28rem;
+  font-size: 0.9375rem;
+}
+
+.maq-ref-band__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* Bloc filtres */
+.maq-ref-filters {
+  display: flex;
+  flex-direction: column;
+}
+
+.maq-ref-filters__block {
+  display: flex;
+  flex-direction: column;
+}
+
+.maq-ref-filters__sep {
+  margin: 1.5rem 0;
+}
+
+/* Tags-group pour les filtres : DSFR fr-tags-group naturellement OK,
+   on ajuste le gap. */
+.maq-ref-filters .fr-tags-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Compteur d'actions au-dessus de la liste */
+.maq-ref-results-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.maq-ref-results-head__count {
+  font-weight: 400;
+  color: var(--text-mention-grey);
+}
+
+/* Liste des actions */
+.maq-ref-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Card action — sobre, bordure DSFR uniquement */
+.maq-ref-action {
+  border: 1px solid var(--border-default-grey);
+  background: var(--background-default-grey);
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: border-color 100ms ease, background-color 100ms ease;
+}
+
+.maq-ref-action:hover {
+  border-color: var(--border-action-high-blue-france);
+}
+
+.maq-ref-action:focus-visible {
+  outline: 2px solid var(--border-action-high-blue-france);
+  outline-offset: 2px;
+}
+
+.maq-ref-action__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.maq-ref-action__code {
+  font-size: 0.875rem;
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  color: var(--text-mention-grey);
+}
+
+.maq-ref-action__title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.55;
+  color: var(--text-title-grey);
+  margin: 0;
+}
+
+.maq-ref-action__footer {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  flex-wrap: wrap;
+}
+
+.maq-ref-action__declared {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-default-success);
+}
+
+.maq-ref-action__declared .fr-icon-check-line::before {
+  --icon-size: 1.125rem;
+}
+
+/* Empty state */
+.maq-ref-empty {
+  padding: 3rem 1.5rem;
+  border: 1px dashed var(--border-default-grey);
+  background: var(--background-alt-grey);
+  text-align: center;
+}
+
+@media (max-width: 767px) {
+  .maq-ref-band__row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .maq-ref-band__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .maq-ref-band__actions .fr-btn {
+    justify-content: center;
+  }
+}
+
+/* Section "Les 4 axes" en bas de la page référentiel */
+.maq-ref-axes-band {
+  background: var(--background-default-grey);
+  border-top: 1px solid var(--border-default-grey);
+}
+
+.maq-ref-axe-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1.5rem 1.25rem;
+}
+
+.maq-ref-axe-card__pictogram {
+  width: 5rem;
+  height: 5rem;
+  margin-bottom: 1rem;
+}
+
+.maq-ref-axe-card__num {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-action-high-blue-france);
+  margin: 0 0 0.375rem;
+}

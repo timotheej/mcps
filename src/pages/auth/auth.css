@@ -17,8 +17,21 @@
   background: var(--background-alt-grey);
 }
 
+/* Section en couleur de marque (bleu France) — pour "Comment ça marche". */
+.maq-home-section--brand {
+  background: var(--background-active-blue-france);
+  color: var(--text-inverted-blue-france, #f5f5fe);
+}
+
+.maq-home-section--brand h2,
+.maq-home-section--brand h3,
+.maq-home-section--brand p {
+  color: inherit;
+}
+
 /* Hero */
-.maq-home-hero__eyebrow {
+.maq-home-hero__eyebrow,
+.maq-home-section__eyebrow {
   font-size: 0.8125rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -68,120 +81,161 @@
   height: auto;
 }
 
-/* Êtes-vous concerné — split illustration + liste */
-.maq-home-concerne__illustration {
+/* Aperçu sobre du tableau de bord dans le hero — mockup simplifié,
+   construit avec des tokens DSFR (pas d'image externe). */
+.maq-home-hero__preview {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.maq-home-concerne__illustration svg {
-  max-width: 100%;
-  height: auto;
+.maq-home-hero__preview-box {
+  width: 100%;
+  max-width: 560px;
+  padding: 1.5rem;
+  background: var(--background-alt-grey);
 }
 
-.maq-home-concerne__total {
-  font-size: 1rem;
-  color: var(--text-mention-grey);
-  margin: 0 0 2rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid var(--border-default-grey);
-}
-
-.maq-home-concerne__total strong {
-  display: inline-block;
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--text-action-high-blue-france);
-  line-height: 1;
-  margin-right: 0.5rem;
-  vertical-align: -0.125em;
-}
-
-.maq-home-concerne__list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0;
-}
-
-.maq-home-concerne__item {
-  display: grid;
-  grid-template-columns: 1.5rem 1fr auto;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.875rem 0;
-  border-bottom: 1px solid var(--border-default-grey);
-}
-
-.maq-home-concerne__item:last-child {
-  border-bottom: none;
-}
-
-.maq-home-concerne__check {
-  color: var(--text-default-success);
-  font-size: 1.125rem;
-}
-
-.maq-home-concerne__check::before {
-  --icon-size: 1.125rem;
-}
-
-.maq-home-concerne__name {
-  font-weight: 600;
-  font-size: 1rem;
-  color: var(--text-title-grey);
-}
-
-.maq-home-concerne__count {
-  font-size: 0.875rem;
-  color: var(--text-mention-grey);
-  font-variant-numeric: tabular-nums;
-}
-
-@media (max-width: 575px) {
-  .maq-home-concerne__total strong {
-    font-size: 1.625rem;
-  }
-  .maq-home-concerne__item {
-    grid-template-columns: 1.25rem 1fr;
-  }
-  .maq-home-concerne__count {
-    grid-column: 2;
-    font-size: 0.8125rem;
-  }
-}
-
-/* Pourquoi vous certifier — 4 axes */
-.maq-home-axis {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 1.75rem 1.25rem;
+.maq-home-hero__preview-frame {
   background: var(--background-default-grey);
   border: 1px solid var(--border-default-grey);
+  overflow: hidden;
 }
 
-.maq-home-axis__pictogram {
-  width: 5rem;
-  height: 5rem;
-  margin-bottom: 1rem;
+.maq-home-hero__preview-bar {
+  display: flex;
+  gap: 0.375rem;
+  padding: 0.625rem 0.875rem;
+  background: var(--background-alt-grey);
+  border-bottom: 1px solid var(--border-default-grey);
 }
 
-.maq-home-axis__num {
+.maq-home-hero__preview-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--border-default-grey);
+}
+
+.maq-home-hero__preview-content {
+  padding: 1.25rem 1.5rem 1.5rem;
+}
+
+.maq-home-hero__preview-overline {
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--text-action-high-blue-france);
-  margin: 0 0 0.375rem;
+  margin: 0 0 0.25rem;
 }
 
-/* Comment ça marche — Timeline */
+.maq-home-hero__preview-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-title-grey);
+  margin: 0 0 0.25rem;
+}
+
+.maq-home-hero__preview-meta {
+  font-size: 0.8125rem;
+  color: var(--text-mention-grey);
+  margin: 0 0 1rem;
+}
+
+.maq-home-hero__preview-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.maq-home-hero__preview-row {
+  display: grid;
+  grid-template-columns: 3rem 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 0.875rem;
+  background: var(--background-alt-grey);
+  font-size: 0.8125rem;
+}
+
+.maq-home-hero__preview-row-tag {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-mention-grey);
+}
+
+.maq-home-hero__preview-row-label {
+  color: var(--text-default-grey);
+  font-weight: 500;
+}
+
+.maq-home-hero__preview-row-status {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-mention-grey);
+}
+
+.maq-home-hero__preview-row-status--done {
+  color: var(--text-default-success);
+}
+
+/* Grille des 7 ordres : composant custom sobre, fond blanc sur alt-grey
+   de section, icône check + nom. Aucune ombre, tokens DSFR. */
+.maq-home-ordres {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.maq-home-ordres__item {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 1rem 1.25rem;
+  background: var(--background-default-grey);
+  min-height: 4rem;
+}
+
+.maq-home-ordres__icon {
+  flex-shrink: 0;
+  color: var(--text-default-success);
+}
+
+.maq-home-ordres__icon::before {
+  --icon-size: 1.25rem;
+}
+
+.maq-home-ordres__name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-title-grey);
+  line-height: 1.3;
+}
+
+@media (max-width: 991px) {
+  .maq-home-ordres {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 575px) {
+  .maq-home-ordres {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Comment ça marche — Timeline horizontale sur fond bleu france.
+   Cercle gris clair + ligne grise entre les étapes. */
 .maq-home-timeline {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 0;
@@ -196,18 +250,18 @@
   position: relative;
   display: flex;
   align-items: center;
-  margin-bottom: 1.25rem;
-  height: 2.5rem;
+  margin-bottom: 1.5rem;
+  height: 3rem;
 }
 
 .maq-home-timeline__circle {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 3rem;
+  height: 3rem;
   border-radius: 50%;
-  background: var(--background-action-high-blue-france);
-  color: var(--text-inverted-blue-france, #fff);
+  background: var(--background-alt-grey);
+  color: var(--text-default-grey);
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.125rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -216,38 +270,36 @@
   z-index: 2;
 }
 
-/* Ligne horizontale reliant les cercles (sauf après le dernier) */
-.maq-home-timeline__step:not(:last-child) .maq-home-timeline__marker::after {
-  content: "";
+.maq-home-timeline__line {
   position: absolute;
-  left: 2.5rem;
-  right: -1.5rem;
+  left: 3rem;
+  right: 0;
   top: 50%;
   height: 2px;
-  background: var(--border-action-high-blue-france);
+  background: var(--background-alt-grey);
   transform: translateY(-50%);
   z-index: 1;
 }
 
 .maq-home-timeline__content {
-  padding-right: 0.5rem;
+  padding-right: 1.5rem;
 }
 
 .maq-home-timeline__num {
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--text-action-high-blue-france);
-  margin: 0 0 0.375rem;
+  letter-spacing: 0.04em;
+  color: var(--text-inverted-grey, #fff);
+  margin: 0 0 0.5rem;
 }
 
 @media (max-width: 991px) {
   .maq-home-timeline {
     grid-template-columns: repeat(2, 1fr);
-    row-gap: 2rem;
+    row-gap: 2.5rem;
   }
-  .maq-home-timeline__step:nth-child(2):not(:last-child) .maq-home-timeline__marker::after {
+  .maq-home-timeline__step:nth-child(2) .maq-home-timeline__line {
     display: none;
   }
 }
@@ -259,24 +311,21 @@
   }
   .maq-home-timeline__step {
     display: grid;
-    grid-template-columns: 2.5rem 1fr;
+    grid-template-columns: 3rem 1fr;
     column-gap: 1rem;
     padding-right: 0;
-    padding-bottom: 1.5rem;
+    padding-bottom: 1.75rem;
   }
   .maq-home-timeline__marker {
     margin-bottom: 0;
     height: auto;
     align-items: flex-start;
-    padding-top: 0.25rem;
   }
-  .maq-home-timeline__step:not(:last-child) .maq-home-timeline__marker::after {
-    content: "";
-    position: absolute;
-    left: 1.25rem;
-    top: 2.75rem;
-    bottom: -0.5rem;
+  .maq-home-timeline__line {
+    left: 1.4rem;
     right: auto;
+    top: 3rem;
+    bottom: -0.25rem;
     width: 2px;
     height: auto;
     transform: none;
@@ -284,6 +333,243 @@
   .maq-home-timeline__content {
     padding-right: 0;
   }
+}
+
+/* ─── Page "En savoir plus" ──────────────────────────────
+   Layout sobre : sommaire sticky desktop + sections.
+*/
+
+.maq-toc {
+  background: var(--background-default-grey);
+}
+
+.maq-toc__title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-mention-grey);
+  margin: 0 0 1rem;
+}
+
+.maq-toc__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-left: 1px solid var(--border-default-grey);
+}
+
+.maq-toc__link {
+  display: block;
+  padding: 0.375rem 0 0.375rem 1rem;
+  background-image: none;
+  color: var(--text-mention-grey);
+  font-size: 0.9375rem;
+  text-decoration: none;
+  margin-left: -1px;
+  border-left: 2px solid transparent;
+  line-height: 1.4;
+}
+
+.maq-toc__link:hover {
+  color: var(--text-action-high-blue-france);
+  border-left-color: var(--border-default-grey);
+}
+
+@media (min-width: 768px) {
+  .maq-toc {
+    position: sticky;
+    top: 1.5rem;
+  }
+}
+
+/* Section de contenu — espacement vertical entre sections */
+.maq-info-section {
+  margin-bottom: 4rem;
+  scroll-margin-top: 2rem;
+}
+
+.maq-info-section:last-child {
+  margin-bottom: 0;
+}
+
+.maq-info-list {
+  list-style: disc;
+  padding-left: 1.5rem;
+  margin: 0 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.maq-info-list li {
+  line-height: 1.5;
+}
+
+/* Card axe sobre — pas de bordure colorée, juste de la structure */
+.maq-info-axis {
+  height: 100%;
+  padding: 1.5rem;
+  background: var(--background-alt-grey);
+  display: flex;
+  flex-direction: column;
+}
+
+.maq-info-axis__overline {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-action-high-blue-france);
+  margin: 0 0 0.5rem;
+}
+
+/* CTA final discret en bas de §11 */
+.maq-info-cta {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-default-grey);
+}
+
+/* Page Interlocuteurs / FAQ — interlocuteur dans l'accordéon FAQ */
+.maq-faq-interlocuteur {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-default-grey);
+}
+
+.maq-faq-interlocuteur__label {
+  font-size: 0.875rem;
+  color: var(--text-mention-grey);
+  font-weight: 500;
+}
+
+/* Grille de tuiles "Vos points de contact" — radiogroup de 7 professions.
+   Pattern cohérent avec .maq-home-ordres mais cliquable avec état sélectionné. */
+.maq-aide-tiles {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.maq-aide-tile {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 1rem 1.25rem;
+  background: var(--background-default-grey);
+  border: 1px solid var(--border-default-grey);
+  min-height: 4rem;
+  text-align: left;
+  font-family: inherit;
+  cursor: pointer;
+  color: var(--text-title-grey);
+  transition: border-color 100ms ease, background-color 100ms ease;
+}
+
+.maq-aide-tile:hover {
+  border-color: var(--border-action-high-blue-france);
+  background: var(--background-contrast-grey);
+}
+
+.maq-aide-tile:focus-visible {
+  outline: 2px solid var(--border-action-high-blue-france);
+  outline-offset: 2px;
+}
+
+.maq-aide-tile--selected {
+  border-color: var(--border-action-high-blue-france);
+  background: var(--background-action-low-blue-france);
+}
+
+.maq-aide-tile--selected .maq-aide-tile__icon,
+.maq-aide-tile--selected .maq-aide-tile__label {
+  color: var(--text-action-high-blue-france);
+}
+
+.maq-aide-tile__icon {
+  flex-shrink: 0;
+  color: var(--text-mention-grey);
+}
+
+.maq-aide-tile__icon::before {
+  --icon-size: 1.5rem;
+}
+
+.maq-aide-tile__label {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+@media (max-width: 991px) {
+  .maq-aide-tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 575px) {
+  .maq-aide-tiles {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Sous-bloc "Problème technique" dans la section Contacts —
+   visuellement déprioritisé (separator, fond légèrement gris, texte sm). */
+.maq-aide-support {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-default-grey);
+}
+
+.maq-aide-support h3 {
+  color: var(--text-mention-grey);
+  font-size: 1rem;
+}
+
+/* Empty state pour le sélecteur profession (sans coordonnées affichées) */
+.maq-empty-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  background: var(--background-alt-grey);
+  border-left: 2px solid var(--border-default-grey);
+}
+
+.maq-empty-card .fr-icon-information-line {
+  flex-shrink: 0;
+  color: var(--text-mention-grey);
+}
+
+.maq-empty-card .fr-icon-information-line::before {
+  --icon-size: 1.25rem;
+}
+
+/* Variante de la grille ordres avec effectifs (page "En savoir plus") */
+.maq-home-ordres--with-meta .maq-home-ordres__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.maq-home-ordres--with-meta .maq-home-ordres__name {
+  font-size: 0.9375rem;
+}
+
+.maq-home-ordres--with-meta .maq-home-ordres__meta {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--text-mention-grey);
 }
 
 /* ─── Ecran de chargement ──────────────────────────────── */

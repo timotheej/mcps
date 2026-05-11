@@ -2,42 +2,22 @@ import { useNavigate } from "react-router-dom";
 import { fr } from "@codegouvfr/react-dsfr";
 import { Accordion } from "@codegouvfr/react-dsfr/Accordion";
 import { Card } from "@codegouvfr/react-dsfr/Card";
-import Avatar from "@codegouvfr/react-dsfr/picto/Avatar";
-import DocumentSearch from "@codegouvfr/react-dsfr/picto/DocumentSearch";
-import Internet from "@codegouvfr/react-dsfr/picto/Internet";
-import Book from "@codegouvfr/react-dsfr/picto/Book";
-import Search from "@codegouvfr/react-dsfr/picto/Search";
-import HumanCooperation from "@codegouvfr/react-dsfr/picto/HumanCooperation";
-import Doctor from "@codegouvfr/react-dsfr/picto/Doctor";
+import { Button } from "@codegouvfr/react-dsfr/Button";
+import { createModal } from "@codegouvfr/react-dsfr/Modal";
 import { ProSanteConnectButton } from "../../components/ProSanteConnectButton";
+const casParticuliersModal = createModal({
+  id: "modal-cas-particuliers",
+  isOpenedByDefault: false,
+});
 
-const ORDRES = [
-  { name: "Médecins", count: "237 200" },
-  { name: "Chirurgiens-dentistes", count: "47 600" },
-  { name: "Sages-femmes", count: "25 800" },
-  { name: "Pharmaciens", count: "74 600" },
-  { name: "Infirmiers", count: "565 553" },
-  { name: "Masseurs-kinésithérapeutes", count: "110 000" },
-  { name: "Pédicures-podologues", count: "14 400" },
-];
-
-const AXES = [
-  {
-    title: "Actualiser mes connaissances",
-    desc: "Formations, DPC, congrès, enseignement",
-  },
-  {
-    title: "Améliorer mes pratiques",
-    desc: "Audits, RMM, analyse de pratiques, simulation",
-  },
-  {
-    title: "Renforcer la relation patient",
-    desc: "Communication, éthique, droits des usagers",
-  },
-  {
-    title: "Préserver ma santé",
-    desc: "Risques psychosociaux, prévention, santé au travail",
-  },
+const ORDRES: Array<{ nom: string; icon: string }> = [
+  { nom: "Médecins", icon: "fr-icon-stethoscope-line" },
+  { nom: "Chirurgiens-dentistes", icon: "fr-icon-surgical-mask-line" },
+  { nom: "Sages-femmes", icon: "fr-icon-parent-line" },
+  { nom: "Pharmaciens", icon: "fr-icon-capsule-line" },
+  { nom: "Infirmiers", icon: "fr-icon-syringe-line" },
+  { nom: "Masseurs-kinés", icon: "fr-icon-heart-pulse-line" },
+  { nom: "Pédicure-podologue", icon: "fr-icon-first-aid-kit-line" },
 ];
 
 type Step = {
@@ -64,68 +44,57 @@ const STEPS: Step[] = [
   },
 ];
 
-const FAQ_ITEMS = [
+const CAS_PARTICULIERS = [
   {
-    label: "Mon référentiel n'est pas encore disponible, que faire ?",
+    label: "Cycle de 6 ou 9 ans selon votre date d'inscription",
+    body: (
+      <p className={fr.cx("fr-mb-0")}>
+        Votre cycle dure <strong>9&nbsp;ans</strong> si vous étiez en exercice
+        avant le 1<sup>er</sup>&nbsp;janvier 2023, ou <strong>6&nbsp;ans</strong>{" "}
+        si vous vous êtes inscrit à votre Ordre après cette date. Le cycle
+        démarre à votre première inscription.
+      </p>
+    ),
+  },
+  {
+    label: "Votre référentiel n'est pas encore disponible",
     body: (
       <p className={fr.cx("fr-mb-0")}>
         Les référentiels sont rédigés par les Conseils Nationaux Professionnels
-        (CNP). Si le vôtre n'est pas encore publié, vous serez informé par
-        e-mail dès qu'il sera disponible. Vous pouvez vous connecter dès
-        maintenant pour suivre l'état d'avancement.
+        (CNP). Si le vôtre n'est pas encore publié, vous serez notifié par
+        e-mail dès sa parution. Vous pouvez vous connecter dès maintenant pour
+        consulter l'état d'avancement et préparer votre dossier.
       </p>
     ),
   },
   {
-    label: "Que se passe-t-il si je ne complète pas dans les délais ?",
+    label: "Vous changez d'ordre ou de spécialité ordinale",
     body: (
       <p className={fr.cx("fr-mb-0")}>
-        À l'échéance de votre cycle, votre Ordre est informé du niveau de
-        complétion de votre obligation. Le dispositif de relance et les
-        modalités d'accompagnement sont en cours de définition par les ordres
-        professionnels.
+        Votre cycle se poursuit avec le référentiel correspondant à votre
+        nouvelle inscription. Les actions déjà déclarées dans le précédent
+        référentiel restent acquises.
       </p>
     ),
   },
   {
-    label: "Mes données sont-elles confidentielles ?",
+    label: "Arrêt longue durée, congé parental ou suspension d'activité",
     body: (
       <p className={fr.cx("fr-mb-0")}>
-        Vos données sont traitées conformément au RGPD. Seuls vous-même et
-        votre Ordre professionnel ont accès à vos données individuelles. L'ANS
-        et les CNP n'accèdent qu'à des données agrégées anonymes.
+        Votre cycle peut être suspendu pendant la durée de votre arrêt et
+        reprend à votre retour d'activité. Adressez-vous à votre Ordre
+        professionnel pour les modalités précises.
       </p>
     ),
   },
   {
-    label: "La certification périodique remplace-t-elle le DPC ?",
+    label: "Vous exercez en libéral, en salariat ou en mixte",
     body: (
       <p className={fr.cx("fr-mb-0")}>
-        Non. La certification périodique et le DPC (développement professionnel
-        continu) sont deux dispositifs distincts mais complémentaires&nbsp;: les
-        actions DPC peuvent compter dans votre certification périodique selon
-        les modalités définies par votre référentiel.
-      </p>
-    ),
-  },
-  {
-    label: "Qui contacter pour des questions sur mon référentiel ?",
-    body: (
-      <p className={fr.cx("fr-mb-0")}>
-        Pour toute question sur le contenu de votre référentiel, contactez le
-        CNP de votre profession. Pour des questions sur la plateforme,
-        écrivez-nous à l'adresse en bas de page.
-      </p>
-    ),
-  },
-  {
-    label: "Comment se passe la certification en cas de changement d'ordre ?",
-    body: (
-      <p className={fr.cx("fr-mb-0")}>
-        En cas de changement d'ordre ou de spécialité ordinale, votre cycle se
-        poursuit avec le référentiel correspondant à votre nouvelle inscription.
-        Les actions déjà déclarées dans le précédent référentiel restent
-        acquises.
+        L'obligation s'applique de la même manière quel que soit votre mode
+        d'exercice. La prise en charge financière des actions de formation peut
+        différer selon votre statut (ANDPC, plan de formation employeur, fonds
+        personnels).
       </p>
     ),
   },
@@ -153,19 +122,31 @@ export function Accueil() {
               "fr-grid-row--middle"
             )}
           >
-            <div className={fr.cx("fr-col-12", "fr-col-lg-7")}>
-              <p className={`maq-home-hero__eyebrow ${fr.cx("fr-mb-2w")}`}>
-                Service public · Agence du Numérique en Santé
+            <div className={fr.cx("fr-col-12", "fr-col-lg-6")}>
+              <p
+                className={`maq-home-section__eyebrow ${fr.cx("fr-mb-2w")}`}
+              >
+                Agence du numérique en santé
               </p>
-              <h1 id="hero-title" className={`${fr.cx("fr-mb-3w")} maq-home-hero__title`}>
+              <h1
+                id="hero-title"
+                className={`${fr.cx("fr-mb-3w")} maq-home-hero__title`}
+              >
                 Suivez votre certification périodique
               </h1>
-              <p className={fr.cx("fr-text--lead", "fr-mb-5w")}>
-                Ma Certif' Pro Santé est l'espace officiel pour les professionnels
-                de santé soumis à l'obligation de certification périodique
-                instaurée par la{" "}
+              <p
+                className={fr.cx("fr-text--md", "fr-mb-4w")}
+                style={{ color: "var(--text-mention-grey)" }}
+              >
+                Ma Certif' Pro Santé est l'espace officiel pour les
+                professionnels de santé soumis à l'obligation de certification
+                périodique instaurée par la{" "}
                 <a
-                  className={fr.cx("fr-link")}
+                  className={fr.cx(
+                    "fr-link",
+                    "fr-link--icon-right",
+                    "fr-icon-external-link-line"
+                  )}
                   href="https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000043407427"
                   target="_blank"
                   rel="noreferrer"
@@ -177,35 +158,78 @@ export function Accueil() {
 
               <div id="connexion" className="maq-home-hero__cta">
                 <ProSanteConnectButton onClick={handleConnect} />
-                <Accordion label="Qu'est-ce que Pro Santé Connect ?">
-                  <p className={fr.cx("fr-mb-1w")}>
-                    Pro Santé Connect est le service d'authentification
-                    officiel des professionnels de santé, géré par l'Agence du
-                    Numérique en Santé. Il utilise votre carte CPS ou
-                    l'application e-CPS sur smartphone.
-                  </p>
-                  <p className={fr.cx("fr-mb-0")}>
-                    <a
-                      className={fr.cx(
-                        "fr-link",
-                        "fr-link--icon-right",
-                        "fr-icon-external-link-line"
-                      )}
-                      href="https://esante.gouv.fr/produits-services/pro-sante-connect"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      En savoir plus sur esante.gouv.fr
-                    </a>
-                  </p>
-                </Accordion>
               </div>
             </div>
 
             <div
-              className={`${fr.cx("fr-col-12", "fr-col-lg-5", "fr-hidden", "fr-unhidden-lg")} maq-home-hero__illustration`}
+              className={`${fr.cx("fr-col-12", "fr-col-lg-6", "fr-hidden", "fr-unhidden-lg")} maq-home-hero__preview`}
             >
-              <Avatar style={{ width: "100%", maxWidth: 460, height: "auto" }} />
+              <div className="maq-home-hero__preview-box" aria-hidden="true">
+                <div className="maq-home-hero__preview-frame">
+                  <div className="maq-home-hero__preview-bar">
+                    <span className="maq-home-hero__preview-dot" />
+                    <span className="maq-home-hero__preview-dot" />
+                    <span className="maq-home-hero__preview-dot" />
+                  </div>
+                  <div className="maq-home-hero__preview-content">
+                    <p className="maq-home-hero__preview-overline">
+                      Infirmière en soins généraux
+                    </p>
+                    <p className="maq-home-hero__preview-title">
+                      Bonjour, Marie
+                    </p>
+                    <p className="maq-home-hero__preview-meta">
+                      Échéance de votre cycle : 5 ans et 7 mois
+                    </p>
+                    <div className="maq-home-hero__preview-rows">
+                      <div className="maq-home-hero__preview-row">
+                        <span className="maq-home-hero__preview-row-tag">
+                          Axe 1
+                        </span>
+                        <span className="maq-home-hero__preview-row-label">
+                          Actualiser mes connaissances
+                        </span>
+                        <span className="maq-home-hero__preview-row-status maq-home-hero__preview-row-status--done">
+                          2 sur 2
+                        </span>
+                      </div>
+                      <div className="maq-home-hero__preview-row">
+                        <span className="maq-home-hero__preview-row-tag">
+                          Axe 2
+                        </span>
+                        <span className="maq-home-hero__preview-row-label">
+                          Renforcer la qualité de mes pratiques
+                        </span>
+                        <span className="maq-home-hero__preview-row-status maq-home-hero__preview-row-status--done">
+                          2 sur 2
+                        </span>
+                      </div>
+                      <div className="maq-home-hero__preview-row">
+                        <span className="maq-home-hero__preview-row-tag">
+                          Axe 3
+                        </span>
+                        <span className="maq-home-hero__preview-row-label">
+                          Améliorer ma relation avec les patients
+                        </span>
+                        <span className="maq-home-hero__preview-row-status">
+                          0 sur 2
+                        </span>
+                      </div>
+                      <div className="maq-home-hero__preview-row">
+                        <span className="maq-home-hero__preview-row-tag">
+                          Axe 4
+                        </span>
+                        <span className="maq-home-hero__preview-row-label">
+                          Mieux prendre en compte ma santé
+                        </span>
+                        <span className="maq-home-hero__preview-row-status maq-home-hero__preview-row-status--done">
+                          3 actions
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -224,138 +248,96 @@ export function Accueil() {
               "fr-grid-row--middle"
             )}
           >
-            <div
-              className={`${fr.cx("fr-col-12", "fr-col-lg-5", "fr-hidden", "fr-unhidden-lg")} maq-home-concerne__illustration`}
-            >
-              <Doctor style={{ width: "100%", maxWidth: 380, height: "auto" }} />
-            </div>
-
-            <div className={fr.cx("fr-col-12", "fr-col-lg-7")}>
+            {/* Colonne gauche : titre + lead + CTA cas particuliers */}
+            <div className={fr.cx("fr-col-12", "fr-col-lg-4")}>
+              <p
+                className={`maq-home-section__eyebrow ${fr.cx("fr-mb-2w")}`}
+              >
+                Qui est concerné&nbsp;?
+              </p>
               <h2 id="concerne-title" className={fr.cx("fr-h3", "fr-mb-2w")}>
                 Êtes-vous concerné&nbsp;?
               </h2>
-              <p className={fr.cx("fr-text--lead", "fr-mb-3w")}>
-                L'obligation s'applique aux professionnels de santé inscrits à
-                l'un des sept ordres.
+              <p
+                className={fr.cx("fr-text--md", "fr-mb-3w")}
+                style={{ color: "var(--text-mention-grey)" }}
+              >
+                Si vous êtes inscrit à l'un des 7 ordres professionnels de
+                santé, oui.
               </p>
+              <Button
+                priority="secondary"
+                nativeButtonProps={casParticuliersModal.buttonProps}
+              >
+                Vous êtes dans un cas particulier&nbsp;?
+              </Button>
+            </div>
 
-              <p className="maq-home-concerne__total">
-                <strong>1&nbsp;075&nbsp;000</strong> professionnels concernés
-                en France
-              </p>
-
-              <ul className="maq-home-concerne__list">
+            {/* Colonne droite : grille des 7 ordres */}
+            <div className={fr.cx("fr-col-12", "fr-col-lg-8")}>
+              <ul className="maq-home-ordres">
                 {ORDRES.map((o) => (
-                  <li key={o.name} className="maq-home-concerne__item">
+                  <li key={o.nom} className="maq-home-ordres__item">
                     <span
-                      className="fr-icon-check-line maq-home-concerne__check"
+                      className={`${o.icon} maq-home-ordres__icon`}
                       aria-hidden="true"
                     />
-                    <span className="maq-home-concerne__name">{o.name}</span>
-                    <span className="maq-home-concerne__count">{o.count}</span>
+                    <span className="maq-home-ordres__name">{o.nom}</span>
                   </li>
                 ))}
               </ul>
             </div>
           </div>
-
-          <div
-            className={fr.cx("fr-callout", "fr-icon-time-line", "fr-mt-7w")}
-          >
-            <h3 className={fr.cx("fr-callout__title", "fr-h6")}>
-              Combien de temps pour vous certifier&nbsp;?
-            </h3>
-            <p className={fr.cx("fr-callout__text")}>
-              Votre cycle de certification dure <strong>9&nbsp;ans</strong> si
-              vous étiez en exercice avant le 1<sup>er</sup>&nbsp;janvier 2023,
-              ou <strong>6&nbsp;ans</strong> pour les nouveaux inscrits.
-            </p>
-          </div>
         </div>
       </section>
 
-      {/* ═══ Zone 3 — Pourquoi vous certifier ════════════════ */}
+      {/* ═══ Zone 3 — Comment ça marche ═══════════════════════ */}
       <section
-        className="maq-home-section maq-home-section--default fr-py-8w fr-py-md-10w"
-        aria-labelledby="pourquoi-title"
-      >
-        <div className={fr.cx("fr-container")}>
-          <div className={fr.cx("fr-grid-row", "fr-mb-5w")}>
-            <div className={fr.cx("fr-col-12", "fr-col-lg-8")}>
-              <h2 id="pourquoi-title" className={fr.cx("fr-h3", "fr-mb-2w")}>
-                Pourquoi vous certifier&nbsp;?
-              </h2>
-              <p className={fr.cx("fr-text--lead", "fr-mb-0")}>
-                Quatre axes pour entretenir et faire évoluer votre exercice tout
-                au long de votre carrière.
-              </p>
-            </div>
-          </div>
-
-          <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
-            {AXES.map((axe, i) => {
-              const pictos = [Book, Search, HumanCooperation, Internet];
-              const Picto = pictos[i];
-              return (
-                <div
-                  key={axe.title}
-                  className={fr.cx("fr-col-12", "fr-col-md-6", "fr-col-lg-3")}
-                >
-                  <div className="maq-home-axis">
-                    <Picto className="maq-home-axis__pictogram" />
-                    <p className="maq-home-axis__num">Axe {i + 1}</p>
-                    <h3 className={fr.cx("fr-h6", "fr-mb-1w")}>{axe.title}</h3>
-                    <p className={fr.cx("fr-text--sm", "fr-mb-0")}>
-                      {axe.desc}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ Zone 4 — Comment ça marche ═══════════════════════ */}
-      <section
-        className="maq-home-section maq-home-section--alt fr-py-8w fr-py-md-10w"
+        className="maq-home-section maq-home-section--brand fr-py-8w fr-py-md-10w"
         aria-labelledby="comment-title"
       >
         <div className={fr.cx("fr-container")}>
-          <div className={fr.cx("fr-grid-row", "fr-mb-5w")}>
+          <div className={fr.cx("fr-grid-row", "fr-mb-7w")}>
             <div className={fr.cx("fr-col-12", "fr-col-lg-8")}>
               <h2 id="comment-title" className={fr.cx("fr-h3", "fr-mb-2w")}>
-                Comment ça marche
+                Comment ça marche&nbsp;?
               </h2>
-              <p className={fr.cx("fr-text--lead", "fr-mb-0")}>
+              <p className={fr.cx("fr-text--md", "fr-mb-0")}>
                 Quatre étapes pour suivre votre certification périodique sur Ma
                 Certif' Pro Santé.
               </p>
             </div>
           </div>
 
-          <div className="maq-home-timeline">
+          <ol className="maq-home-timeline">
             {STEPS.map((step, i) => (
-              <div key={step.title} className="maq-home-timeline__step">
+              <li key={step.title} className="maq-home-timeline__step">
                 <div className="maq-home-timeline__marker">
-                  <span className="maq-home-timeline__circle" aria-hidden="true">
+                  <span
+                    className="maq-home-timeline__circle"
+                    aria-hidden="true"
+                  >
                     {i + 1}
                   </span>
+                  {i < STEPS.length - 1 && (
+                    <span
+                      className="maq-home-timeline__line"
+                      aria-hidden="true"
+                    />
+                  )}
                 </div>
                 <div className="maq-home-timeline__content">
                   <p className="maq-home-timeline__num">Étape {i + 1}</p>
-                  <h3 className={fr.cx("fr-h6", "fr-mb-1w")}>{step.title}</h3>
-                  <p className={fr.cx("fr-text--sm", "fr-mb-0")}>
-                    {step.desc}
-                  </p>
+                  <h3 className={fr.cx("fr-h5", "fr-mb-1w")}>{step.title}</h3>
+                  <p className={fr.cx("fr-text--md", "fr-mb-0")}>{step.desc}</p>
                 </div>
-              </div>
+              </li>
             ))}
-          </div>
+          </ol>
         </div>
       </section>
 
-      {/* ═══ Zone 5 — Explorer sans se connecter ════════════ */}
+      {/* ═══ Zone 4 — Pour aller plus loin ══════════════════ */}
       <section
         className="maq-home-section maq-home-section--default fr-py-8w fr-py-md-10w"
         aria-labelledby="explorer-title"
@@ -363,13 +345,9 @@ export function Accueil() {
         <div className={fr.cx("fr-container")}>
           <div className={fr.cx("fr-grid-row", "fr-mb-5w")}>
             <div className={fr.cx("fr-col-12", "fr-col-lg-8")}>
-              <h2 id="explorer-title" className={fr.cx("fr-h3", "fr-mb-2w")}>
-                Explorer sans vous connecter
+              <h2 id="explorer-title" className={fr.cx("fr-h3", "fr-mb-0")}>
+                Pour aller plus loin
               </h2>
-              <p className={fr.cx("fr-text--lead", "fr-mb-0")}>
-                Vous pouvez vous renseigner sur le dispositif avant de vous
-                connecter.
-              </p>
             </div>
           </div>
 
@@ -378,21 +356,9 @@ export function Accueil() {
               <Card
                 border
                 enlargeLink
-                imageComponent={<DocumentSearch />}
-                title="Consulter les référentiels"
+                title="En savoir plus"
                 titleAs="h3"
-                desc="Avant de vous connecter, consultez les actions de certification par profession, regroupées par axe."
-                linkProps={{ to: "/referentiel" }}
-              />
-            </div>
-            <div className={fr.cx("fr-col-12", "fr-col-md-6")}>
-              <Card
-                border
-                enlargeLink
-                imageComponent={<Internet />}
-                title="En savoir plus sur le dispositif"
-                titleAs="h3"
-                desc="Cadre, calendrier de déploiement et modalités sur le site officiel de l'Agence du Numérique en Santé."
+                desc="Cadre légal, calendrier de déploiement et modalités sur le site officiel de l'Agence du Numérique en Santé."
                 linkProps={{
                   href: "https://esante.gouv.fr",
                   target: "_blank",
@@ -400,52 +366,48 @@ export function Accueil() {
                 }}
               />
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ Zone 6 — Questions fréquentes ═══════════════════ */}
-      <section
-        className="maq-home-section maq-home-section--alt fr-py-8w fr-py-md-10w"
-        aria-labelledby="faq-title"
-      >
-        <div className={fr.cx("fr-container")}>
-          <div className={fr.cx("fr-grid-row", "fr-grid-row--center")}>
-            <div
-              className={fr.cx("fr-col-12", "fr-col-md-10", "fr-col-lg-8")}
-            >
-              <h2 id="faq-title" className={fr.cx("fr-h3", "fr-mb-2w")}>
-                Questions fréquentes
-              </h2>
-              <p className={fr.cx("fr-text--lead", "fr-mb-5w")}>
-                Les réponses aux questions les plus posées sur la certification
-                périodique.
-              </p>
-
-              <div className={fr.cx("fr-accordions-group")}>
-                {FAQ_ITEMS.map((item) => (
-                  <Accordion key={item.label} label={item.label}>
-                    {item.body}
-                  </Accordion>
-                ))}
-              </div>
-
-              <p className={fr.cx("fr-mt-5w", "fr-mb-0")}>
-                <a
-                  className={fr.cx(
-                    "fr-link",
-                    "fr-link--icon-left",
-                    "fr-icon-mail-line"
-                  )}
-                  href="mailto:contact-mcps@esante.gouv.fr"
-                >
-                  Une autre question&nbsp;? Contactez-nous
-                </a>
-              </p>
+            <div className={fr.cx("fr-col-12", "fr-col-md-6")}>
+              <Card
+                border
+                enlargeLink
+                title="Tous les référentiels"
+                titleAs="h3"
+                desc="Découvrez les actions de certification par profession, regroupées par axe, sans avoir à vous connecter."
+                linkProps={{ to: "/referentiel" }}
+              />
+            </div>
+            <div className={fr.cx("fr-col-12", "fr-col-md-6")}>
+              <Card
+                border
+                enlargeLink
+                title="Besoin d'aide ?"
+                titleAs="h3"
+                desc="Réponses aux questions fréquentes, coordonnées de votre Ordre et de votre CNP, et support technique."
+                linkProps={{ to: "/aide" }}
+              />
             </div>
           </div>
         </div>
       </section>
+
+      {/* Modale "Cas particuliers" — ouverte depuis le bouton zone 2 */}
+      <casParticuliersModal.Component
+        title="Vous êtes dans un cas particulier ?"
+        size="large"
+      >
+        <p className={fr.cx("fr-text--md", "fr-mb-3w")}>
+          Cycle de 6 ou 9 ans, changement d'ordre, suspension d'activité…
+          On répond aux 5 cas les plus fréquents.
+        </p>
+        <div className={fr.cx("fr-accordions-group")}>
+          {CAS_PARTICULIERS.map((item) => (
+            <Accordion key={item.label} label={item.label}>
+              {item.body}
+            </Accordion>
+          ))}
+        </div>
+      </casParticuliersModal.Component>
+
     </>
   );
 }
