@@ -11,7 +11,7 @@ import {
   referentiel,
   saveSelectedThemes,
 } from "../../data/maquette";
-import { signalementInfosModal } from "../../components/SignalementInfosModal";
+import { openContactModal } from "../../components/ContactModal";
 
 /**
  * Activation de l'espace — écran unique du MVP.
@@ -143,7 +143,7 @@ export function Verification() {
         <div className="maq-activation__actions">
           <Button
             priority="secondary"
-            onClick={() => signalementInfosModal.open()}
+            onClick={() => openContactModal("ordre", profileMock.profession)}
           >
             Une donnée incorrecte&nbsp;?
           </Button>

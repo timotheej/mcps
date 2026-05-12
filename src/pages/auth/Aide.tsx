@@ -1,23 +1,77 @@
-import { useMemo, useState } from "react";
+import { useMemo, type ReactNode } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import { Accordion } from "@codegouvfr/react-dsfr/Accordion";
 import { Badge } from "@codegouvfr/react-dsfr/Badge";
 import { Breadcrumb } from "@codegouvfr/react-dsfr/Breadcrumb";
 import { Card } from "@codegouvfr/react-dsfr/Card";
-import { Notice } from "@codegouvfr/react-dsfr/Notice";
+import { Tile } from "@codegouvfr/react-dsfr/Tile";
+import Book from "@codegouvfr/react-dsfr/picto/Book";
+import Avatar from "@codegouvfr/react-dsfr/picto/Avatar";
+import FlowSettings from "@codegouvfr/react-dsfr/picto/FlowSettings";
+import Information from "@codegouvfr/react-dsfr/picto/Information";
 import {
   FAQ_ITEMS,
-  CONTACTS_BY_PROFESSION,
   type FaqCategorie,
   type Interlocuteur,
 } from "../../data/interlocuteurs";
+import {
+  openContactModal,
+  type ContactTarget,
+} from "../../components/ContactModal";
 
-// La catégorie "Outil MCPS" est exclue : ses sujets (connexion, bug)
-// sont traités en §1 dans le sous-bloc Support technique.
-const FAQ_CATEGORIES_VISIBLES: FaqCategorie[] = [
+// ─── Mapping interlocuteur (FAQ) → target (modale) ──────
+const TARGET_BY_INTERLOCUTEUR: Record<Interlocuteur, ContactTarget> = {
+  CNP: "cnp",
+  Ordre: "ordre",
+  ANS: "ans",
+  DPO: "dpo",
+};
+
+// ─── Dispatcher : 4 grandes catégories de besoin ───────
+type Dispatch = {
+  title: string;
+  desc: string;
+  interlocuteur: Interlocuteur;
+  target: ContactTarget;
+  pictogram: ReactNode;
+};
+
+const DISPATCH: Dispatch[] = [
+  {
+    title: "Référentiel et actions de certification",
+    desc: "Contenu de votre référentiel, éligibilité d'une action, équivalences DPC, mises à jour.",
+    interlocuteur: "CNP",
+    target: "cnp",
+    pictogram: <Book />,
+  },
+  {
+    title: "Vos informations et votre cycle",
+    desc: "Données personnelles (nom, RPPS, profession), durée de cycle, suspension, changement d'ordre.",
+    interlocuteur: "Ordre",
+    target: "ordre",
+    pictogram: <Avatar />,
+  },
+  {
+    title: "Problème technique sur Ma Certif' Pro Santé",
+    desc: "Connexion avec Pro Santé Connect, bug d'affichage, anomalie sur la plateforme.",
+    interlocuteur: "ANS",
+    target: "ans",
+    pictogram: <FlowSettings />,
+  },
+  {
+    title: "Données personnelles et RGPD",
+    desc: "Accès, rectification, opposition ou suppression de vos données personnelles.",
+    interlocuteur: "DPO",
+    target: "dpo",
+    pictogram: <Information />,
+  },
+];
+
+const FAQ_CATEGORIES_ORDER: FaqCategorie[] = [
   "Référentiel",
   "Cycle",
   "Mes données",
+  "Outil MCPS",
 ];
 
 function InterlocuteurBadge({ value }: { value: Interlocuteur }) {
@@ -35,9 +89,22 @@ function InterlocuteurBadge({ value }: { value: Interlocuteur }) {
   );
 }
 
-export function Aide() {
-  const [professionId, setProfessionId] = useState<string>("");
+function ctaLabel(target: ContactTarget): string {
+  switch (target) {
+    case "ordre":
+      return "Contacter mon Ordre";
+    case "cnp":
+      return "Contacter mon CNP";
+    case "ans":
+      return "Contacter l'équipe MCPS";
+    case "dpo":
+      return "Contacter le DPO";
+    case "both":
+      return "Voir mes coordonnées";
+  }
+}
 
+export function Aide() {
   const itemsByCategorie = useMemo(() => {
     const map: Record<FaqCategorie, typeof FAQ_ITEMS> = {
       Référentiel: [],
@@ -49,32 +116,27 @@ export function Aide() {
     return map;
   }, []);
 
-  const selectedProfession = CONTACTS_BY_PROFESSION.find(
-    (p) => p.id === professionId
-  );
-
   return (
-    <div className={`${fr.cx("fr-container", "fr-mt-4w", "fr-mb-8w")}`}>
+    <div className={fr.cx("fr-container", "fr-mt-4w", "fr-mb-8w")}>
       <Breadcrumb
         currentPageLabel="Aide"
         segments={[{ label: "Accueil", linkProps: { to: "/" } }]}
       />
 
-      {/* En-tête */}
+      {/* ─── Hero ──────────────────────────────────────── */}
       <div className={fr.cx("fr-grid-row", "fr-mb-6w")}>
         <div className={fr.cx("fr-col-12", "fr-col-lg-9")}>
           <h1 className={fr.cx("fr-mb-2w")}>Besoin d'aide&nbsp;?</h1>
-          <p className={fr.cx("fr-text--lead", "fr-mb-2w")}>
-            Trouvez vos points de contact selon votre besoin. Pour les
-            questions métier (référentiel, actions, cycle), votre Ordre ou
-            votre CNP est le bon interlocuteur. Pour un problème technique sur
-            l'outil, contactez l'équipe MCPS.
+          <p className={fr.cx("fr-text--lead", "fr-mb-0")}>
+            Choisissez votre besoin pour être orienté vers le bon
+            interlocuteur. Selon votre question, votre Ordre, votre CNP, ou
+            l'équipe Ma Certif' Pro Santé peut vous répondre.
           </p>
         </div>
       </div>
 
+      {/* ─── Sommaire latéral + contenu ─────────────────── */}
       <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
-        {/* Sommaire latéral */}
         <aside
           className={fr.cx("fr-col-12", "fr-col-md-3")}
           aria-label="Sur cette page"
@@ -83,12 +145,12 @@ export function Aide() {
             <p className="maq-toc__title">Sur cette page</p>
             <ul className="maq-toc__list">
               <li>
-                <a className="maq-toc__link" href="#contacts">
-                  Vos points de contact
+                <a className="maq-toc__link" href="#dispatcher">
+                  Qui contacter selon votre besoin
                 </a>
               </li>
               <li>
-                <a className="maq-toc__link" href="#questions">
+                <a className="maq-toc__link" href="#faq">
                   Questions fréquentes
                 </a>
               </li>
@@ -101,237 +163,88 @@ export function Aide() {
           </nav>
         </aside>
 
-        {/* Contenu */}
         <div className={fr.cx("fr-col-12", "fr-col-md-9")}>
-          {/* §1 — Vos points de contact (Ordre / CNP + support technique) */}
-          <section className="maq-info-section" aria-labelledby="contacts">
-            <h2 id="contacts" className={fr.cx("fr-h3", "fr-mb-2w")}>
-              Vos points de contact
+          {/* ═══ §1 — Dispatcher 4 besoins ═══════════════════ */}
+          <section className="maq-info-section" aria-labelledby="dispatcher">
+            <h2 id="dispatcher" className={fr.cx("fr-h3", "fr-mb-2w")}>
+              Qui contacter selon votre besoin&nbsp;?
             </h2>
-            <p className={fr.cx("fr-text--md", "fr-mb-3w")}>
-              Sélectionnez votre profession pour afficher les coordonnées de
-              votre Ordre et de votre CNP.
+            <p className={fr.cx("fr-text--md", "fr-mb-4w")}>
+              Sélectionnez votre situation pour afficher les coordonnées du
+              bon interlocuteur.
             </p>
 
-            <div
-              role="radiogroup"
-              aria-label="Sélection de la profession"
-              className="maq-aide-tiles"
-            >
-              {CONTACTS_BY_PROFESSION.map((p) => {
-                const isSelected = professionId === p.id;
-                return (
-                  <button
-                    key={p.id}
-                    type="button"
-                    role="radio"
-                    aria-checked={isSelected}
-                    className={`maq-aide-tile${isSelected ? " maq-aide-tile--selected" : ""}`}
-                    onClick={() => setProfessionId(p.id)}
-                  >
-                    <span
-                      className={`${p.icon} maq-aide-tile__icon`}
-                      aria-hidden="true"
-                    />
-                    <span className="maq-aide-tile__label">{p.label}</span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {selectedProfession ? (
-              <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
-                <div className={fr.cx("fr-col-12", "fr-col-md-6")}>
-                  <div className="maq-info-axis">
-                    <Badge severity="info" small noIcon>
-                      Votre Ordre
-                    </Badge>
-                    <h3 className={fr.cx("fr-h6", "fr-mt-2w", "fr-mb-2w")}>
-                      {selectedProfession.ordre.nom}
-                    </h3>
-                    <ul className="maq-info-list">
-                      <li>
-                        <a
-                          className={fr.cx(
-                            "fr-link",
-                            "fr-link--icon-right",
-                            "fr-icon-external-link-line"
-                          )}
-                          href={selectedProfession.ordre.site}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          {selectedProfession.ordre.siteLabel}
-                        </a>
-                      </li>
-                      {selectedProfession.ordre.trouver && (
-                        <li>
-                          <a
-                            className={fr.cx(
-                              "fr-link",
-                              "fr-link--icon-right",
-                              "fr-icon-external-link-line"
-                            )}
-                            href={selectedProfession.ordre.trouver.url}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            {selectedProfession.ordre.trouver.label}
-                          </a>
-                        </li>
-                      )}
-                    </ul>
-                  </div>
+            <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
+              {DISPATCH.map((d) => (
+                <div
+                  key={d.title}
+                  className={fr.cx("fr-col-12", "fr-col-md-6")}
+                >
+                  <Tile
+                    title={d.title}
+                    titleAs="h3"
+                    desc={d.desc}
+                    detail={<InterlocuteurBadge value={d.interlocuteur} />}
+                    pictogram={d.pictogram}
+                    orientation="horizontal"
+                    enlargeLinkOrButton
+                    buttonProps={{
+                      onClick: () => openContactModal(d.target),
+                    }}
+                  />
                 </div>
-                <div className={fr.cx("fr-col-12", "fr-col-md-6")}>
-                  <div className="maq-info-axis">
-                    <Badge severity="info" small noIcon>
-                      Votre CNP
-                    </Badge>
-                    <h3 className={fr.cx("fr-h6", "fr-mt-2w", "fr-mb-2w")}>
-                      {selectedProfession.cnp.nom}
-                    </h3>
-                    {selectedProfession.cnp.site && (
-                      <ul className="maq-info-list">
-                        <li>
-                          <a
-                            className={fr.cx(
-                              "fr-link",
-                              "fr-link--icon-right",
-                              "fr-icon-external-link-line"
-                            )}
-                            href={selectedProfession.cnp.site}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            Site officiel
-                          </a>
-                        </li>
-                      </ul>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="maq-empty-card" role="status">
-                <span
-                  className="fr-icon-information-line"
-                  aria-hidden="true"
-                />
-                <p className={fr.cx("fr-mb-0", "fr-text--md")}>
-                  Sélectionnez votre profession ci-dessus pour afficher les
-                  coordonnées de votre Ordre national et de votre Conseil
-                  National Professionnel.
-                </p>
-              </div>
-            )}
-
-            <Notice
-              className={fr.cx("fr-mt-3w")}
-              title="Une fois connecté à Ma Certif' Pro Santé, vos coordonnées Ordre et CNP s'affichent automatiquement selon votre inscription RPPS."
-              isClosable={false}
-            />
-
-            {/* ─── Support technique ANS (sous-bloc, déprioritisé) ─── */}
-            <div className="maq-aide-support">
-              <h3 className={fr.cx("fr-h6", "fr-mb-2w")}>
-                Problème technique sur l'outil
-              </h3>
-              <p className={fr.cx("fr-text--sm", "fr-mb-2w")}>
-                Avant de nous écrire, vérifiez&nbsp;:
-              </p>
-              <ul className={`maq-info-list ${fr.cx("fr-text--sm")}`}>
-                <li>
-                  Que vous utilisez bien votre carte CPS ou l'application e-CPS
-                </li>
-                <li>Que votre carte est en cours de validité</li>
-                <li>
-                  Que votre RPPS est bien enregistré auprès de votre Ordre
-                </li>
-              </ul>
-              <ul
-                className={`maq-info-list ${fr.cx("fr-mt-2w", "fr-text--sm")}`}
-              >
-                <li>
-                  <a
-                    className={fr.cx(
-                      "fr-link",
-                      "fr-link--icon-right",
-                      "fr-icon-external-link-line",
-                      "fr-link--sm"
-                    )}
-                    href="https://esante.gouv.fr/produits-services/pro-sante-connect"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Aide Pro Santé Connect (problème d'authentification)
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className={fr.cx(
-                      "fr-link",
-                      "fr-link--icon-left",
-                      "fr-icon-mail-line",
-                      "fr-link--sm"
-                    )}
-                    href="mailto:support-mcps@esante.gouv.fr"
-                  >
-                    Bug ou anomalie sur MCPS&nbsp;: support-mcps@esante.gouv.fr
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className={fr.cx(
-                      "fr-link",
-                      "fr-link--icon-left",
-                      "fr-icon-mail-line",
-                      "fr-link--sm"
-                    )}
-                    href="mailto:dpo@esante.gouv.fr"
-                  >
-                    Exercice de vos droits (RGPD)&nbsp;: dpo@esante.gouv.fr
-                  </a>
-                </li>
-              </ul>
+              ))}
             </div>
           </section>
 
-          {/* §2 — Questions fréquentes (référence) */}
-          <section className="maq-info-section" aria-labelledby="questions">
-            <h2 id="questions" className={fr.cx("fr-h3", "fr-mb-2w")}>
+          {/* ═══ §2 — FAQ par catégorie ═════════════════════ */}
+          <section className="maq-info-section" aria-labelledby="faq">
+            <h2 id="faq" className={fr.cx("fr-h3", "fr-mb-2w")}>
               Questions fréquentes
             </h2>
-            <p className={fr.cx("fr-text--md", "fr-mb-3w")}>
-              Si vous ne savez pas qui contacter, ces questions peuvent vous
-              orienter. Chaque réponse précise l'interlocuteur compétent.
+            <p className={fr.cx("fr-text--md", "fr-mb-4w")}>
+              Si vous ne savez pas qui contacter, ces réponses peuvent vous
+              orienter. Chaque réponse mène à l'interlocuteur compétent.
             </p>
 
-            {FAQ_CATEGORIES_VISIBLES.map((cat) => {
+            {FAQ_CATEGORIES_ORDER.map((cat) => {
               const items = itemsByCategorie[cat];
               if (items.length === 0) return null;
               return (
                 <div key={cat} className={fr.cx("fr-mb-4w")}>
                   <h3 className={fr.cx("fr-h6", "fr-mb-2w")}>{cat}</h3>
                   <div className={fr.cx("fr-accordions-group")}>
-                    {items.map((it) => (
-                      <Accordion key={it.q} label={it.q}>
-                        <p className={fr.cx("fr-mb-2w")}>{it.a}</p>
-                        <div className="maq-faq-interlocuteur">
-                          <span className="maq-faq-interlocuteur__label">
-                            Pour aller plus loin&nbsp;:
-                          </span>
-                          <InterlocuteurBadge value={it.interlocuteur} />
-                        </div>
-                      </Accordion>
-                    ))}
+                    {items.map((it) => {
+                      const target =
+                        TARGET_BY_INTERLOCUTEUR[it.interlocuteur];
+                      return (
+                        <Accordion key={it.q} label={it.q}>
+                          <p className={fr.cx("fr-mb-2w")}>{it.a}</p>
+                          <div className="maq-faq-footer">
+                            <button
+                              type="button"
+                              className={fr.cx(
+                                "fr-btn",
+                                "fr-btn--sm",
+                                "fr-btn--secondary",
+                                "fr-icon-arrow-right-line",
+                                "fr-btn--icon-right"
+                              )}
+                              onClick={() => openContactModal(target)}
+                            >
+                              {ctaLabel(target)}
+                            </button>
+                          </div>
+                        </Accordion>
+                      );
+                    })}
                   </div>
                 </div>
               );
             })}
           </section>
 
-          {/* §3 — Pour aller plus loin */}
+          {/* ═══ §3 — Pour aller plus loin ══════════════════ */}
           <section className="maq-info-section" aria-labelledby="ressources">
             <h2 id="ressources" className={fr.cx("fr-h3", "fr-mb-3w")}>
               Pour aller plus loin

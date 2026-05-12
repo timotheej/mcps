@@ -271,6 +271,37 @@ export function getOrdreFromProfession(profession: string): Ordre | null {
   return aliasKey ? ORDRES[aliasKey] : null;
 }
 
+/** Renvoie la clé normalisée ("infirmier", "medecin", ...) ou null si la
+ *  profession n'est pas reconnue. Utile pour stocker la profession choisie
+ *  par un visiteur public (sessionStorage). */
+export function normalizeProfessionKey(profession: string): string | null {
+  const key = profession.trim().toLowerCase();
+  return PROFESSION_ALIASES[key] || null;
+}
+
+// ─── Profession publique (visiteur non connecté) ────────
+// Mémoire courte de la profession choisie par un visiteur public, pour ne
+// pas redemander à chaque ouverture de modale. Distinct de profileMock qui
+// est l'utilisateur "connecté" via PSC.
+
+const PUBLIC_PROFESSION_KEY = "mcps-public-profession";
+
+export function getPublicProfession(): string | null {
+  try {
+    return sessionStorage.getItem(PUBLIC_PROFESSION_KEY);
+  } catch {
+    return null;
+  }
+}
+
+export function setPublicProfession(professionKey: string): void {
+  try {
+    sessionStorage.setItem(PUBLIC_PROFESSION_KEY, professionKey);
+  } catch {
+    /* sessionStorage indispo (SSR ou block) → no-op */
+  }
+}
+
 // ─── Actions realisees ──────────────────────────────────
 
 export type ActionRealisee = {

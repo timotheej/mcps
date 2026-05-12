@@ -2,11 +2,11 @@ import { Outlet, useLocation } from "react-router-dom";
 import { Header } from "@codegouvfr/react-dsfr/Header";
 import { Footer } from "@codegouvfr/react-dsfr/Footer";
 import { headerFooterDisplayItem } from "@codegouvfr/react-dsfr/Display";
-import { loadSelectedThemes } from "../../data/maquette";
+import { loadSelectedThemes, profileMock } from "../../data/maquette";
 import {
-  SignalementInfosModal,
-  signalementInfosModal,
-} from "../../components/SignalementInfosModal";
+  ContactModal,
+  openContactModal,
+} from "../../components/ContactModal";
 
 export function MaquetteLayout() {
   const location = useLocation();
@@ -64,13 +64,13 @@ export function MaquetteLayout() {
           {
             text: "Une donnée incorrecte ?",
             buttonProps: {
-              onClick: () => signalementInfosModal.open(),
+              onClick: () => openContactModal("ordre", profileMock.profession),
             },
           },
           headerFooterDisplayItem,
         ]}
       />
-      <SignalementInfosModal />
+      <ContactModal />
     </div>
   );
 }

@@ -10,7 +10,9 @@ import { Checkbox } from "@codegouvfr/react-dsfr/Checkbox";
 import { Alert } from "@codegouvfr/react-dsfr/Alert";
 import { Badge } from "@codegouvfr/react-dsfr/Badge";
 import { CallOut } from "@codegouvfr/react-dsfr/CallOut";
+import { Accordion } from "@codegouvfr/react-dsfr/Accordion";
 import { MiniRing } from "../../components/MiniRing";
+import { openContactModal } from "../../components/ContactModal";
 import { ActionSearch } from "./ActionSearch";
 import {
   referentiel,
@@ -621,6 +623,35 @@ export function DeclarationDrawer({
           <section className="maq-decl-section maq-decl-section--visible">
             <h3 className={fr.cx("fr-h6", "fr-mb-1w")}>Dans quel axe ?</h3>
 
+            {!axeLocked && (
+              <div className={fr.cx("fr-mb-2w")}>
+                <Accordion label="Pas sûr du bon axe ?">
+                  <ul className={fr.cx("fr-mb-0")}>
+                    <li>
+                      <strong>Axe 1 — Actualiser mes connaissances :</strong>{" "}
+                      formations, DPC, DU/DIU, congrès, enseignement,
+                      simulation, analyse réflexive
+                    </li>
+                    <li>
+                      <strong>Axe 2 — Améliorer mes pratiques :</strong>{" "}
+                      audits, RMM, CREX, analyse des pratiques en groupe,
+                      protocoles
+                    </li>
+                    <li>
+                      <strong>Axe 3 — Renforcer la relation patient :</strong>{" "}
+                      relation d'aide, éthique, communication, dispositifs
+                      d'annonce
+                    </li>
+                    <li>
+                      <strong>Axe 4 — Préserver ma santé :</strong> prévention
+                      des risques psychosociaux, vaccinations, santé au
+                      travail, auto-évaluation
+                    </li>
+                  </ul>
+                </Accordion>
+              </div>
+            )}
+
             {axeLocked && selectedAxe ? (
               <div className="maq-decl-readonly">
                 <span className="maq-decl-readonly__label">Axe</span>
@@ -703,27 +734,41 @@ export function DeclarationDrawer({
                   placeholder="Sélectionnez une action"
                 />
                 {selectedAction && (
-                  <div className="maq-decl-action-preview">
-                    <span className="maq-decl-action-preview__code">
-                      {selectedAction.code}
-                    </span>
-                    <p className="maq-decl-action-preview__libelle">
-                      {selectedAction.libelle}
-                    </p>
-                  </div>
+                  <>
+                    <div className="maq-decl-action-preview">
+                      <span className="maq-decl-action-preview__code">
+                        {selectedAction.code}
+                      </span>
+                      <p className="maq-decl-action-preview__libelle">
+                        {selectedAction.libelle}
+                      </p>
+                    </div>
+                    {!selectedAction.attestation_honneur && (
+                      <CallOut
+                        className={fr.cx("fr-mt-2w")}
+                        iconId="fr-icon-attachment-line"
+                        title="Justificatif à préparer"
+                      >
+                        <p className={fr.cx("fr-mb-0", "fr-text--sm")}>
+                          <strong>{selectedAction.preuve.type}</strong>{" "}
+                          — {selectedAction.preuve.precision}
+                        </p>
+                      </CallOut>
+                    )}
+                  </>
                 )}
                 <p
-                  className={fr.cx("fr-text--sm", "fr-mt-1w", "fr-mb-0")}
+                  className={fr.cx("fr-text--sm", "fr-mt-2w", "fr-mb-0")}
                   style={{ color: "var(--text-mention-grey)" }}
                 >
                   Vous ne trouvez pas votre action ?{" "}
-                  <a
-                    href="#"
+                  <button
+                    type="button"
                     className={fr.cx("fr-link", "fr-text--sm")}
-                    onClick={(e) => e.preventDefault()}
+                    onClick={() => openContactModal("cnp")}
                   >
                     Contactez votre CNP
-                  </a>
+                  </button>
                 </p>
               </>
             )}

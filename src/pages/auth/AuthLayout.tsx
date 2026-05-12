@@ -4,9 +4,10 @@ import { Footer, type FooterProps } from "@codegouvfr/react-dsfr/Footer";
 import { headerFooterDisplayItem } from "@codegouvfr/react-dsfr/Display";
 import type { ReactNode } from "react";
 import {
-  SignalementInfosModal,
-  signalementInfosModal,
-} from "../../components/SignalementInfosModal";
+  ContactModal,
+  openContactModal,
+} from "../../components/ContactModal";
+import { profileMock } from "../../data/maquette";
 import "./auth.css";
 
 export type AuthLayoutMode = "deconnecte" | "masque" | "connecte-sans-nav";
@@ -194,12 +195,20 @@ export function AuthLayout({ mode, userName, children }: Props) {
         {
           text: "Une donnée incorrecte ?",
           buttonProps: {
-            onClick: () => signalementInfosModal.open(),
+            onClick: () => openContactModal("ordre", profileMock.profession),
           },
         },
         headerFooterDisplayItem,
       ]
-    : [headerFooterDisplayItem];
+    : [
+        {
+          text: "Contacter mon Ordre / CNP",
+          buttonProps: {
+            onClick: () => openContactModal("both"),
+          },
+        },
+        headerFooterDisplayItem,
+      ];
 
   return (
     <div
@@ -233,7 +242,7 @@ export function AuthLayout({ mode, userName, children }: Props) {
         linkList={footerLinkList}
         bottomItems={bottomItems}
       />
-      {isConnecte && <SignalementInfosModal />}
+      <ContactModal />
     </div>
   );
 }

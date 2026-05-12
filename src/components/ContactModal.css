@@ -1,0 +1,15 @@
+/* Modale de contact universelle — états spécifiques (le reste = Tile DSFR natif) */
+
+.contact-modal__placeholder {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: var(--background-alt-grey);
+  border: 1px solid var(--border-default-grey);
+  color: var(--text-mention-grey);
+}
+
+.contact-modal__placeholder .fr-icon-arrow-up-line {
+  color: var(--text-action-high-blue-france);
+}
