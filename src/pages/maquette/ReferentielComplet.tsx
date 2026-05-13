@@ -486,17 +486,25 @@ export function ReferentielComplet({
               {referentiel.axes.map((a) => {
                 const n = a.id.split("-")[1];
                 const isCurrent = a.id === id;
-                return (
+                return isCurrent ? (
                   <Button
                     key={a.id}
-                    priority={isCurrent ? "tertiary" : "tertiary no outline"}
+                    priority="tertiary"
+                    size="small"
+                    disabled
+                  >
+                    Axe {n}
+                  </Button>
+                ) : (
+                  <Button
+                    key={a.id}
+                    priority="tertiary no outline"
                     size="small"
                     linkProps={{
                       to: isPublic
                         ? `/referentiel/${a.id}`
                         : `/maquette/axe/${a.id}/referentiel`,
                     }}
-                    disabled={isCurrent}
                   >
                     Axe {n}
                   </Button>
